@@ -427,3 +427,9 @@ html .jf-foot-pod a:hover { text-decoration-color: #fff; }
 @media (max-width: 999px) {
   html .page-_top main.contents { padding-top: 2px !important; }
 }
+
+/* v18: スマホでは、下へスクロールすると上の帯・タブ・メニューのボタンが上に隠れる。上へ戻すと出てくる */
+@media (max-width: 999px) {
+  html .header, html .jf-tabs, html .jf-menu-btn { transition: transform 0.3s ease; }
+  html.jf-hide:not(.jf-menu-open) .header, html.jf-hide:not(.jf-menu-open) .jf-tabs, html.jf-hide:not(.jf-menu-open) .jf-menu-btn { transform: translateY(-112px); }
+}

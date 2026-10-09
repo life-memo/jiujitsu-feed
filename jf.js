@@ -412,6 +412,20 @@
   if (btn) btn.addEventListener('click', function () { menu(!html.classList.contains('jf-menu-open')); });
   if (shade) shade.addEventListener('click', function () { menu(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') menu(false); });
+  // スマホ: 下へスクロールしたら上の帯とタブを隠し、上へ戻したら出す(見た目は jf.css の html.jf-hide)
+  var lastY = window.pageYOffset, ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      var y = Math.max(window.pageYOffset, 0), d = y - lastY;
+      if (y < 80 || html.classList.contains('jf-menu-open')) html.classList.remove('jf-hide');
+      else if (d > 6) html.classList.add('jf-hide');
+      else if (d < -6) html.classList.remove('jf-hide');
+      if (Math.abs(d) > 6) lastY = y;
+      ticking = false;
+    });
+  }, { passive: true });
   // サイト内のリンクは、ページを読み込み直さずに切り替える。切り替わるまで本文をふっと薄くする
   var shownPath = null, fadeTurn = 'b', leaveTimer;
   document.addEventListener('click', function (e) {
