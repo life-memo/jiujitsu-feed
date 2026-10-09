@@ -89,13 +89,14 @@
       set(r, 'data-prop', k);
       if (k === '掲載日') {
         var v = r.querySelector('.notion-property-date-item'), p = v ? v.textContent.trim().split('/') : [];
-        set(r, 'data-jf-text', p.length === 3 ? p[0] + '年' + Number(p[1]) + '月' + Number(p[2]) + '日 掲載' : null);
+        set(r, 'data-jf-text', p.length === 3 ? '掲載日：' + p[0] + '年' + Number(p[1]) + '月' + Number(p[2]) + '日' : null);
       }
     });
-    var src = false, main = document.querySelector('main.contents');
+    var src = false, prev = null, main = document.querySelector('main.contents');
     document.querySelectorAll('main.contents > *').forEach(function (el) {
-      if (el.classList.contains('notion-text') && el.textContent.trim() === '参照記事') { src = true; set(el, 'data-jf-src', '1'); }
+      if (el.classList.contains('notion-text') && el.textContent.trim() === '参照記事') { src = true; set(el, 'data-jf-src', '1'); if (prev) set(prev, 'data-jf-last', '1'); }
       else if (src && el.classList.contains('notion-list')) set(el, 'data-jf-src', '1');
+      prev = el;
     });
     if (mode === 'article' && main) linkNames(main);
   }

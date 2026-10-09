@@ -226,3 +226,13 @@ html .jf-foot { margin-top: 56px; }
   html .page-_top .contents > .notion-collection[data-jf-recs] ~ .notion-text { grid-column: 2; grid-row: 3; }
   html .page-_top .contents > .notion-collection[data-jf-date]::before { top: 24px; }
 }
+
+/* v8: 記事ページ。参照記事は横に並べる(「参照記事  サイト名 ↗  サイト名 ↗」) */
+html .contents > [data-jf-last] { padding-bottom: 22px; border-bottom: 1px solid var(--jf-line); }
+html .contents > .notion-text[data-jf-src] { display: inline; margin: 0 14px 0 0; padding: 0; border: 0; font-size: 0.7rem; letter-spacing: 0.14em; line-height: 2.2; color: var(--jf-muted); }
+html .contents > .notion-list-disc[data-jf-src] { display: inline-block; margin: 14px 14px 0 0; padding: 0; list-style: none; vertical-align: baseline; }
+html .contents > .notion-list-disc[data-jf-src] li { display: inline; margin: 0; padding: 0; font-size: 0.78rem; line-height: 1.7; }
+html .contents > .notion-list-disc[data-jf-src] li::before, html .contents > .notion-list-disc[data-jf-src] li::marker { content: none; }
+html .contents > .notion-list-disc[data-jf-src] a { color: var(--jf-muted) !important; font-size: inherit !important; text-decoration: underline; text-decoration-color: var(--jf-line); text-underline-offset: 4px; border: 0; transition: color 0.3s, text-decoration-color 0.3s; }
+html .contents > .notion-list-disc[data-jf-src] a::after { content: " ↗"; }
+html .contents > .notion-list-disc[data-jf-src] a:hover { color: var(--jf-text) !important; text-decoration-color: var(--jf-text); }
