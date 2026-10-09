@@ -1,0 +1,210 @@
+/* ジュウジュツフィード Wraptas 追加CSS v1 */
+:root { --jf-text: #000; --jf-muted: #767676; --jf-line: #e6e6e6; --jf-faint: #c4c4c4; --jf-sans: "M PLUS U", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif; --jf-title: "WDXL Lubrifont JP N", "M PLUS U", "Hiragino Sans", sans-serif; }
+body, .notion { font-family: var(--jf-sans) !important; color: var(--jf-text); background: #fff; }
+
+/* 上の帯: サイト名だけを中央に */
+.header { border-bottom: 1px solid var(--jf-line); background: rgba(255, 255, 255, 0.92); }
+.header__contentsWrapper { max-width: 640px; margin-inline: auto; justify-content: center; }
+.header .breadcrumb__icon, .header .breadcrumb__spacer, .header .breadcrumb__link.between, .header a.breadcrumb__link ~ .breadcrumb__link.active { display: none !important; }
+.header .breadcrumb__title { font-family: var(--jf-title); font-size: 1.4rem; font-weight: 400; letter-spacing: 0.08em; color: var(--jf-text); }
+.header a.breadcrumb__link { text-decoration: none; }
+
+/* 共通: 幅と、いらない表示を消す */
+.container { max-width: 640px; margin-inline: auto; padding-inline: 20px; }
+.pageIconSpacer, .pageDatetime, .notion-page-link-datetime, .notion-page-title-icon, .notion-hash-link, .pageIcon-cover { display: none !important; }
+
+/* トップ: 見出しまわりを消して、一覧をカードにする */
+.page-_top .titleSection, .page-_top .notion-h2, .notion-collection-header { display: none !important; }
+.page-_top .contents > .notion-text { margin: 24px 0 0; font-size: 0.8rem; color: var(--jf-muted); }
+.notion-collection { margin: 0 0 56px; }
+.notion-list-body { display: flex; flex-direction: column; gap: 12px; }
+a.notion-list-item { --c: #fff; --b: #111; display: block; position: relative; margin: 0; padding: 13px 18px 13px 35px; border: 1px solid var(--jf-line); border-radius: 14px; background: linear-gradient(to top, var(--c) 0 12px, var(--b) 12px 34px, var(--c) 34px) left / 18px 100% no-repeat, #fff; color: inherit; text-decoration: none; transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; }
+a.notion-list-item::after { content: ""; position: absolute; left: 18px; top: 0; bottom: 0; width: 1px; background: var(--jf-line); }
+a.notion-list-item:hover { border-color: var(--jf-faint); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06); }
+a.notion-list-item[data-rank="1"] { --c: #111; --b: #c8102e; }
+a.notion-list-item[data-rank="2"] { --c: #8a5527; }
+a.notion-list-item[data-rank="3"] { --c: #7a3da8; }
+a.notion-list-item[data-rank="4"] { --c: #1f5fc4; }
+a.notion-list-item .notion-list-item-title, a.notion-list-item .notion-list-item-body { display: block; padding: 0; margin: 0; }
+a.notion-list-item .notion-page-title-text { display: block; font-size: 1.02rem; font-weight: 700; line-height: 1.5; white-space: normal; border: 0; }
+a.notion-list-item .notion-list-item-property { display: none; }
+a.notion-list-item .notion-list-item-property:has(.notion-property-text) { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; margin-top: 4px; font-size: 0.76rem; line-height: 1.65; color: var(--jf-muted); white-space: normal; }
+/* 日付ごとの見出し(HTML直接追記のスクリプトが data-day を付ける) */
+a.notion-list-item[data-jf-first] { margin-top: 64px; }
+a.notion-list-item[data-jf-first]::before { content: attr(data-day); position: absolute; left: 0; bottom: calc(100% + 14px); font-size: 1.15rem; font-weight: 700; letter-spacing: 0.04em; line-height: 1.4; white-space: nowrap; }
+a.notion-list-item[data-jf-today]::before { font-size: 1.6rem; }
+
+/* トップの下: 案内ページへのリンク */
+.contents > a.notion-page-link { display: block; padding: 14px 0; border-bottom: 1px solid var(--jf-line); font-size: 0.9rem; color: inherit; text-decoration: none; }
+.contents > a.notion-page-link[href$="a956fb4cc7df46d69ac41768e5195c5e"] { display: none !important; }
+
+/* 記事ページ */
+.titleSection .title { margin: 28px 0 0; font-size: 1.45rem; font-weight: 700; line-height: 1.5; }
+.notion-collection-row-wrapper, .notion-collection-row, .notion-collection-row-body { display: block; border: 0; margin: 0; padding: 0; }
+.notion-collection-row-property { display: none !important; }
+.notion-collection-row-property[data-prop="カテゴリー"], .notion-collection-row-property[data-prop="掲載日"] { display: inline-block !important; margin: 10px 14px 0 0; font-size: 0.74rem; letter-spacing: 0.08em; color: var(--jf-muted); }
+.notion-collection-row-property .notion-collection-column-title { display: none; }
+.notion-property-select-item { padding: 0 !important; background: none !important; color: inherit !important; }
+.contents > .notion-list-disc { margin: 18px 0 0; padding-left: 1.2em; }
+.contents > .notion-list-disc li { font-size: 0.94rem; line-height: 1.85; }
+.contents > .notion-text[data-jf-src] { margin: 28px 0 0; padding-top: 14px; border-top: 1px solid var(--jf-line); font-size: 0.7rem; letter-spacing: 0.14em; color: var(--jf-muted); }
+.contents > .notion-text[data-jf-src] b { font-weight: 500; }
+.contents > .notion-list-disc[data-jf-src] { margin-top: 4px; list-style: none; padding-left: 0; }
+.contents > .notion-list-disc[data-jf-src] li { font-size: 0.78rem; line-height: 1.7; }
+.contents > .notion-list-disc[data-jf-src] a { color: var(--jf-muted); }
+
+/* 上書き: Wraptas側の指定に勝つための調整 */
+.header__logoArea { flex: 1; justify-content: center; }
+.header .headerBreadcrumb { margin: 0; }
+.notion-list-body { overflow: visible !important; padding-top: 0 !important; }
+a.notion-list-item { display: block !important; overflow: visible !important; }
+a.notion-list-item .notion-list-item-property:has(.notion-property-text) { display: -webkit-box !important; margin: 4px 0 0 !important; }
+.notion-collection, .notion-list-view, .notion-list-collection { border: 0 !important; }
+.notion-list-body { border: 0 !important; }
+.contents > a.notion-page-link .notion-page-title-text { border: 0 !important; }
+.header__contentsWrapper { display: flex !important; justify-content: center !important; }
+.header__logoArea { flex: 0 1 auto !important; width: auto !important; margin-inline: auto !important; }
+
+/* v2: 上の帯の下に、カテゴリーのタブを並べる(中身は HTML直接追記 body の nav) */
+.jf-tabs { position: fixed; top: 45px; left: 0; right: 0; z-index: 9; background: #f6f6f6; border-bottom: 1px solid var(--jf-line); }
+.jf-tabs-in { max-width: 640px; margin-inline: auto; padding-inline: 12px; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.jf-tabs-in::-webkit-scrollbar { display: none; }
+.jf-tabs a { flex: none; min-width: 92px; padding: 12px 10px; text-align: center; font-size: 0.82rem !important; font-weight: 500; line-height: 1.5; letter-spacing: 0.04em; color: var(--jf-muted); white-space: nowrap; text-decoration: none; border-bottom: 2px solid transparent; transition: color 0.3s, border-color 0.3s; }
+.jf-tabs a:hover { color: var(--jf-text); }
+.jf-tabs a[aria-current="page"] { color: var(--jf-text); border-bottom-color: var(--jf-text); }
+.jf-tabs .jf-gap, .jf-tabs .jf-extra { display: none; }
+.container { padding-top: 47px; }
+@media (min-width: 1000px) {
+  .jf-tabs .jf-gap { display: block; flex: none; align-self: center; width: 1px; height: 18px; margin-inline: 14px; background: var(--jf-faint); }
+  .jf-tabs .jf-extra { display: block; }
+}
+/* カテゴリーのページ: 見出しと説明 */
+.notion:not(.page-_top) .titleSection .title { letter-spacing: 0.02em; }
+.contents > .titleSection + .notion-text { margin: 10px 0 0; font-size: 0.82rem; color: var(--jf-muted); }
+/* トップの下の一覧から、カテゴリーのページは外す(タブから行ける) */
+.contents > a.notion-page-link[href$="3f4a6fb1972b8111b35acde92edb95c6"], .contents > a.notion-page-link[href$="3f4a6fb1972b81acafb0c003a41de503"], .contents > a.notion-page-link[href$="3f4a6fb1972b81278c42ca7be73c9d33"], .contents > a.notion-page-link[href$="3f4a6fb1972b81d5967bc73bcd7a5e0c"] { display: none !important; }
+
+/* v3: 黒い帯のフッター(中身は HTML直接追記 body の footer) */
+.jf-foot { margin-top: 88px; padding: 44px 20px 28px; background: #111; color: #fff; }
+.jf-foot-in { max-width: 600px; margin-inline: auto; display: flex; flex-direction: column; gap: 32px; }
+.jf-brand { display: flex; flex-direction: column; gap: 6px; }
+.jf-brand strong { font-family: var(--jf-title); font-weight: 400; font-size: 1.5rem; letter-spacing: 0.08em; line-height: 1.2; }
+.jf-brand > span { font-size: 0.78rem; color: #a0a0a0; }
+.jf-icons { display: flex; gap: 10px; margin-top: 12px; }
+.jf-icons a { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border: 1px solid #303030; border-radius: 50%; transition: border-color 0.3s, transform 0.3s; }
+.jf-icons a:hover { border-color: #fff; transform: translateY(-2px); }
+.jf-icons img { width: 18px; height: 18px; display: block; filter: invert(1); }
+.jf-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 24px; border-top: 1px solid #303030; padding-top: 28px; }
+.jf-cols h2 { margin: 0 0 8px; padding: 0; border: 0; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; color: #a0a0a0; }
+.jf-cols ul { list-style: none; margin: 0; padding: 0; }
+.jf-cols a { display: block; padding-block: 6px; font-size: 0.88rem !important; color: #fff !important; text-decoration: none; }
+.jf-cols a:hover { text-decoration: underline; text-underline-offset: 5px; }
+.jf-legal { margin: 0; border-top: 1px solid #303030; padding-top: 18px; font-size: 0.7rem; letter-spacing: 0.04em; color: #a0a0a0; }
+/* 案内ページへのリンクはフッターにあるので、トップの下の一覧は消す */
+.page-_top .contents > a.notion-page-link { display: none !important; }
+.page-_top .contents > .notion-text { margin-top: 8px; }
+
+/* v3: PC(幅が広い画面)では横幅を使う */
+@media (min-width: 1000px) {
+  .header__contentsWrapper, .jf-tabs-in, .jf-foot-in { max-width: 1080px; }
+  .container { max-width: 1080px; padding-inline: 32px; }
+  main.contents:not(:has(.notion-collection)) { max-width: 760px; margin-inline: auto; }
+  .notion-list-body { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  a.notion-list-item[data-jf-first] { grid-column: 1 / -1; }
+  a.notion-list-item[data-jf-today] { padding: 26px 32px 26px 54px; background-size: 26px 100%, auto; }
+  a.notion-list-item[data-jf-today]::after { left: 26px; }
+  a.notion-list-item[data-jf-today] .notion-page-title-text { font-size: 1.55rem; line-height: 1.45; }
+  a.notion-list-item[data-jf-today] .notion-list-item-property:has(.notion-property-text) { margin-top: 8px !important; font-size: 0.9rem; line-height: 1.75; -webkit-line-clamp: 3; }
+  .jf-foot { padding-inline: 32px; }
+  .jf-foot-in { display: grid; grid-template-columns: 1fr 1fr; gap: 32px 64px; }
+  .jf-cols { border-top: 0; padding-top: 0; }
+  .jf-legal { grid-column: 1 / -1; }
+}
+
+/* v4: マウスを乗せても帯の色を消さない */
+a.notion-list-item, a.notion-list-item:hover { background: linear-gradient(to top, var(--c) 0 12px, var(--b) 12px 34px, var(--c) 34px) left / 18px 100% no-repeat, #fff !important; }
+
+/* v4: トップは今日の分だけ。前の日はアーカイブのページへ */
+.page-_top a.notion-list-item[data-jf-old] { display: none !important; }
+.page-_top .notion-collection { margin-bottom: 0; }
+/* v4: おすすめ(トップの2つ目の一覧) */
+.page-_top .contents > .notion-collection ~ .notion-h2 { display: block !important; margin: 48px 0 12px; padding: 0; border: 0; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.14em; color: var(--jf-muted); }
+.notion-collection[data-jf-recs] .notion-list-body { display: block !important; border-top: 1px solid var(--jf-line) !important; }
+.notion-collection[data-jf-recs] a.notion-list-item, .notion-collection[data-jf-recs] a.notion-list-item:hover { margin: 0 !important; padding: 13px 0 !important; border: 0 !important; border-bottom: 1px solid var(--jf-line) !important; border-radius: 0; background: none !important; transform: none; box-shadow: none; }
+.notion-collection[data-jf-recs] a.notion-list-item::after { display: none; }
+.notion-collection[data-jf-recs] a.notion-list-item::before { content: attr(data-day); position: static; display: block; font-size: 0.72rem; font-weight: 400; letter-spacing: 0.06em; line-height: 1.6; color: var(--jf-muted); }
+.notion-collection[data-jf-recs] .notion-page-title-text { font-size: 0.95rem !important; line-height: 1.55 !important; }
+.notion-collection[data-jf-recs] .notion-list-item-property { display: none !important; }
+
+/* v4: 三本線のメニュー */
+.jf-menu-btn { position: fixed; top: 4px; left: max(16px, calc((100vw - 640px) / 2 + 20px)); z-index: 21; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 36px; padding: 0; border: 1px solid var(--jf-line); border-radius: 8px; background: #fff; color: var(--jf-text); cursor: pointer; }
+.jf-menu-btn:hover { border-color: var(--jf-text); }
+.jf-menu-btn i { display: inline-flex; flex-direction: column; gap: 4px; width: 16px; }
+.jf-menu-btn i span { display: block; height: 2px; border-radius: 1px; background: currentColor; transition: transform 0.4s, opacity 0.3s; }
+.jf-menu-open .jf-menu-btn i span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.jf-menu-open .jf-menu-btn i span:nth-child(2) { opacity: 0; }
+.jf-menu-open .jf-menu-btn i span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.jf-shade { position: fixed; inset: 0; z-index: 19; background: rgba(20, 21, 24, 0.3); opacity: 0; pointer-events: none; transition: opacity 0.4s; }
+.jf-menu-open .jf-shade { opacity: 1; pointer-events: auto; }
+.jf-drawer { position: fixed; top: 0; bottom: 0; left: 0; z-index: 20; width: min(300px, 84vw); padding: 72px 24px 32px; background: #fff; overflow-y: auto; transform: translateX(-102%); transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1); }
+.jf-menu-open .jf-drawer { transform: none; box-shadow: 0 0 40px rgba(0, 0, 0, 0.12); }
+.jf-drawer ul { list-style: none; margin: 0; padding: 12px 0; border-top: 1px solid var(--jf-line); }
+.jf-drawer ul:first-child { border-top: 0; }
+.jf-drawer a { display: block; padding-block: 11px; font-size: 0.98rem !important; letter-spacing: 0.02em; color: var(--jf-text) !important; text-decoration: none; }
+.jf-drawer a:hover { transform: translateX(4px); }
+
+@media (min-width: 1000px) {
+  .jf-menu-btn { left: max(32px, calc((100vw - 1080px) / 2 + 32px)); }
+  a.notion-list-item[data-jf-today], a.notion-list-item[data-jf-today]:hover { background-size: 26px 100%, auto !important; }
+  /* トップ: 左に今日の5本、右におすすめ */
+  .page-_top main.contents { display: grid; grid-template-columns: minmax(0, 1fr) 300px; column-gap: 56px; align-items: start; }
+  .page-_top .contents > .notion-text { grid-column: 1 / -1; }
+  .page-_top .contents > .notion-collection { grid-column: 1; grid-row: 2 / span 2; }
+  .page-_top .contents > .notion-collection ~ .notion-h2 { grid-column: 2; grid-row: 2; margin-top: 40px; }
+  .page-_top .contents > .notion-collection[data-jf-recs] { grid-column: 2; grid-row: 3; }
+}
+
+/* v5: 余白を詰める。トップのひとこと文はフッターにあるので消す */
+main.contents { padding-top: 20px !important; }
+.page-_top .contents > .notion-text { display: none !important; }
+.page-_top a.notion-list-item[data-jf-first] { margin-top: 52px; }
+.page-_top .contents > .notion-collection ~ .notion-h2 { margin: 44px 0 12px; }
+
+/* v5: 帯の色は、トップの今日のヘッドラインだけ。ほかの一覧は色なしで形をそろえる */
+a.notion-list-item:where(:not([data-jf-belt])), a.notion-list-item:where(:not([data-jf-belt])):hover { padding-left: 18px !important; background: #fff !important; }
+a.notion-list-item:not([data-jf-belt])::after { display: none; }
+/* カテゴリー・人物のページ: 日付の見出しはやめて、カードごとに日付を出す */
+a.notion-list-item[data-jf-date]::before { content: attr(data-jf-date); position: static; display: block; margin-bottom: 2px; font-size: 0.72rem; font-weight: 400; letter-spacing: 0.06em; line-height: 1.6; color: var(--jf-muted); }
+[data-jf-page="list"] .notion-collection, [data-jf-page="person"] .notion-collection { margin-top: 24px; }
+[data-jf-page="person"] .titleSection .title::before { content: "人物"; display: block; margin-bottom: 2px; font-size: 0.5em; font-weight: 400; letter-spacing: 0.08em; color: var(--jf-muted); }
+
+/* v5: 人物から探す(名前の一覧。あ行・か行の見出しつき) */
+[data-jf-page="people"] .notion-list-body { display: block !important; }
+[data-jf-page="people"] a.notion-list-item, [data-jf-page="people"] a.notion-list-item:hover { margin: 0 !important; padding: 15px 0 !important; border: 0 !important; border-bottom: 1px solid var(--jf-line) !important; border-radius: 0; background: none !important; transform: none; box-shadow: none; }
+[data-jf-page="people"] a.notion-list-item .notion-list-item-property { display: none !important; }
+[data-jf-page="people"] a.notion-list-item[data-jf-first] { margin-top: 62px !important; border-top: 1px solid var(--jf-line) !important; }
+[data-jf-page="people"] a.notion-list-item[data-jf-first]::before { bottom: calc(100% + 10px); font-size: 0.74rem; font-weight: 500; letter-spacing: 0.14em; color: var(--jf-muted); }
+
+/* v5: 記事ページを枠で囲み、カテゴリーと掲載日を言葉で出す */
+[data-jf-page="article"] main.contents { margin-top: 24px; padding: 26px 22px 24px !important; border: 1px solid var(--jf-line); border-radius: 14px; background: #fff; }
+[data-jf-page="article"] .titleSection .title { margin-top: 0; }
+.notion-collection-row-property[data-prop="カテゴリー"]::before { content: "カテゴリー："; }
+.notion-collection-row-property[data-prop="掲載日"] .notion-property { display: none; }
+.notion-collection-row-property[data-prop="掲載日"]::after { content: attr(data-jf-text); }
+.notion-collection-row-property .notion-property-select-item { display: inline; font-size: inherit; }
+a.jf-who { color: inherit !important; font-size: inherit !important; text-decoration: underline; text-decoration-color: var(--jf-muted); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+a.jf-who:hover { text-decoration-color: var(--jf-text); text-decoration-thickness: 2px; }
+
+@media (min-width: 1000px) {
+  /* 2列に並べるのは、トップ・カテゴリー・人物のページ。どれも同じ大きさのカード */
+  a.notion-list-item[data-jf-first]:not([data-jf-today]) { grid-column: auto; }
+  [data-jf-page="archive"] main.contents, [data-jf-page="people"] main.contents { max-width: 760px; margin-inline: auto; }
+  [data-jf-page="archive"] .notion-list-body { display: flex !important; }
+  .page-_top .contents > .notion-collection { grid-row: 1 / span 2; }
+  .page-_top .contents > .notion-collection ~ .notion-h2 { grid-row: 1; margin: 22px 0 14px; }
+  .page-_top .contents > .notion-collection[data-jf-recs] { grid-row: 2; }
+  [data-jf-page="article"] main.contents { padding: 34px 38px 30px !important; }
+}
+
+/* v6: 記事ページの「カテゴリー：動向」を1行に */
+.notion-collection-row-property[data-prop] .notion-collection-row-value, .notion-collection-row-property[data-prop="カテゴリー"] .notion-property { display: inline !important; padding: 0 !important; }
