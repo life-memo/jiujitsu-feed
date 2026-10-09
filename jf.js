@@ -4,7 +4,7 @@
   if (window.__jfLoaded) return;
   window.__jfLoaded = true;
   // タブ・三本線のメニュー・フッター
-  document.body.insertAdjacentHTML('beforeend', '<div class="jf-chrome">' + "<nav class=\"jf-tabs\" aria-label=\"カテゴリー\"><div class=\"jf-tabs-in\">\n<a href=\"/\">トップ</a>\n<a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a>\n<a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a>\n<a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a>\n<a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a>\n<span class=\"jf-gap\"></span>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b8180ae98e5da079356b7\">記事を探す</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b81759becfdc7d44f99d3\">大会から探す</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a>\n</div></nav>\n<button type=\"button\" class=\"jf-menu-btn\" aria-label=\"メニュー\" aria-expanded=\"false\" aria-controls=\"jf-drawer\"><i aria-hidden=\"true\"><span></span><span></span><span></span></i></button>\n<div class=\"jf-shade\"></div>\n<nav class=\"jf-drawer\" id=\"jf-drawer\" aria-label=\"メニュー\">\n<h2>ニュース</h2>\n<ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a></li>\n<li><a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a></li>\n<li><a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a></li>\n<li><a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">記事を探す</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n<li><a href=\"/3f4a6fb1972b81759becfdc7d44f99d3\">大会から探す</a></li>\n</ul>\n<h2>このサイトについて</h2>\n<ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n</ul>\n</nav>\n<footer class=\"jf-foot\"><div class=\"jf-foot-in\">\n<div class=\"jf-lead\"><div class=\"jf-brand\"><strong>ジュウジュツフィード</strong><span>あした道場で話したくなるニュース。</span>\n</div>\n<div class=\"jf-foot-pod\"><img src=\"https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/b4/41/10/b44110f5-e8a0-6d21-4ea7-0cdd03ad4736/mza_4669245238295162244.jpg/240x240bb.jpg\" width=\"72\" height=\"72\" alt=\"\" loading=\"lazy\" decoding=\"async\"><div><span>ポッドキャスト</span><strong>ジュウジュツニワカ</strong><p><a href=\"https://open.spotify.com/show/54049CgarXju0SngOoZ8Zn\" target=\"_blank\" rel=\"noopener\">Spotify</a><a href=\"https://podcasts.apple.com/jp/podcast/id1853188871\" target=\"_blank\" rel=\"noopener\">Apple Podcast</a><a href=\"https://music.amazon.co.jp/podcasts/51f983ab-e8c8-4edb-8e82-a7852ed2e15d\" target=\"_blank\" rel=\"noopener\">Amazon Music</a></p></div></div></div>\n<div class=\"jf-cols\">\n<nav aria-label=\"ニュース\"><h2>ニュース</h2><ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a></li>\n<li><a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a></li>\n<li><a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a></li>\n<li><a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">記事を探す</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n<li><a href=\"/3f4a6fb1972b81759becfdc7d44f99d3\">大会から探す</a></li>\n</ul></nav>\n<nav aria-label=\"このサイトについて\"><h2>このサイトについて</h2><ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n</ul></nav>\n</div>\n<p class=\"jf-legal\">© 2026 ジュウジュツフィード</p>\n</div></footer>\n" + '</div>');
+  document.body.insertAdjacentHTML('beforeend', '<div class="jf-chrome">' + "<nav class=\"jf-tabs\" aria-label=\"カテゴリー\"><div class=\"jf-tabs-in\">\n<a href=\"/\">トップ</a>\n<a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a>\n<a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a>\n<a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a>\n<a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a>\n<span class=\"jf-gap\"></span>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b8180ae98e5da079356b7\">記事を探す</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b81759becfdc7d44f99d3\">大会から探す</a>\n</div></nav>\n<button type=\"button\" class=\"jf-menu-btn\" aria-label=\"メニュー\" aria-expanded=\"false\" aria-controls=\"jf-drawer\"><i aria-hidden=\"true\"><span></span><span></span><span></span></i></button>\n<div class=\"jf-shade\"></div>\n<nav class=\"jf-drawer\" id=\"jf-drawer\" aria-label=\"メニュー\">\n<h2>ニュース</h2>\n<ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a></li>\n<li><a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a></li>\n<li><a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a></li>\n<li><a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">記事を探す</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n<li><a href=\"/3f4a6fb1972b81759becfdc7d44f99d3\">大会から探す</a></li>\n</ul>\n<h2>このサイトについて</h2>\n<ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n</ul>\n</nav>\n<footer class=\"jf-foot\"><div class=\"jf-foot-in\">\n<div class=\"jf-lead\"><div class=\"jf-brand\"><strong>ジュウジュツフィード</strong><span>あした道場で話したくなるニュース。</span>\n</div>\n<div class=\"jf-foot-pod\"><img src=\"https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/b4/41/10/b44110f5-e8a0-6d21-4ea7-0cdd03ad4736/mza_4669245238295162244.jpg/240x240bb.jpg\" width=\"72\" height=\"72\" alt=\"\" loading=\"lazy\" decoding=\"async\"><div><span>ポッドキャスト</span><strong>ジュウジュツニワカ</strong><p><a href=\"https://open.spotify.com/show/54049CgarXju0SngOoZ8Zn\" target=\"_blank\" rel=\"noopener\">Spotify</a><a href=\"https://podcasts.apple.com/jp/podcast/id1853188871\" target=\"_blank\" rel=\"noopener\">Apple Podcast</a><a href=\"https://music.amazon.co.jp/podcasts/51f983ab-e8c8-4edb-8e82-a7852ed2e15d\" target=\"_blank\" rel=\"noopener\">Amazon Music</a></p></div></div></div>\n<div class=\"jf-cols\">\n<nav aria-label=\"ニュース\"><h2>ニュース</h2><ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a></li>\n<li><a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a></li>\n<li><a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a></li>\n<li><a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">記事を探す</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n<li><a href=\"/3f4a6fb1972b81759becfdc7d44f99d3\">大会から探す</a></li>\n</ul></nav>\n<nav aria-label=\"このサイトについて\"><h2>このサイトについて</h2><ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n</ul></nav>\n</div>\n<p class=\"jf-legal\">© 2026 ジュウジュツフィード</p>\n</div></footer>\n" + '</div>');
   // 人物の名前 → その人物のページ。Notionの「人物」に足したら、ここにも1行足す
   var PEOPLE = {"ゴードン・ライアン": "/3f4a6fb1972b81099802c4a490bd8aaf", "マイキー・ムスメシ": "/3f4a6fb1972b81acaae9de24d8e7104e", "ジョン・ダナハー": "/3f4a6fb1972b81298fd0cb39c97db5b7", "ヒクソン・グレイシー": "/3f4a6fb1972b81c292fee369024358f6", "クラウディア・ガデーリャ": "/3f4a6fb1972b81af9256ed72083093ea", "ヴィクトル・ウーゴ": "/3f4a6fb1972b817bbd39d9f0b08d5343", "ヘレナ・クレバー": "/3f4a6fb1972b814bb861c4e4f47145e1", "ギルバート・バーンズ": "/3f4a6fb1972b81a2a617ca519b492599", "ガブリエル・アルメイダ": "/3f4a6fb1972b812f8adef03d2524b8b1", "サラ・ガウヴァオン": "/3f4a6fb1972b81639c7fcdb2d25a71c3"};
   // ポッドキャストで取り上げた人物 → その回(人物のページのアドレス: [回の題, Spotify, Apple Podcast, Amazon Music])。
@@ -54,6 +54,7 @@
       while ((n = w.nextNode())) nodes.push(n);
       nodes.forEach(scan);
     });
+    linkEvents([].slice.call(main.querySelectorAll(':scope > ul.notion-list:not([data-jf-src]) li')));
   }
   // カテゴリーと人物のページは10本ずつ。11本以上あるときは、一覧の下に 1 2 3 のページ番号を出す
   var PER_PAGE = 10, DAYS_PER_PAGE = 3, pageNow = {};
@@ -124,6 +125,33 @@
     while ((n = w.nextNode())) nodes.push(n);
     nodes.forEach(scan);
   }
+  // 本文に出てくる大会の名前を「大会から探す」へのリンクにする(1つの記事で、同じ大会は最初の1回だけ)
+  var EVENT_WORDS = [['UFC BJJ', /UFC BJJ(?: \d+)?/], ['ADCC', /ADCC/], ['IBJJF', /IBJJF/], ['ONE', /ONE(?: Fight Night(?: \d+)?| Championship)?/], ['Polaris', /Polaris(?: \d+)?/], ['RAF', /RAF(?: \d+)?/]];
+  function linkEvents(nodes) {
+    var used = {}, az = /[A-Za-z]/;
+    var scan = function (tn) {
+      if (tn.parentNode.closest('a')) return;
+      var t = tn.nodeValue, hit = null, at = -1, tag = null;
+      EVENT_WORDS.forEach(function (w) {
+        if (used[w[0]]) return;
+        var m = w[1].exec(t);
+        if (!m || az.test(t.charAt(m.index - 1)) || az.test(t.charAt(m.index + m[0].length))) return;
+        if (at < 0 || m.index < at) { at = m.index; hit = m[0]; tag = w[0]; }
+      });
+      if (!hit) return;
+      used[tag] = 1;
+      var rest = tn.splitText(at);
+      rest.nodeValue = rest.nodeValue.slice(hit.length);
+      var a = document.createElement('a'); a.className = 'jf-who jf-ev'; a.href = '/' + EVENTS_PAGE + '#' + encodeURIComponent(tag); a.textContent = hit;
+      rest.parentNode.insertBefore(a, rest);
+      scan(rest);
+    };
+    nodes.forEach(function (node) {
+      var w = document.createTreeWalker(node, NodeFilter.SHOW_TEXT), list = [], n;
+      while ((n = w.nextNode())) list.push(n);
+      list.forEach(scan);
+    });
+  }
   var el = function (tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   function storyCard(s, picked) {
     var li = el('li', 'jf-story' + (picked ? ' jf-picked' : ''));
@@ -134,6 +162,7 @@
     var ul = el('ul', 'jf-points');
     s.points.forEach(function (p) { ul.appendChild(el('li', null, p)); });
     linkWho(ul);
+    linkEvents([ul]);
     li.appendChild(ul);
     if (s.srcs.length) {
       var d = el('div', 'jf-srcs'); d.appendChild(el('span', null, '参照記事'));
@@ -334,7 +363,7 @@
 
   // ---- 大会から探す ----
   // 一覧の各記事に付いている大会の札を読み、札のボタンで絞り込む。札はNotionの「大会」の欄。
-  var evTag = '';
+  var evTag = '', evKey = null;
   var tagsOf = function (a) {
     var found = [];
     a.querySelectorAll('.notion-list-item-property, .notion-list-item-property *').forEach(function (x) {
@@ -447,6 +476,7 @@
       var tin = document.querySelector('.jf-tabs-in'), cur = tin && tin.querySelector('a[aria-current="page"]');
       if (tin) tin.scrollLeft = cur && cur.offsetParent ? Math.max(0, cur.offsetLeft - (tin.clientWidth - cur.offsetWidth) / 2) : 0;
     }
+    if (root.className.indexOf('page_id-' + EVENTS_PAGE) < 0) evKey = null;
     document.querySelectorAll('.notion-collection').forEach(function (c, ci) {
       var recs = top && ci > 0, last = null, group = 0;
       set(c, 'data-jf-recs', recs ? '1' : null);
@@ -457,6 +487,14 @@
       var paged = (mode === 'list' && !events) || mode === 'person', items = c.querySelectorAll('a.notion-list-item'), arch = mode === 'archive', days = [], pageOf = [], hits = 0;
       // 大会から探す: 選んだ札の記事だけを、10本ずつ
       if (events) {
+        // 記事の中の大会名から来たときは、アドレスの # に付いた大会を選んだ状態で開く
+        var hk = location.pathname + location.hash;
+        if (hk !== evKey) {
+          evKey = hk;
+          var want = ''; try { want = decodeURIComponent(location.hash.slice(1)); } catch (err) {}
+          evTag = EVENT_TAGS.indexOf(want) >= 0 ? want : '';
+          pageNow[path] = 1;
+        }
         var counts = {};
         items.forEach(function (a, i) {
           var tags = tagsOf(a);
@@ -589,6 +627,7 @@
     clientNav = true;
     router.push(href);
   });
+  window.addEventListener('hashchange', apply);
   new MutationObserver(apply).observe(document.body, { childList: true, subtree: true });
   apply();
 })();
