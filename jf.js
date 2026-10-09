@@ -317,6 +317,7 @@
   // ---- 黒帯(その日の1本目)の絵 ----
   // 写真は使わず、人物の名前を大きく組んだ自作の札をカードの上に置く。名前は見出しから拾う(登録済みの人物の、フルネームか姓)。
   // 人物が見つからないときは、見出しの最初のひと区切りを使う。
+  var LEAD_ART = false;   // 試しの札は、いまは出さない(出すときは true)
   function leadArt(a, on, date) {
     var art = a.querySelector(':scope > .jf-art');
     if (!on) { if (art) art.remove(); return; }
@@ -404,7 +405,7 @@
         set(a, 'data-jf-old', top && group > 1 ? '1' : null);
         set(a, 'data-day', first && date ? (top && date === today ? '今日のヘッドライン' : dayLabel(date)) : null);
         set(a, 'data-jf-today', top && first ? '1' : null);
-        leadArt(a, top && first && group === 1, date);
+        leadArt(a, LEAD_ART && top && first && group === 1, date);
         last = date;
       });
     });
