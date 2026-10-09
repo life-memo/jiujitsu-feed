@@ -1,6 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap");
 /* ジュウジュツフィードの見た目。Wraptasのサイトに読み込む。
    Wraptas側の指定に必ず勝つように、すべてのセレクタを html で始めている(足すときも同じにする)。 */
-:root { --jf-text: #000; --jf-muted: #767676; --jf-line: #e6e6e6; --jf-faint: #c4c4c4; --jf-sans: "M PLUS U", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif; --jf-title: "WDXL Lubrifont JP N", "M PLUS U", "Hiragino Sans", sans-serif; }
+:root { --jf-text: #000; --jf-muted: #767676; --jf-line: #e6e6e6; --jf-faint: #c4c4c4; --jf-sans: "Noto Sans JP", "Hiragino Sans", "Yu Gothic UI", "Meiryo", sans-serif; --jf-title: "WDXL Lubrifont JP N", "Noto Sans JP", "Hiragino Sans", sans-serif; }
 html body, html .notion { font-family: var(--jf-sans) !important; color: var(--jf-text); background: #fff; }
 
 /* 上の帯: サイト名だけを中央に */
