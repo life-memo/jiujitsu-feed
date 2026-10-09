@@ -139,8 +139,23 @@
     root.setAttribute('data-jf-day', '1');
     var alive = function () { return box.isConnected && box.getAttribute('data-path') === path; };
     getDoc('/' + ARCHIVE).then(function (doc) {
-      var all = Array.prototype.map.call(doc.querySelectorAll('a.notion-list-item'), function (a) {
-        return { href: (a.getAttribute('href') || '').split('?')[0], date: txt(a.querySelector('.notion-property-date-item')), rank: Number(txt(a.querySelector('.notion-property-number'))) || 99 };
+      // 一覧はページに埋め込まれたデータから読む(一覧の見た目は後から描かれるので、HTMLには入っていない)
+      var rm = JSON.parse(doc.getElementById('__NEXT_DATA__').textContent).props.pageProps.pageRecordMap;
+      var val = function (o) { while (o && o.value && !o.type && !o.schema) o = o.value; return o || {}; };
+      var key = {}, ids = [], seen = {};
+      Object.keys(rm.collection || {}).forEach(function (c) { var sc = val(rm.collection[c]).schema || {}; Object.keys(sc).forEach(function (k) { key[sc[k].name] = k; }); });
+      (function find(o) {
+        if (!o || typeof o !== 'object') return;
+        if (Array.isArray(o.blockIds)) o.blockIds.forEach(function (i) { if (!seen[i]) { seen[i] = 1; ids.push(i); } });
+        Object.keys(o).forEach(function (k) { find(o[k]); });
+      })(rm.collection_query);
+      var all = [];
+      ids.forEach(function (i) {
+        var pr = val(rm.block[i]).properties; if (!pr) return;
+        var st = pr[key['状態']], dt = pr[key['掲載日']], rk = pr[key['並び順']], d = '';
+        if (st && st[0][0] !== '公開') return;
+        try { d = dt[0][1][0][1].start_date.split('-').map(Number).join('/'); } catch (e) {}
+        if (d) all.push({ href: '/' + i.replace(/-/g, ''), date: d, rank: Number(rk && rk[0][0]) || 99 });
       });
       var mates = all.filter(function (x) { return x.date === me.date; }).sort(function (a, b) { return a.rank - b.rank; });
       if (!mates.some(function (x) { return x.href === path; })) return;
