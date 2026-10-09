@@ -141,14 +141,14 @@
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     var a = e.target.closest ? e.target.closest('a[href]') : null, href = a ? a.getAttribute('href') : '';
     if (!a || a.target === '_blank' || href.charAt(0) !== '/' || href.charAt(1) === '/') return;
-    var mine = !!a.closest('.jf-chrome') || a.classList.contains('jf-who');
     var here = location.pathname.replace(/\/$/, '') || '/', there = href.split(/[?#]/)[0].replace(/\/$/, '') || '/';
-    if (there === here) { if (mine) { e.preventDefault(); menu(false); window.scrollTo(0, 0); } return; }
     var router = window.next && window.next.router;
-    if (mine && !router) return;
+    if (!router) return;
+    e.preventDefault(); menu(false);
+    if (there === here) { window.scrollTo(0, 0); return; }
     html.classList.add('jf-leaving');
     clearTimeout(leaveTimer); leaveTimer = setTimeout(function () { html.classList.remove('jf-leaving'); }, 4000);
-    if (mine) { e.preventDefault(); menu(false); router.push(href); }
+    router.push(href);
   });
   new MutationObserver(apply).observe(document.body, { childList: true, subtree: true });
   apply();
