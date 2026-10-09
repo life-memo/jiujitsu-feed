@@ -148,6 +148,7 @@
     var me = readStory(main, path), plain = false;
     try { plain = sessionStorage.getItem('jf-nopick') === path; } catch (e) {}
     if (!me.date || !me.points.length) return;                 // 中身が読めないときは、ふつうの記事ページのままにする
+    try { if (dnum(me.date) > (Number(localStorage.getItem('jf-latest')) || 0)) localStorage.setItem('jf-latest', String(dnum(me.date))); } catch (e) {}
     box = el('div', 'jf-day'); box.setAttribute('data-path', path);
     var p = me.date.split('/').map(Number), now = new Date(), isToday = now.getFullYear() === p[0] && now.getMonth() + 1 === p[1] && now.getDate() === p[2];
     var h = el('h1', 'jf-day-title'); h.appendChild(el('span', null, p[0] + '年' + p[1] + '月' + p[2] + '日')); h.appendChild(document.createTextNode(isToday ? '今日のヘッドライン' : p[1] + '月' + p[2] + '日のヘッドライン'));
@@ -157,48 +158,94 @@
     main.parentNode.appendChild(box);
     root.setAttribute('data-jf-day', '1');
     var alive = function () { return box.isConnected && box.getAttribute('data-path') === path; };
-    getDoc('/' + ARCHIVE).then(function (doc) {
-      // 一覧はページに埋め込まれたデータから読む(一覧の見た目は後から描かれるので、HTMLには入っていない)
-      var rm = JSON.parse(doc.getElementById('__NEXT_DATA__').textContent).props.pageProps.pageRecordMap;
-      var val = function (o) { while (o && o.value && !o.type && !o.schema) o = o.value; return o || {}; };
-      var key = {}, ids = [], seen = {};
-      Object.keys(rm.collection || {}).forEach(function (c) { var sc = val(rm.collection[c]).schema || {}; Object.keys(sc).forEach(function (k) { key[sc[k].name] = k; }); });
-      (function find(o) {
-        if (!o || typeof o !== 'object') return;
-        if (Array.isArray(o.blockIds)) o.blockIds.forEach(function (i) { if (!seen[i]) { seen[i] = 1; ids.push(i); } });
-        Object.keys(o).forEach(function (k) { find(o[k]); });
-      })(rm.collection_query);
-      var all = [];
-      ids.forEach(function (i) {
-        var pr = val(rm.block[i]).properties; if (!pr) return;
-        var st = pr[key['状態']], dt = pr[key['掲載日']], rk = pr[key['並び順']], d = '';
-        if (st && st[0][0] !== '公開') return;
-        try { d = dt[0][1][0][1].start_date.split('-').map(Number).join('/'); } catch (e) {}
-        var ct = pr[key['カテゴリー']];
-        if (d) all.push({ href: '/' + i.replace(/-/g, ''), date: d, rank: Number(rk && rk[0][0]) || 99, cat: ct ? ct[0][0] : '' });
-      });
-      var mates = all.filter(function (x) { return x.date === me.date; }).sort(function (a, b) { return a.rank - b.rank; });
-      if (!mates.some(function (x) { return x.href === path; })) return;
-      var dates = []; all.forEach(function (x) { if (x.date && dates.indexOf(x.date) < 0) dates.push(x.date); });
-      var di = dates.indexOf(me.date), first = function (d) { return all.filter(function (x) { return x.date === d; }).sort(function (a, b) { return a.rank - b.rank; })[0]; };
+    // 同じ日の記事は3か所から集める: これまでに見た一覧(端末に覚えてある分)、「記事を探す」のページ、トップページ。
+    // 公開した直後は、サイト側の一覧がまだ古いことがあるので、1か所だけに頼らない。
+    var shownKey = '';
+    var show = function (all) {
+      if (!alive()) return;
+      var byHref = {}; all.forEach(function (x) { if (x && x.href && x.date) byHref[x.href] = x; });
+      if (!byHref[path]) byHref[path] = { href: path, date: me.date, rank: Number(me.rank) || 99, cat: me.cat };
+      all = Object.keys(byHref).map(function (k) { return byHref[k]; });
+      var byRank = function (a, b) { return a.rank - b.rank; };
+      var mates = all.filter(function (x) { return x.date === me.date; }).sort(byRank);
+      var dates = []; all.forEach(function (x) { if (dates.indexOf(x.date) < 0) dates.push(x.date); });
+      dates.sort(function (a, b) { return dnum(b) - dnum(a); });
+      var key = mates.map(function (x) { return x.href; }).join(',') + '|' + dates.join(',');
+      if (key === shownKey) return;
+      shownKey = key;
+      var di = dates.indexOf(me.date), first = function (d) { return all.filter(function (x) { return x.date === d; }).sort(byRank)[0]; };
       var short = function (d) { var q = d.split('/').map(Number); return q[1] + '月' + q[2] + '日(' + WD[new Date(q[0], q[1] - 1, q[2]).getDay()] + ')'; };
-      if (alive()) {
-        if (dates[di + 1]) { var a1 = el('a', null, '← 前の日 ' + short(dates[di + 1])); a1.href = first(dates[di + 1]).href; nav.appendChild(a1); }
-        if (di > 0) { var a2 = el('a', 'jf-next', '次の日 ' + short(dates[di - 1]) + ' →'); a2.href = first(dates[di - 1]).href; nav.appendChild(a2); }
-      }
-      return Promise.all(mates.map(function (x) {
+      nav.textContent = '';
+      if (dates[di + 1]) { var a1 = el('a', null, '← 前の日 ' + short(dates[di + 1])); a1.href = first(dates[di + 1]).href; nav.appendChild(a1); }
+      if (di > 0) { var a2 = el('a', 'jf-next', '次の日 ' + short(dates[di - 1]) + ' →'); a2.href = first(dates[di - 1]).href; nav.appendChild(a2); }
+      Promise.all(mates.map(function (x) {
         if (x.href === path) return me;
         return getDoc(x.href).then(function (d) { var m = d.querySelector('main.contents'); var s = m ? readStory(m, x.href) : null; if (s) { s.rank = s.rank || String(x.rank); s.cat = s.cat || x.cat; } return s; }).catch(function () { return null; });
       })).then(function (stories) {
-        if (!alive()) return;
+        if (!alive() || shownKey !== key) return;
         list.textContent = '';
         stories.forEach(function (s) { if (s && s.points.length) list.appendChild(storyCard(s, !plain && s.href === path)); });
         var mine = list.querySelector('.jf-picked');
         if (mine && mine !== list.firstElementChild) mine.scrollIntoView({ block: 'start' });
       });
-    }).catch(function () {});
+    };
+    var known = knownRows();
+    if (known.some(function (x) { return x.href === path; })) show(known);
+    var grab = function (url) { return getDoc(url).then(rowsFromDoc).catch(function () { return []; }); };
+    Promise.all([grab('/' + ARCHIVE), grab('/')]).then(function (r) { show(known.concat(r[0], r[1])); });
   }
-
+  // 一覧のデータを、ページに埋め込まれた情報から読む(一覧の見た目は後から描かれるので、HTMLには入っていない)
+  function rowsFromDoc(doc) {
+    var rm = JSON.parse(doc.getElementById('__NEXT_DATA__').textContent).props.pageProps.pageRecordMap;
+    var val = function (o) { while (o && o.value && !o.type && !o.schema) o = o.value; return o || {}; };
+    var key = {}, ids = [], seen = {}, all = [];
+    Object.keys(rm.collection || {}).forEach(function (c) { var sc = val(rm.collection[c]).schema || {}; Object.keys(sc).forEach(function (k) { key[sc[k].name] = k; }); });
+    (function find(o) {
+      if (!o || typeof o !== 'object') return;
+      if (Array.isArray(o.blockIds)) o.blockIds.forEach(function (i) { if (!seen[i]) { seen[i] = 1; ids.push(i); } });
+      Object.keys(o).forEach(function (k) { find(o[k]); });
+    })(rm.collection_query);
+    ids.forEach(function (i) {
+      var pr = val(rm.block[i]).properties; if (!pr) return;
+      var st = pr[key['状態']], dt = pr[key['掲載日']], rk = pr[key['並び順']], d = '';
+      if (st && st[0][0] !== '公開') return;
+      try { d = dt[0][1][0][1].start_date.split('-').map(Number).join('/'); } catch (e) {}
+      var ct = pr[key['カテゴリー']];
+      if (d && rk) all.push({ href: '/' + i.replace(/-/g, ''), date: d, rank: Number(rk[0][0]) || 99, cat: ct ? ct[0][0] : '' });
+    });
+    return all;
+  }
+  // 見た一覧の中身(記事のアドレス・掲載日・並び順・カテゴリー)を端末に覚えておく。新しいものから400本まで
+  var dnum = function (d) { var p = String(d || '').split('/').map(Number); return p.length === 3 ? p[0] * 10000 + p[1] * 100 + p[2] : 0; };
+  var ROWS = null, rowsDirty = null;
+  function knownRows() {
+    if (!ROWS) { ROWS = {}; try { (JSON.parse(localStorage.getItem('jf-rows') || '[]') || []).forEach(function (x) { if (x && x.href) ROWS[x.href] = x; }); } catch (e) {} }
+    return Object.keys(ROWS).map(function (k) { return ROWS[k]; });
+  }
+  function remember(href, date, rank, cat) {
+    if (!href || !date || !rank) return;
+    knownRows();
+    var o = ROWS[href];
+    if (o && o.date === date && o.rank === rank && o.cat === cat) return;
+    ROWS[href] = { href: href, date: date, rank: rank, cat: cat };
+    clearTimeout(rowsDirty);
+    rowsDirty = setTimeout(function () {
+      var keep = knownRows().sort(function (a, b) { return dnum(b.date) - dnum(a.date); }).slice(0, 400);
+      try { localStorage.setItem('jf-rows', JSON.stringify(keep)); } catch (e) {}
+    }, 400);
+  }
+  // トップに出ている日付が、すでに見たいちばん新しい日付より古いときは、古い控えが出ている。読み込み直して新しいほうを出す
+  var clientNav = false;
+  window.addEventListener('popstate', function () { clientNav = true; });
+  function freshTop(shown) {
+    var seenMax = 0, n = dnum(shown);
+    try { seenMax = Number(localStorage.getItem('jf-latest')) || 0; } catch (e) {}
+    if (!n) return;
+    if (n >= seenMax) { if (n > seenMax) try { localStorage.setItem('jf-latest', String(n)); } catch (e) {} return; }
+    if (!clientNav) return;                                      // 開いた直後の表示では読み込み直さない(繰り返しを防ぐ)。サイト内の移動や「戻る」で出たときだけ
+    document.documentElement.classList.add('jf-leaving');
+    location.reload();
+  }
   var out = function (text, href) { var a = el('a', null, text); a.href = href; a.target = '_blank'; a.rel = 'noopener'; return a; };
   // ---- アーカイブの絞り込み(キーワード・日付・帯の色) ----
   var BELT_NAMES = ['黒帯', '茶帯', '紫帯', '青帯', '白帯'];
@@ -384,6 +431,11 @@
         if (arch && pageOf[idx] !== page) { set(a, 'data-jf-off', '1'); set(a, 'data-jf-first', null); set(a, 'data-day', null); return; }
         var d = a.querySelector('.notion-property-date-item'), n = a.querySelector('.notion-property-number');
         var date = d ? d.textContent.trim() : '', key, first;
+        if (mode !== 'people') {
+          var sel = a.querySelector('.notion-property-select-item');
+          remember((a.getAttribute('href') || '').split('?')[0], date, n ? Number(n.textContent.trim()) || 0 : 0, sel ? sel.textContent.trim() : '');
+          if (top && !recs && idx === 0) freshTop(date);
+        }
         if (mode === 'people') {
           var y = a.querySelector('.notion-property-text');
           key = kanaRow(y ? y.textContent.trim() : ''); first = key !== last; last = key;
@@ -474,6 +526,7 @@
     if (there === here) { window.scrollTo(0, 0); return; }
     html.classList.add('jf-leaving');
     clearTimeout(leaveTimer); leaveTimer = setTimeout(function () { html.classList.remove('jf-leaving'); }, 4000);
+    clientNav = true;
     router.push(href);
   });
   new MutationObserver(apply).observe(document.body, { childList: true, subtree: true });
