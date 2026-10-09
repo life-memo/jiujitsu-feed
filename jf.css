@@ -209,3 +209,20 @@ html a.jf-who:hover { text-decoration-color: var(--jf-text); text-decoration-thi
 
 /* v6: 記事ページの「カテゴリー：動向」を1行に */
 html .notion-collection-row-property[data-prop] .notion-collection-row-value, html .notion-collection-row-property[data-prop="カテゴリー"] .notion-property { display: inline !important; padding: 0 !important; }
+
+/* v7: トップの見出しの右に日付、おすすめの下にアーカイブへのリンク、すき間を詰める */
+html .page-_top .contents > .notion-collection:not([data-jf-recs]) { position: relative; }
+html .page-_top .contents > .notion-collection[data-jf-date]::before { content: attr(data-jf-date); position: absolute; right: 0; top: 20px; font-size: 0.74rem; letter-spacing: 0.08em; line-height: 1.4; color: var(--jf-muted); font-variant-numeric: tabular-nums; }
+html .page-_top .contents > .notion-collection[data-jf-recs] ~ .notion-text { display: block !important; margin: 14px 0 0; padding: 0; font-size: 0.76rem; letter-spacing: 0.08em; }
+html .page-_top .contents > .notion-collection[data-jf-recs] ~ .notion-text a { color: var(--jf-muted) !important; font-size: inherit !important; text-decoration: none; border: 0; transition: color 0.3s; }
+html .page-_top .contents > .notion-collection[data-jf-recs] ~ .notion-text a:hover { color: var(--jf-text) !important; }
+html .jf-foot { margin-top: 56px; }
+@media (min-width: 1000px) {
+  /* 右の列は上から「おすすめ」の見出し・一覧・アーカイブへのリンク。高さは中身の分だけにする */
+  html .page-_top main.contents { grid-template-rows: auto auto 1fr; }
+  html .page-_top .contents > .notion-collection { grid-row: 1 / span 3; }
+  html .page-_top .contents > .notion-collection ~ .notion-h2 { grid-row: 1; }
+  html .page-_top .contents > .notion-collection[data-jf-recs] { grid-row: 2; }
+  html .page-_top .contents > .notion-collection[data-jf-recs] ~ .notion-text { grid-column: 2; grid-row: 3; }
+  html .page-_top .contents > .notion-collection[data-jf-date]::before { top: 24px; }
+}

@@ -55,6 +55,9 @@
     document.querySelectorAll('.notion-collection').forEach(function (c, ci) {
       var recs = top && ci > 0, last = null, group = 0;
       set(c, 'data-jf-recs', recs ? '1' : null);
+      // トップの見出しの右に出す日付(いちばん新しい日)
+      var d0 = top && !recs ? c.querySelector('a.notion-list-item .notion-property-date-item') : null, p0 = d0 ? d0.textContent.trim().split('/') : [];
+      set(c, 'data-jf-date', p0.length === 3 ? p0[0] + '年' + Number(p0[1]) + '月' + Number(p0[2]) + '日' : null);
       c.querySelectorAll('a.notion-list-item').forEach(function (a) {
         var d = a.querySelector('.notion-property-date-item'), n = a.querySelector('.notion-property-number');
         var date = d ? d.textContent.trim() : '', key, first;
