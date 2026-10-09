@@ -437,7 +437,7 @@ html .jf-foot-pod a:hover { text-decoration-color: #fff; }
 /* v19: スマホのタブは横にスクロールして、アーカイブと人物から探すも出せる(運用方針はパソコンだけ)。右端はうっすら消して、続きがあると分かるようにする */
 @media (max-width: 999px) {
   html .jf-tabs-in { position: relative; }
-  html .jf-tabs a { flex: 0 0 auto; min-width: 19%; padding-inline: 12px; }
+  html .jf-tabs a { flex: 0 0 auto; box-sizing: border-box; min-width: 18.4vw; padding-inline: 8px; }
   html .jf-tabs a.jf-extra { display: block; }
   html .jf-tabs a.jf-extra[href$="3f4a6fb1972b814197a3c91977d78b35"] { display: none; }
   html .jf-tabs::after { content: ""; position: absolute; top: 0; right: 0; bottom: 1px; width: 28px; background: linear-gradient(to right, rgba(246, 246, 246, 0), #f6f6f6); pointer-events: none; }
