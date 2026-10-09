@@ -422,3 +422,8 @@ html .jf-foot-pod a:hover { text-decoration-color: #fff; }
   html .page-_top main.contents { grid-template-rows: auto auto 1fr; }
   html .page-_top .contents > .notion-collection:not([data-jf-recs]) { grid-row: 1 / span 3; }
 }
+
+/* v17: スマホのトップ。タブと「今日のヘッドライン」のあいだの余白を詰める */
+@media (max-width: 999px) {
+  html .page-_top main.contents { padding-top: 2px !important; }
+}
