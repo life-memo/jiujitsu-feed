@@ -282,3 +282,39 @@ html.jf-leaving main.contents { opacity: 0 !important; transition: opacity 0.25s
   html main.contents[data-jf-in] { animation: none; }
   html.jf-leaving main.contents { transition: none; }
 }
+
+/* v13: その日のページ。記事を開くと同じ日の記事が全部並び、開いた1本に黒い枠と「選んだニュース」の印が付く */
+html [data-jf-day] main.contents { display: none !important; }
+html .jf-day { padding-top: 20px; animation: jf-rise-a 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+html.jf-leaving .jf-day { opacity: 0; transition: opacity 0.25s ease; animation: none; }
+html .jf-day-title { margin: 6px 0 0; padding: 0; border: 0; font-size: clamp(1.6rem, 6.4vw, 2.1rem); font-weight: 700; line-height: 1.35; letter-spacing: 0.02em; }
+html .jf-day-title span { display: block; margin-bottom: 4px; font-size: 0.5em; font-weight: 400; letter-spacing: 0.08em; color: var(--jf-muted); font-variant-numeric: tabular-nums; }
+html .jf-stories { list-style: none; margin: 24px 0 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+html .jf-story { --c: #fff; --b: #111; position: relative; margin: 0; padding: 22px 20px 22px 40px; border: 1px solid var(--jf-line); border-radius: 14px; background: linear-gradient(to top, var(--c) 0 20px, var(--b) 20px 60px, var(--c) 60px) left / 22px 100% no-repeat, #fff; scroll-margin-top: 112px; transition: border-color 0.6s, box-shadow 0.6s; }
+html .jf-story::after { content: ""; position: absolute; left: 22px; top: 0; bottom: 0; width: 1px; background: var(--jf-line); }
+html .jf-story[data-rank="1"] { --c: #111; --b: #c8102e; }
+html .jf-story[data-rank="2"] { --c: #8a5527; }
+html .jf-story[data-rank="3"] { --c: #7a3da8; }
+html .jf-story[data-rank="4"] { --c: #1f5fc4; }
+@keyframes jf-picked { 0% { box-shadow: 0 0 0 2px #000, 0 0 0 0 rgba(0, 0, 0, 0.4); } 65% { box-shadow: 0 0 0 2px #000, 0 0 0 16px rgba(0, 0, 0, 0); } 100% { box-shadow: 0 0 0 2px #000, 0 12px 32px rgba(0, 0, 0, 0.12); } }
+html .jf-story.jf-picked { border-color: #000; box-shadow: 0 0 0 2px #000, 0 12px 32px rgba(0, 0, 0, 0.12); animation: jf-picked 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) 0.25s both; }
+html .jf-story-meta { margin: 0; font-size: 0.72rem; letter-spacing: 0.1em; line-height: 1.8; color: var(--jf-muted); }
+html .jf-pick { margin-left: 10px; padding: 3px 9px; border-radius: 10px; background: #000; color: #fff; font-size: 0.66rem; letter-spacing: 0.06em; }
+html .jf-story h2 { margin: 6px 0 0; padding: 0; border: 0; font-size: clamp(1.2rem, 4.8vw, 1.45rem); font-weight: 700; line-height: 1.5; }
+html .jf-points { list-style: none; margin: 16px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+html .jf-points li { position: relative; margin: 0; padding: 0 0 0 17px; font-size: 0.92rem; line-height: 1.85; }
+html .jf-points li::before { content: ""; position: absolute; left: 0; top: 0.8em; width: 5px; height: 5px; border-radius: 50%; background: #000; }
+html .jf-srcs { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--jf-line); font-size: 0.76rem; }
+html .jf-srcs span { font-size: 0.7rem; letter-spacing: 0.14em; color: var(--jf-muted); }
+html .jf-srcs a { color: var(--jf-muted) !important; font-size: inherit !important; text-decoration: underline; text-decoration-color: var(--jf-line); text-underline-offset: 4px; transition: color 0.3s, text-decoration-color 0.3s; }
+html .jf-srcs a:hover { color: var(--jf-text) !important; text-decoration-color: var(--jf-text); }
+html .jf-daynav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 16px; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--jf-line); }
+html .jf-daynav a { font-size: 0.76rem !important; letter-spacing: 0.08em; color: var(--jf-muted) !important; text-decoration: none; transition: color 0.3s; }
+html .jf-daynav a:hover { color: var(--jf-text) !important; }
+html .jf-daynav .jf-next { margin-left: auto; }
+@media (min-width: 1000px) {
+  html .jf-stories { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  html .jf-story:first-child { grid-column: 1 / -1; }
+  html .jf-story { padding: 28px 30px 28px 48px; }
+}
+@media (prefers-reduced-motion: reduce) { html .jf-day, html .jf-story.jf-picked { animation: none; } }

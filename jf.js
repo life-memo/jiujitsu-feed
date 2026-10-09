@@ -61,6 +61,109 @@
       nav.appendChild(b);
     }
   }
+  // ---- その日のページ ----
+  // 記事を開くと、同じ日の記事を全部並べて、開いた1本に印を付ける。
+  // 同じ日の記事はアーカイブの一覧から探し、中身はそれぞれの記事ページから読み込む。
+  var cache = {};
+  var getDoc = function (url) {
+    if (!cache[url]) cache[url] = fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }).then(function (t) { return new DOMParser().parseFromString(t, 'text/html'); });
+    cache[url].catch(function () { delete cache[url]; });
+    return cache[url];
+  };
+  var txt = function (el) { return el ? el.textContent.trim() : ''; };
+  function readStory(main, href) {
+    var s = { href: href, title: txt(main.querySelector('h1.title')), cat: '', date: '', rank: '', points: [], srcs: [] }, src = false;
+    main.querySelectorAll('.notion-collection-row-property').forEach(function (r) {
+      var k = txt(r.querySelector('.notion-collection-column-title-body')), v = r.querySelector('.notion-collection-row-value');
+      if (k === 'カテゴリー') s.cat = txt(v); else if (k === '掲載日') s.date = txt(r.querySelector('.notion-property-date-item')); else if (k === '並び順') s.rank = txt(v);
+    });
+    Array.prototype.forEach.call(main.children, function (el) {
+      if (el.classList.contains('notion-text') && txt(el) === '参照記事') { src = true; return; }
+      if (!el.classList.contains('notion-list')) return;
+      el.querySelectorAll('li').forEach(function (li) {
+        if (!src) { s.points.push(txt(li)); return; }
+        var a = li.querySelector('a[href]'); if (a) s.srcs.push([txt(a), a.getAttribute('href')]);
+      });
+    });
+    return s;
+  }
+  function linkWho(node) {
+    var used = {}, names = Object.keys(PEOPLE);
+    var scan = function (tn) {
+      var t = tn.nodeValue, who = null, at = -1;
+      names.forEach(function (p) { if (used[p]) return; var k = t.indexOf(p); if (k >= 0 && (at < 0 || k < at)) { at = k; who = p; } });
+      if (!who) return;
+      used[who] = 1;
+      var rest = tn.splitText(at);
+      rest.nodeValue = rest.nodeValue.slice(who.length);
+      var a = document.createElement('a'); a.className = 'jf-who'; a.href = PEOPLE[who]; a.textContent = who;
+      rest.parentNode.insertBefore(a, rest);
+      scan(rest);
+    };
+    var w = document.createTreeWalker(node, NodeFilter.SHOW_TEXT), nodes = [], n;
+    while ((n = w.nextNode())) nodes.push(n);
+    nodes.forEach(scan);
+  }
+  var el = function (tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+  function storyCard(s, picked) {
+    var li = el('li', 'jf-story' + (picked ? ' jf-picked' : ''));
+    if (s.rank) li.setAttribute('data-rank', s.rank);
+    var meta = el('p', 'jf-story-meta', s.cat);
+    if (picked) meta.appendChild(el('span', 'jf-pick', '選んだニュース'));
+    li.appendChild(meta);
+    li.appendChild(el('h2', null, s.title));
+    var ul = el('ul', 'jf-points');
+    s.points.forEach(function (p) { ul.appendChild(el('li', null, p)); });
+    linkWho(ul);
+    li.appendChild(ul);
+    if (s.srcs.length) {
+      var d = el('div', 'jf-srcs'); d.appendChild(el('span', null, '参照記事'));
+      s.srcs.forEach(function (x) { var a = el('a', null, x[0] + ' ↗'); a.href = x[1]; a.target = '_blank'; a.rel = 'noopener'; d.appendChild(a); });
+      li.appendChild(d);
+    }
+    return li;
+  }
+  function dayView(root, main, path) {
+    var box = document.querySelector('.jf-day');
+    if (box && box.getAttribute('data-path') === path) return;
+    if (box) box.remove();
+    var me = readStory(main, path);
+    if (!me.date || !me.points.length) return;                 // 中身が読めないときは、ふつうの記事ページのままにする
+    box = el('div', 'jf-day'); box.setAttribute('data-path', path);
+    var p = me.date.split('/').map(Number), now = new Date(), isToday = now.getFullYear() === p[0] && now.getMonth() + 1 === p[1] && now.getDate() === p[2];
+    var h = el('h1', 'jf-day-title'); h.appendChild(el('span', null, p[0] + '年' + p[1] + '月' + p[2] + '日')); h.appendChild(document.createTextNode(isToday ? '今日のヘッドライン' : p[1] + '月' + p[2] + '日のヘッドライン'));
+    var list = el('ul', 'jf-stories'), nav = el('div', 'jf-daynav');
+    box.appendChild(h); box.appendChild(list); box.appendChild(nav);
+    list.appendChild(storyCard(me, true));
+    main.parentNode.appendChild(box);
+    root.setAttribute('data-jf-day', '1');
+    var alive = function () { return box.isConnected && box.getAttribute('data-path') === path; };
+    getDoc('/' + ARCHIVE).then(function (doc) {
+      var all = Array.prototype.map.call(doc.querySelectorAll('a.notion-list-item'), function (a) {
+        return { href: (a.getAttribute('href') || '').split('?')[0], date: txt(a.querySelector('.notion-property-date-item')), rank: Number(txt(a.querySelector('.notion-property-number'))) || 99 };
+      });
+      var mates = all.filter(function (x) { return x.date === me.date; }).sort(function (a, b) { return a.rank - b.rank; });
+      if (!mates.some(function (x) { return x.href === path; })) return;
+      var dates = []; all.forEach(function (x) { if (x.date && dates.indexOf(x.date) < 0) dates.push(x.date); });
+      var di = dates.indexOf(me.date), first = function (d) { return all.filter(function (x) { return x.date === d; }).sort(function (a, b) { return a.rank - b.rank; })[0]; };
+      var short = function (d) { var q = d.split('/').map(Number); return q[1] + '月' + q[2] + '日(' + WD[new Date(q[0], q[1] - 1, q[2]).getDay()] + ')'; };
+      if (alive()) {
+        if (dates[di + 1]) { var a1 = el('a', null, '← 前の日 ' + short(dates[di + 1])); a1.href = first(dates[di + 1]).href; nav.appendChild(a1); }
+        if (di > 0) { var a2 = el('a', 'jf-next', '次の日 ' + short(dates[di - 1]) + ' →'); a2.href = first(dates[di - 1]).href; nav.appendChild(a2); }
+      }
+      return Promise.all(mates.map(function (x) {
+        if (x.href === path) return me;
+        return getDoc(x.href).then(function (d) { var m = d.querySelector('main.contents'); return m ? readStory(m, x.href) : null; }).catch(function () { return null; });
+      })).then(function (stories) {
+        if (!alive()) return;
+        list.textContent = '';
+        stories.forEach(function (s) { if (s && s.points.length) list.appendChild(storyCard(s, s.href === path)); });
+        var mine = list.querySelector('.jf-picked');
+        if (mine && mine !== list.firstElementChild) mine.scrollIntoView({ block: 'start' });
+      });
+    }).catch(function () {});
+  }
+
   function apply() {
     var root = document.querySelector('.notion.page');
     if (!root) return;
@@ -96,8 +199,9 @@
         }
         first = date !== last;
         if (first) group++;
-        set(a, 'data-rank', top && n ? n.textContent.trim() : null);
-        set(a, 'data-jf-belt', top ? '1' : null);
+        var belted = top || mode === 'archive';
+        set(a, 'data-rank', belted && n ? n.textContent.trim() : null);
+        set(a, 'data-jf-belt', belted ? '1' : null);
         set(a, 'data-jf-first', first ? '1' : null);
         set(a, 'data-jf-old', top && group > 1 ? '1' : null);
         set(a, 'data-day', first && date ? (top && date === today ? '今日のヘッドライン' : dayLabel(date)) : null);
@@ -119,7 +223,10 @@
       else if (src && el.classList.contains('notion-list')) set(el, 'data-jf-src', '1');
       prev = el;
     });
-    if (mode === 'article' && main) linkNames(main);
+    var day = document.querySelector('.jf-day');
+    if (day && (mode !== 'article' || day.getAttribute('data-path') !== path)) { day.remove(); day = null; }
+    if (mode === 'article' && main) { linkNames(main); dayView(root, main, path); }
+    set(root, 'data-jf-day', document.querySelector('.jf-day') ? '1' : null);
     // ページが替わったら、本文をふわっと出し直す(a と b を交互に付けると、そのたびにアニメーションがかかる)
     if (main && (shownPath !== path || !main.getAttribute('data-jf-in'))) {
       shownPath = path; fadeTurn = fadeTurn === 'a' ? 'b' : 'a';
