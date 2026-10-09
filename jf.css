@@ -442,3 +442,6 @@ html .jf-foot-pod a:hover { text-decoration-color: #fff; }
   html .jf-tabs a.jf-extra[href$="3f4a6fb1972b814197a3c91977d78b35"] { display: none; }
   html .jf-tabs::after { content: ""; position: absolute; top: 0; right: 0; bottom: 1px; width: 28px; background: linear-gradient(to right, rgba(246, 246, 246, 0), #f6f6f6); pointer-events: none; }
 }
+
+/* v20: 上の帯の虫眼鏡(Wraptasの検索)は出さない。探すのは「記事を探す」のページで */
+html .header__searchOpenBtn { display: none !important; }
