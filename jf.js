@@ -155,7 +155,8 @@
         var st = pr[key['状態']], dt = pr[key['掲載日']], rk = pr[key['並び順']], d = '';
         if (st && st[0][0] !== '公開') return;
         try { d = dt[0][1][0][1].start_date.split('-').map(Number).join('/'); } catch (e) {}
-        if (d) all.push({ href: '/' + i.replace(/-/g, ''), date: d, rank: Number(rk && rk[0][0]) || 99 });
+        var ct = pr[key['カテゴリー']];
+        if (d) all.push({ href: '/' + i.replace(/-/g, ''), date: d, rank: Number(rk && rk[0][0]) || 99, cat: ct ? ct[0][0] : '' });
       });
       var mates = all.filter(function (x) { return x.date === me.date; }).sort(function (a, b) { return a.rank - b.rank; });
       if (!mates.some(function (x) { return x.href === path; })) return;
@@ -168,7 +169,7 @@
       }
       return Promise.all(mates.map(function (x) {
         if (x.href === path) return me;
-        return getDoc(x.href).then(function (d) { var m = d.querySelector('main.contents'); return m ? readStory(m, x.href) : null; }).catch(function () { return null; });
+        return getDoc(x.href).then(function (d) { var m = d.querySelector('main.contents'); var s = m ? readStory(m, x.href) : null; if (s) { s.rank = s.rank || String(x.rank); s.cat = s.cat || x.cat; } return s; }).catch(function () { return null; });
       })).then(function (stories) {
         if (!alive()) return;
         list.textContent = '';
