@@ -445,3 +445,8 @@ html .jf-foot-pod a:hover { text-decoration-color: #fff; }
 
 /* v20: 上の帯の虫眼鏡(Wraptasの検索)は出さない。探すのは「記事を探す」のページで */
 html .header__searchOpenBtn { display: none !important; }
+
+/* v21: スマホでは、選んだ記事を画面の上のほうに寄せる(スクロールすると上の帯とタブは隠れるので、そのぶんの空きは取らない) */
+@media (max-width: 999px) {
+  html .jf-story { scroll-margin-top: 14px; }
+}

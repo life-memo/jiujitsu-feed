@@ -128,7 +128,6 @@
     var li = el('li', 'jf-story' + (picked ? ' jf-picked' : ''));
     if (s.rank) li.setAttribute('data-rank', s.rank);
     var meta = el('p', 'jf-story-meta', s.cat);
-    if (picked) meta.appendChild(el('span', 'jf-pick', '選んだニュース'));
     li.appendChild(meta);
     li.appendChild(el('h2', null, s.title));
     var ul = el('ul', 'jf-points');
