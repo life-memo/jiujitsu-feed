@@ -318,3 +318,51 @@ html .jf-daynav .jf-next { margin-left: auto; }
   html .jf-story { padding: 28px 30px 28px 48px; }
 }
 @media (prefers-reduced-motion: reduce) { html .jf-day, html .jf-story.jf-picked { animation: none; } }
+
+/* v14: 上の帯を少し高くして、サイト名の下に余白を取る。サイト名は画面の真ん中に置く(右の虫眼鏡に押されてずれていた) */
+html .header { height: 56px; }
+html .header__contentsWrapper { position: relative; height: 56px; align-items: center; }
+html .header__logoArea { position: absolute !important; left: 50%; top: 50%; transform: translate(-50%, -50%); margin: 0 !important; white-space: nowrap; }
+html .header__searchOpenBtn { margin-left: auto !important; }
+html .jf-tabs { top: 56px; }
+html .container { padding-top: 58px; }
+html .jf-menu-btn { top: 10px; }
+html .jf-story { scroll-margin-top: 124px; }
+
+/* メニューの見出し */
+html .jf-drawer h2 { margin: 0; padding: 18px 0 0; border: 0; border-top: 1px solid var(--jf-line); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em; color: var(--jf-muted); }
+html .jf-drawer h2:first-child { padding-top: 0; border-top: 0; }
+html .jf-drawer ul, html .jf-drawer ul:first-child { padding: 6px 0 14px; border-top: 0; }
+
+/* ページ番号の「…」 */
+html .jf-pager { align-items: center; }
+html .jf-pager span { color: var(--jf-muted); font-size: 0.86rem; }
+
+/* アーカイブ: 日付から選ぶカレンダー(一覧の上に出す) */
+html [data-jf-page="archive"] .notion-collection { display: flex; flex-direction: column; }
+html .jf-cal { order: -1; margin-top: 22px; }
+html .jf-cal-toggle { height: 40px; padding: 0 18px; border: 1px solid var(--jf-line); border-radius: 20px; background: #fff; font: inherit; font-size: 0.84rem; letter-spacing: 0.04em; color: var(--jf-text); cursor: pointer; transition: border-color 0.3s; }
+html .jf-cal-toggle:hover { border-color: var(--jf-text); }
+html .jf-cal-panel { max-width: 340px; margin-top: 12px; padding: 16px; border: 1px solid var(--jf-line); border-radius: 14px; background: #fff; }
+html .jf-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+html .jf-cal-head strong { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+html .jf-cal-head button { width: 36px; height: 36px; padding: 0; border: 1px solid var(--jf-line); border-radius: 18px; background: #fff; font: inherit; color: var(--jf-text); cursor: pointer; }
+html .jf-cal-head button:disabled { color: var(--jf-faint); cursor: default; }
+html .jf-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; font-size: 0.86rem; font-variant-numeric: tabular-nums; }
+html .jf-cal-grid > * { display: flex; align-items: center; justify-content: center; height: 38px; }
+html .jf-cal-wd { height: 26px !important; font-size: 0.68rem; color: var(--jf-muted); }
+html .jf-cal-none { color: var(--jf-faint); }
+html .jf-cal-grid button { padding: 0; border: 1px solid var(--jf-text); border-radius: 19px; background: #fff; font: inherit; font-weight: 700; color: var(--jf-text); cursor: pointer; transition: background 0.3s, color 0.3s; }
+html .jf-cal-grid button:hover, html .jf-cal-grid button.jf-cal-on { background: var(--jf-text); color: #fff; }
+
+/* 帯の色のページ: 説明の行を、ヘッドラインと同じ帯つきの札にする */
+html .contents > ul[data-jf-beltrow] { --c: #fff; --b: #111; position: relative; list-style: none; margin: 12px 0 0; padding: 16px 18px 16px 40px; border: 1px solid var(--jf-line); border-radius: 14px; background: linear-gradient(to top, var(--c) 0 10px, var(--b) 10px 26px, var(--c) 26px) left / 22px 100% no-repeat, #fff; }
+html .contents > ul[data-jf-beltrow]::after { content: ""; position: absolute; left: 22px; top: 0; bottom: 0; width: 1px; background: var(--jf-line); }
+html .contents > ul[data-jf-beltrow="1"] { margin-top: 22px; --c: #111; --b: #c8102e; }
+html .contents > ul[data-jf-beltrow="2"] { --c: #8a5527; }
+html .contents > ul[data-jf-beltrow="3"] { --c: #7a3da8; }
+html .contents > ul[data-jf-beltrow="4"] { --c: #1f5fc4; }
+html .contents > ul[data-jf-beltrow] li { margin: 0; padding: 0; font-size: 0.92rem; line-height: 1.7; }
+html .contents > ul[data-jf-beltrow] li::before, html .contents > ul[data-jf-beltrow] li::marker { content: none; }
+html .contents > ul[data-jf-beltrow] b { font-size: 1.02rem; }
+html .contents > .notion-text a { color: var(--jf-text); text-decoration: underline; text-underline-offset: 4px; }

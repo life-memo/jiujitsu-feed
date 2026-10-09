@@ -4,10 +4,10 @@
   if (window.__jfLoaded) return;
   window.__jfLoaded = true;
   // タブ・三本線のメニュー・フッター
-  document.body.insertAdjacentHTML('beforeend', '<div class="jf-chrome">' + "<nav class=\"jf-tabs\" aria-label=\"カテゴリー\"><div class=\"jf-tabs-in\">\n<a href=\"/\">トップ</a>\n<a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a>\n<a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a>\n<a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a>\n<a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a>\n<span class=\"jf-gap\"></span>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a>\n</div></nav>\n<button type=\"button\" class=\"jf-menu-btn\" aria-label=\"メニュー\" aria-expanded=\"false\" aria-controls=\"jf-drawer\"><i aria-hidden=\"true\"><span></span><span></span><span></span></i></button>\n<div class=\"jf-shade\"></div>\n<nav class=\"jf-drawer\" id=\"jf-drawer\" aria-label=\"メニュー\">\n<ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n</ul>\n<ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n</ul>\n</nav>\n<footer class=\"jf-foot\"><div class=\"jf-foot-in\">\n<div class=\"jf-brand\"><strong>ジュウジュツフィード</strong><span>あした道場で話したくなるニュース。</span>\n<span class=\"jf-icons\">\n<a href=\"https://open.spotify.com/show/54049CgarXju0SngOoZ8Zn\" target=\"_blank\" rel=\"noopener\" aria-label=\"Spotifyで聴く\" title=\"Spotify\"><img src=\"https://life-memo.github.io/jiujitsu-feed/icons/spotify.png\" width=\"24\" height=\"24\" alt=\"\"></a>\n<a href=\"https://podcasts.apple.com/jp/podcast/id1853188871\" target=\"_blank\" rel=\"noopener\" aria-label=\"Apple Podcastで聴く\" title=\"Apple Podcast\"><img src=\"https://life-memo.github.io/jiujitsu-feed/icons/apple.png\" width=\"24\" height=\"24\" alt=\"\"></a>\n<a href=\"https://music.amazon.co.jp/search/%E3%82%B8%E3%83%A5%E3%82%A6%E3%82%B8%E3%83%A5%E3%83%84%E3%83%8B%E3%83%AF%E3%82%AB\" target=\"_blank\" rel=\"noopener\" aria-label=\"Amazon Musicで聴く\" title=\"Amazon Music\"><img src=\"https://life-memo.github.io/jiujitsu-feed/icons/amazon.png\" width=\"24\" height=\"24\" alt=\"\"></a>\n</span></div>\n<div class=\"jf-cols\">\n<nav aria-label=\"ニュース\"><h2>ニュース</h2><ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n<li><a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a></li>\n<li><a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a></li>\n<li><a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a></li>\n<li><a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a></li>\n</ul></nav>\n<nav aria-label=\"案内\"><h2>案内</h2><ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n</ul></nav>\n</div>\n<p class=\"jf-legal\">© 2026 ジュウジュツフィード</p>\n</div></footer>\n" + '</div>');
+  document.body.insertAdjacentHTML('beforeend', '<div class="jf-chrome">' + "<nav class=\"jf-tabs\" aria-label=\"カテゴリー\"><div class=\"jf-tabs-in\">\n<a href=\"/\">トップ</a>\n<a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a>\n<a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a>\n<a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a>\n<a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a>\n<span class=\"jf-gap\"></span>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a>\n</div></nav>\n<button type=\"button\" class=\"jf-menu-btn\" aria-label=\"メニュー\" aria-expanded=\"false\" aria-controls=\"jf-drawer\"><i aria-hidden=\"true\"><span></span><span></span><span></span></i></button>\n<div class=\"jf-shade\"></div>\n<nav class=\"jf-drawer\" id=\"jf-drawer\" aria-label=\"メニュー\">\n<h2>ニュース</h2>\n<ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a></li>\n<li><a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a></li>\n<li><a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a></li>\n<li><a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n</ul>\n<h2>このサイトについて</h2>\n<ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n</ul>\n</nav>\n<footer class=\"jf-foot\"><div class=\"jf-foot-in\">\n<div class=\"jf-brand\"><strong>ジュウジュツフィード</strong><span>あした道場で話したくなるニュース。</span>\n<span class=\"jf-icons\">\n<a href=\"https://open.spotify.com/show/54049CgarXju0SngOoZ8Zn\" target=\"_blank\" rel=\"noopener\" aria-label=\"Spotifyで聴く\" title=\"Spotify\"><img src=\"https://life-memo.github.io/jiujitsu-feed/icons/spotify.png\" width=\"24\" height=\"24\" alt=\"\"></a>\n<a href=\"https://podcasts.apple.com/jp/podcast/id1853188871\" target=\"_blank\" rel=\"noopener\" aria-label=\"Apple Podcastで聴く\" title=\"Apple Podcast\"><img src=\"https://life-memo.github.io/jiujitsu-feed/icons/apple.png\" width=\"24\" height=\"24\" alt=\"\"></a>\n<a href=\"https://music.amazon.co.jp/search/%E3%82%B8%E3%83%A5%E3%82%A6%E3%82%B8%E3%83%A5%E3%83%84%E3%83%8B%E3%83%AF%E3%82%AB\" target=\"_blank\" rel=\"noopener\" aria-label=\"Amazon Musicで聴く\" title=\"Amazon Music\"><img src=\"https://life-memo.github.io/jiujitsu-feed/icons/amazon.png\" width=\"24\" height=\"24\" alt=\"\"></a>\n</span></div>\n<div class=\"jf-cols\">\n<nav aria-label=\"ニュース\"><h2>ニュース</h2><ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a></li>\n<li><a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a></li>\n<li><a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a></li>\n<li><a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n</ul></nav>\n<nav aria-label=\"このサイトについて\"><h2>このサイトについて</h2><ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n</ul></nav>\n</div>\n<p class=\"jf-legal\">© 2026 ジュウジュツフィード</p>\n</div></footer>\n" + '</div>');
   // 人物の名前 → その人物のページ。Notionの「人物」に足したら、ここにも1行足す
   var PEOPLE = {"ゴードン・ライアン": "/3f4a6fb1972b81099802c4a490bd8aaf", "マイキー・ムスメシ": "/3f4a6fb1972b81acaae9de24d8e7104e", "ジョン・ダナハー": "/3f4a6fb1972b81298fd0cb39c97db5b7", "ヒクソン・グレイシー": "/3f4a6fb1972b81c292fee369024358f6", "クラウディア・ガデーリャ": "/3f4a6fb1972b81af9256ed72083093ea", "ヴィクトル・ウーゴ": "/3f4a6fb1972b817bbd39d9f0b08d5343", "ヘレナ・クレバー": "/3f4a6fb1972b814bb861c4e4f47145e1", "ギルバート・バーンズ": "/3f4a6fb1972b81a2a617ca519b492599", "ガブリエル・アルメイダ": "/3f4a6fb1972b812f8adef03d2524b8b1", "サラ・ガウヴァオン": "/3f4a6fb1972b81639c7fcdb2d25a71c3"};
-  var ARCHIVE = '3f4a6fb1972b8180ae98e5da079356b7', PEOPLE_PAGE = '3f4a6fb1972b81ef88f3f81eb2192323', PEOPLE_DB = 'f8ceb4420ed948a6b63df206d4b9ea00', NEWS_DB = 'a956fb4cc7df46d69ac41768e5195c5e';
+  var BELTS = '3f4a6fb1972b81bbbd91efa7948132e5', ARCHIVE = '3f4a6fb1972b8180ae98e5da079356b7', PEOPLE_PAGE = '3f4a6fb1972b81ef88f3f81eb2192323', PEOPLE_DB = 'f8ceb4420ed948a6b63df206d4b9ea00', NEWS_DB = 'a956fb4cc7df46d69ac41768e5195c5e';
   var WD = ['日', '月', '火', '水', '木', '金', '土'];
   var ROWS = [['あ', 'アイウエオヴ'], ['か', 'カキクケコガギグゲゴ'], ['さ', 'サシスセソザジズゼゾ'], ['た', 'タチツテトダヂヅデド'], ['な', 'ナニヌネノ'], ['は', 'ハヒフヘホバビブベボパピプペポ'], ['ま', 'マミムメモ'], ['や', 'ヤユヨ'], ['ら', 'ラリルレロ'], ['わ', 'ワヲン']];
   var set = function (el, k, v) { if (v == null) { if (el.hasAttribute(k)) el.removeAttribute(k); } else if (el.getAttribute(k) !== v) el.setAttribute(k, v); };
@@ -18,6 +18,7 @@
     if (c.indexOf('page-_top') >= 0) return 'top';
     if (c.indexOf('page_id-' + ARCHIVE) >= 0) return 'archive';
     if (c.indexOf('page_id-' + PEOPLE_PAGE) >= 0) return 'people';
+    if (c.indexOf('page_id-' + BELTS) >= 0) return 'belts';
     if (c.indexOf('_' + PEOPLE_DB + '_') >= 0) return 'person';
     if (c.indexOf('_' + NEWS_DB + '_') >= 0) return 'article';
     return 'list';
@@ -45,7 +46,7 @@
     });
   }
   // カテゴリーと人物のページは10本ずつ。11本以上あるときは、一覧の下に 1 2 3 のページ番号を出す
-  var PER_PAGE = 10, pageNow = {};
+  var PER_PAGE = 10, DAYS_PER_PAGE = 3, pageNow = {};
   function pager(c, pages, page, path) {
     var nav = c.querySelector(':scope > .jf-pager'), sig = pages + ':' + page;
     if (pages < 2) { if (nav) nav.remove(); return; }
@@ -53,13 +54,22 @@
     if (!nav) { nav = document.createElement('nav'); nav.className = 'jf-pager'; nav.setAttribute('aria-label', 'ページ'); c.appendChild(nav); }
     nav.setAttribute('data-sig', sig);
     nav.textContent = '';
-    for (var k = 1; k <= pages; k++) {
-      var b = document.createElement('button'); b.type = 'button'; b.textContent = String(k);
-      b.setAttribute('aria-label', k + 'ページ目');
-      if (k === page) b.setAttribute('aria-current', 'page');
-      b.addEventListener('click', (function (k) { return function () { pageNow[path] = k; apply(); window.scrollTo(0, 0); }; })(k));
+    var add = function (label, k, cur, aria) {
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = label;
+      b.setAttribute('aria-label', aria || k + 'ページ目');
+      if (cur) b.setAttribute('aria-current', 'page');
+      b.addEventListener('click', function () { pageNow[path] = k; apply(); window.scrollTo(0, 0); });
       nav.appendChild(b);
-    }
+    };
+    // ページが多いときは、最初・最後・今のページの前後だけを出す
+    var show = [], k;
+    for (k = 1; k <= pages; k++) if (pages <= 7 || k === 1 || k === pages || Math.abs(k - page) <= 1) show.push(k);
+    if (page > 1) add('←', page - 1, false, '前のページ');
+    show.forEach(function (n, i) {
+      if (i && n - show[i - 1] > 1) { var gap = document.createElement('span'); gap.textContent = '…'; nav.appendChild(gap); }
+      add(String(n), n, n === page);
+    });
+    if (page < pages) add('→', page + 1, false, '次のページ');
   }
   // ---- その日のページ ----
   // 記事を開くと、同じ日の記事を全部並べて、開いた1本に印を付ける。
@@ -127,14 +137,15 @@
     var box = document.querySelector('.jf-day');
     if (box && box.getAttribute('data-path') === path) return;
     if (box) box.remove();
-    var me = readStory(main, path);
+    var me = readStory(main, path), plain = false;
+    try { plain = sessionStorage.getItem('jf-nopick') === path; } catch (e) {}
     if (!me.date || !me.points.length) return;                 // 中身が読めないときは、ふつうの記事ページのままにする
     box = el('div', 'jf-day'); box.setAttribute('data-path', path);
     var p = me.date.split('/').map(Number), now = new Date(), isToday = now.getFullYear() === p[0] && now.getMonth() + 1 === p[1] && now.getDate() === p[2];
     var h = el('h1', 'jf-day-title'); h.appendChild(el('span', null, p[0] + '年' + p[1] + '月' + p[2] + '日')); h.appendChild(document.createTextNode(isToday ? '今日のヘッドライン' : p[1] + '月' + p[2] + '日のヘッドライン'));
     var list = el('ul', 'jf-stories'), nav = el('div', 'jf-daynav');
     box.appendChild(h); box.appendChild(list); box.appendChild(nav);
-    list.appendChild(storyCard(me, true));
+    list.appendChild(storyCard(me, !plain));
     main.parentNode.appendChild(box);
     root.setAttribute('data-jf-day', '1');
     var alive = function () { return box.isConnected && box.getAttribute('data-path') === path; };
@@ -173,11 +184,51 @@
       })).then(function (stories) {
         if (!alive()) return;
         list.textContent = '';
-        stories.forEach(function (s) { if (s && s.points.length) list.appendChild(storyCard(s, s.href === path)); });
+        stories.forEach(function (s) { if (s && s.points.length) list.appendChild(storyCard(s, !plain && s.href === path)); });
         var mine = list.querySelector('.jf-picked');
         if (mine && mine !== list.firstElementChild) mine.scrollIntoView({ block: 'start' });
       });
     }).catch(function () {});
+  }
+
+  // ---- アーカイブのカレンダー ----
+  // ニュースのある日だけ押せる。押すと、その日が入っているページに切り替えて、その日の見出しまで移る。
+  var calOpen = false, calMonth = null;
+  function calendar(c, days, page, path) {
+    var box = c.querySelector(':scope > .jf-cal');
+    if (!days.length) { if (box) box.remove(); return; }
+    var ym = function (d) { var p = d.split('/').map(Number); return p[0] * 12 + p[1] - 1; };
+    var newest = ym(days[0]), oldest = ym(days[days.length - 1]);
+    if (calMonth == null || calMonth > newest || calMonth < oldest) calMonth = ym(days[Math.min((page - 1) * DAYS_PER_PAGE, days.length - 1)]);
+    var sig = [days.length, days[0], page, calOpen, calMonth].join('|');
+    if (box && box.getAttribute('data-sig') === sig) return;
+    if (!box) { box = el('div', 'jf-cal'); c.appendChild(box); }
+    box.setAttribute('data-sig', sig);
+    box.textContent = '';
+    var redo = function () { box.setAttribute('data-sig', ''); apply(); };
+    var tg = el('button', 'jf-cal-toggle', calOpen ? '閉じる' : '日付から選ぶ'); tg.type = 'button'; tg.setAttribute('aria-expanded', calOpen ? 'true' : 'false');
+    tg.addEventListener('click', function () { calOpen = !calOpen; redo(); });
+    box.appendChild(tg);
+    if (!calOpen) return;
+    var y = Math.floor(calMonth / 12), m = calMonth % 12, panel = el('div', 'jf-cal-panel'), head = el('div', 'jf-cal-head'), grid = el('div', 'jf-cal-grid');
+    var step = function (label, to, aria) { var b = el('button', null, label); b.type = 'button'; b.setAttribute('aria-label', aria); b.disabled = to < oldest || to > newest; b.addEventListener('click', function () { calMonth = to; redo(); }); return b; };
+    head.appendChild(step('←', calMonth - 1, '前の月')); head.appendChild(el('strong', null, y + '年' + (m + 1) + '月')); head.appendChild(step('→', calMonth + 1, '次の月'));
+    WD.forEach(function (w) { grid.appendChild(el('span', 'jf-cal-wd', w)); });
+    for (var i = 0, lead = new Date(y, m, 1).getDay(); i < lead; i++) grid.appendChild(el('span'));
+    var shown = days.slice((page - 1) * DAYS_PER_PAGE, page * DAYS_PER_PAGE);
+    for (var d = 1, n = new Date(y, m + 1, 0).getDate(); d <= n; d++) (function (d) {
+      var key = y + '/' + (m + 1) + '/' + d, at = days.indexOf(key);
+      if (at < 0) { grid.appendChild(el('span', 'jf-cal-none', String(d))); return; }
+      var b = el('button', shown.indexOf(key) >= 0 ? 'jf-cal-on' : null, String(d)); b.type = 'button'; b.setAttribute('aria-label', (m + 1) + '月' + d + '日のニュース');
+      b.addEventListener('click', function () {
+        pageNow[path] = Math.floor(at / DAYS_PER_PAGE) + 1; calOpen = false; redo();
+        var hit = null;
+        c.querySelectorAll('a.notion-list-item[data-jf-first]').forEach(function (a) { var x = a.querySelector('.notion-property-date-item'); if (x && x.textContent.trim() === key) hit = a; });
+        if (hit) window.scrollTo(0, hit.getBoundingClientRect().top + window.pageYOffset - 170);
+      });
+      grid.appendChild(b);
+    })(d);
+    panel.appendChild(head); panel.appendChild(grid); box.appendChild(panel);
   }
 
   function apply() {
@@ -194,9 +245,12 @@
       // トップの見出しの右に出す日付(いちばん新しい日)
       var d0 = top && !recs ? c.querySelector('a.notion-list-item .notion-property-date-item') : null, p0 = d0 ? d0.textContent.trim().split('/') : [];
       set(c, 'data-jf-date', p0.length === 3 ? p0[0] + '年' + Number(p0[1]) + '月' + Number(p0[2]) + '日' : null);
-      var paged = mode === 'list' || mode === 'person', items = c.querySelectorAll('a.notion-list-item');
-      var pages = paged ? Math.ceil(items.length / PER_PAGE) : 0, page = Math.min(Math.max(pageNow[path] || 1, 1), pages || 1);
+      var paged = mode === 'list' || mode === 'person', items = c.querySelectorAll('a.notion-list-item'), arch = mode === 'archive', days = [];
+      // アーカイブは3日分ずつ。日付の並びを先に数えておく
+      if (arch) items.forEach(function (a) { var d = a.querySelector('.notion-property-date-item'), t = d ? d.textContent.trim() : ''; if (t && days[days.length - 1] !== t) days.push(t); });
+      var pages = paged ? Math.ceil(items.length / PER_PAGE) : arch ? Math.ceil(days.length / DAYS_PER_PAGE) : 0, page = Math.min(Math.max(pageNow[path] || 1, 1), pages || 1);
       pager(c, pages, page, path);
+      if (arch) calendar(c, days, page, path);
       items.forEach(function (a, idx) {
         set(a, 'data-jf-off', paged && Math.floor(idx / PER_PAGE) + 1 !== page ? '1' : null);
         var d = a.querySelector('.notion-property-date-item'), n = a.querySelector('.notion-property-number');
@@ -215,6 +269,7 @@
         }
         first = date !== last;
         if (first) group++;
+        if (arch) set(a, 'data-jf-off', Math.ceil(group / DAYS_PER_PAGE) !== page ? '1' : null);
         var belted = top || mode === 'archive';
         set(a, 'data-rank', belted && n ? n.textContent.trim() : null);
         set(a, 'data-jf-belt', belted ? '1' : null);
@@ -239,6 +294,8 @@
       else if (src && el.classList.contains('notion-list')) set(el, 'data-jf-src', '1');
       prev = el;
     });
+    // 帯の色のページ: 説明の行に、ヘッドラインと同じ帯の絵を付ける
+    if (mode === 'belts' && main) main.querySelectorAll(':scope > ul.notion-list').forEach(function (u, i) { set(u, 'data-jf-beltrow', String(i + 1)); });
     var day = document.querySelector('.jf-day');
     if (day && (mode !== 'article' || day.getAttribute('data-path') !== path)) { day.remove(); day = null; }
     if (mode === 'article' && main) { linkNames(main); dayView(root, main, path); }
@@ -267,6 +324,8 @@
     var here = location.pathname.replace(/\/$/, '') || '/', there = href.split(/[?#]/)[0].replace(/\/$/, '') || '/';
     var router = window.next && window.next.router;
     if (!router) return;
+    // 「前の日」「次の日」で移ったときは、その日のページを出すだけにする(「選んだニュース」の印は付けない)
+    try { if (a.closest('.jf-daynav')) sessionStorage.setItem('jf-nopick', there); else sessionStorage.removeItem('jf-nopick'); } catch (err) {}
     e.preventDefault(); menu(false);
     if (there === here) { window.scrollTo(0, 0); return; }
     html.classList.add('jf-leaving');
