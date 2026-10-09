@@ -406,3 +406,18 @@ html [data-jf-page="people"] a.notion-list-item[data-jf-pod] .notion-page-title-
   html .page-_top .contents > .jf-pod { grid-column: 2; grid-row: 4; margin-top: 22px; }
   html .jf-pod img { width: 72px; height: 72px; }
 }
+
+/* v16: 黒い部分のアイコンをやめて、ポッドキャストの案内(サムネイルとリンク)にする。トップの案内カードはなし */
+html .jf-lead { display: flex; flex-direction: column; gap: 24px; }
+html .jf-foot-pod { display: flex; align-items: center; gap: 14px; }
+html .jf-foot-pod img { flex: none; width: 72px; height: 72px; border-radius: 10px; object-fit: cover; background: #222; }
+html .jf-foot-pod > div { display: flex; flex-direction: column; min-width: 0; }
+html .jf-foot-pod span { font-size: 0.68rem; letter-spacing: 0.14em; color: #a0a0a0; }
+html .jf-foot-pod strong { font-size: 1rem; font-weight: 700; line-height: 1.5; color: #fff; }
+html .jf-foot-pod p { display: flex; flex-wrap: wrap; gap: 2px 14px; margin: 4px 0 0; }
+html .jf-foot-pod a { font-size: 0.8rem !important; color: #fff !important; text-decoration: underline; text-decoration-color: #555; text-underline-offset: 4px; transition: text-decoration-color 0.3s; }
+html .jf-foot-pod a:hover { text-decoration-color: #fff; }
+@media (min-width: 1000px) {
+  html .page-_top main.contents { grid-template-rows: auto auto 1fr; }
+  html .page-_top .contents > .notion-collection:not([data-jf-recs]) { grid-row: 1 / span 3; }
+}

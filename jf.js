@@ -4,15 +4,17 @@
   if (window.__jfLoaded) return;
   window.__jfLoaded = true;
   // タブ・三本線のメニュー・フッター
-  document.body.insertAdjacentHTML('beforeend', '<div class="jf-chrome">' + "<nav class=\"jf-tabs\" aria-label=\"カテゴリー\"><div class=\"jf-tabs-in\">\n<a href=\"/\">トップ</a>\n<a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a>\n<a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a>\n<a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a>\n<a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a>\n<span class=\"jf-gap\"></span>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a>\n</div></nav>\n<button type=\"button\" class=\"jf-menu-btn\" aria-label=\"メニュー\" aria-expanded=\"false\" aria-controls=\"jf-drawer\"><i aria-hidden=\"true\"><span></span><span></span><span></span></i></button>\n<div class=\"jf-shade\"></div>\n<nav class=\"jf-drawer\" id=\"jf-drawer\" aria-label=\"メニュー\">\n<h2>ニュース</h2>\n<ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a></li>\n<li><a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a></li>\n<li><a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a></li>\n<li><a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n</ul>\n<h2>このサイトについて</h2>\n<ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n</ul>\n</nav>\n<footer class=\"jf-foot\"><div class=\"jf-foot-in\">\n<div class=\"jf-brand\"><strong>ジュウジュツフィード</strong><span>あした道場で話したくなるニュース。</span>\n<span class=\"jf-icons\">\n<a href=\"https://open.spotify.com/show/54049CgarXju0SngOoZ8Zn\" target=\"_blank\" rel=\"noopener\" aria-label=\"Spotifyで聴く\" title=\"Spotify\"><img src=\"https://life-memo.github.io/jiujitsu-feed/icons/spotify.png\" width=\"24\" height=\"24\" alt=\"\"></a>\n<a href=\"https://podcasts.apple.com/jp/podcast/id1853188871\" target=\"_blank\" rel=\"noopener\" aria-label=\"Apple Podcastで聴く\" title=\"Apple Podcast\"><img src=\"https://life-memo.github.io/jiujitsu-feed/icons/apple.png\" width=\"24\" height=\"24\" alt=\"\"></a>\n<a href=\"https://music.amazon.co.jp/search/%E3%82%B8%E3%83%A5%E3%82%A6%E3%82%B8%E3%83%A5%E3%83%84%E3%83%8B%E3%83%AF%E3%82%AB\" target=\"_blank\" rel=\"noopener\" aria-label=\"Amazon Musicで聴く\" title=\"Amazon Music\"><img src=\"https://life-memo.github.io/jiujitsu-feed/icons/amazon.png\" width=\"24\" height=\"24\" alt=\"\"></a>\n</span></div>\n<div class=\"jf-cols\">\n<nav aria-label=\"ニュース\"><h2>ニュース</h2><ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a></li>\n<li><a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a></li>\n<li><a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a></li>\n<li><a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n</ul></nav>\n<nav aria-label=\"このサイトについて\"><h2>このサイトについて</h2><ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n</ul></nav>\n</div>\n<p class=\"jf-legal\">© 2026 ジュウジュツフィード</p>\n</div></footer>\n" + '</div>');
+  document.body.insertAdjacentHTML('beforeend', '<div class="jf-chrome">' + "<nav class=\"jf-tabs\" aria-label=\"カテゴリー\"><div class=\"jf-tabs-in\">\n<a href=\"/\">トップ</a>\n<a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a>\n<a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a>\n<a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a>\n<a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a>\n<span class=\"jf-gap\"></span>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a>\n</div></nav>\n<button type=\"button\" class=\"jf-menu-btn\" aria-label=\"メニュー\" aria-expanded=\"false\" aria-controls=\"jf-drawer\"><i aria-hidden=\"true\"><span></span><span></span><span></span></i></button>\n<div class=\"jf-shade\"></div>\n<nav class=\"jf-drawer\" id=\"jf-drawer\" aria-label=\"メニュー\">\n<h2>ニュース</h2>\n<ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a></li>\n<li><a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a></li>\n<li><a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a></li>\n<li><a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n</ul>\n<h2>このサイトについて</h2>\n<ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n</ul>\n</nav>\n<footer class=\"jf-foot\"><div class=\"jf-foot-in\">\n<div class=\"jf-lead\"><div class=\"jf-brand\"><strong>ジュウジュツフィード</strong><span>あした道場で話したくなるニュース。</span>\n</div>\n<div class=\"jf-foot-pod\"><img src=\"https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/b4/41/10/b44110f5-e8a0-6d21-4ea7-0cdd03ad4736/mza_4669245238295162244.jpg/240x240bb.jpg\" width=\"72\" height=\"72\" alt=\"\" loading=\"lazy\" decoding=\"async\"><div><span>ポッドキャスト</span><strong>ジュウジュツニワカ</strong><p><a href=\"https://open.spotify.com/show/54049CgarXju0SngOoZ8Zn\" target=\"_blank\" rel=\"noopener\">Spotify</a><a href=\"https://podcasts.apple.com/jp/podcast/id1853188871\" target=\"_blank\" rel=\"noopener\">Apple Podcast</a><a href=\"https://music.amazon.co.jp/podcasts/51f983ab-e8c8-4edb-8e82-a7852ed2e15d\" target=\"_blank\" rel=\"noopener\">Amazon Music</a></p></div></div></div>\n<div class=\"jf-cols\">\n<nav aria-label=\"ニュース\"><h2>ニュース</h2><ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a></li>\n<li><a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a></li>\n<li><a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a></li>\n<li><a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n</ul></nav>\n<nav aria-label=\"このサイトについて\"><h2>このサイトについて</h2><ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n</ul></nav>\n</div>\n<p class=\"jf-legal\">© 2026 ジュウジュツフィード</p>\n</div></footer>\n" + '</div>');
   // 人物の名前 → その人物のページ。Notionの「人物」に足したら、ここにも1行足す
   var PEOPLE = {"ゴードン・ライアン": "/3f4a6fb1972b81099802c4a490bd8aaf", "マイキー・ムスメシ": "/3f4a6fb1972b81acaae9de24d8e7104e", "ジョン・ダナハー": "/3f4a6fb1972b81298fd0cb39c97db5b7", "ヒクソン・グレイシー": "/3f4a6fb1972b81c292fee369024358f6", "クラウディア・ガデーリャ": "/3f4a6fb1972b81af9256ed72083093ea", "ヴィクトル・ウーゴ": "/3f4a6fb1972b817bbd39d9f0b08d5343", "ヘレナ・クレバー": "/3f4a6fb1972b814bb861c4e4f47145e1", "ギルバート・バーンズ": "/3f4a6fb1972b81a2a617ca519b492599", "ガブリエル・アルメイダ": "/3f4a6fb1972b812f8adef03d2524b8b1", "サラ・ガウヴァオン": "/3f4a6fb1972b81639c7fcdb2d25a71c3"};
-  // ポッドキャストで取り上げた人物 → その回。回が増えたら、ここに1行足す(人物のページのアドレス: [回の題, Spotifyのリンク, Apple Podcastのリンク])
-  var SHOW = { art: 'https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/b4/41/10/b44110f5-e8a0-6d21-4ea7-0cdd03ad4736/mza_4669245238295162244.jpg/240x240bb.jpg', spotify: 'https://open.spotify.com/show/54049CgarXju0SngOoZ8Zn', apple: 'https://podcasts.apple.com/jp/podcast/id1853188871', amazon: 'https://music.amazon.co.jp/search/%E3%82%B8%E3%83%A5%E3%82%A6%E3%82%B8%E3%83%A5%E3%83%84%E3%83%8B%E3%83%AF%E3%82%AB' };
+  // ポッドキャストで取り上げた人物 → その回(人物のページのアドレス: [回の題, Spotify, Apple Podcast, Amazon Music])。
+  // 新しい回は、番組の配信データから自動で拾う(下の loadFeed)。題に人物の名前が入っていれば、その人物につながる。
+  // 自動で拾った回は、Amazon Musicだけ番組のページに飛ぶ。回そのものに飛ばしたいときは、ここに1行足す
+  var SHOW = { amazon: 'https://music.amazon.co.jp/podcasts/51f983ab-e8c8-4edb-8e82-a7852ed2e15d', rss: 'https://anchor.fm/s/10b36b274/podcast/rss', lookup: 'https://itunes.apple.com/lookup?id=1853188871&entity=podcastEpisode&limit=200&country=jp', apple: 'https://podcasts.apple.com/jp/podcast/id1853188871' };
   var EPISODES = {
-    '/3f4a6fb1972b81099802c4a490bd8aaf': [['#1 ゴードン・ライアン：最強はなぜ最強か', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/1-e3aqh7f', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000736843508']],
-    '/3f4a6fb1972b81acaae9de24d8e7104e': [['#12 マイキー・ムスメシ（前編）：世界一の技術オタク', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/12-e3dqp3k', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000750780712'], ['#13 マイキー・ムスメシ（後編）：世界一の技術オタク', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/13-e3dqpbl', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000752077507']],
-    '/3f4a6fb1972b81c292fee369024358f6': [['#25 ヒクソン・グレイシー：不敗の神話、一族最強の男', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/25-e3ig1f9', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000770319415']]
+    '/3f4a6fb1972b81099802c4a490bd8aaf': [['#1 ゴードン・ライアン：最強はなぜ最強か', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/1-e3aqh7f', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000736843508', SHOW.amazon + '/episodes/e384a0bf-067f-4e6a-bff8-f384ec1230ee']],
+    '/3f4a6fb1972b81acaae9de24d8e7104e': [['#12 マイキー・ムスメシ（前編）：世界一の技術オタク', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/12-e3dqp3k', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000750780712', SHOW.amazon + '/episodes/16f0d5d9-dc2f-4ff7-afeb-1a03b29f0254'], ['#13 マイキー・ムスメシ（後編）：世界一の技術オタク', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/13-e3dqpbl', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000752077507', SHOW.amazon + '/episodes/b7d9d92f-c470-42ef-86a1-326f10b42c37']],
+    '/3f4a6fb1972b81c292fee369024358f6': [['#25 ヒクソン・グレイシー：不敗の神話、一族最強の男', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/25-e3ig1f9', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000770319415', SHOW.amazon + '/episodes/4214226b-fe45-495b-b6a9-689cdcaeb1dd']]
   };
   var BELTS = '3f4a6fb1972b81bbbd91efa7948132e5', ARCHIVE = '3f4a6fb1972b8180ae98e5da079356b7', PEOPLE_PAGE = '3f4a6fb1972b81ef88f3f81eb2192323', PEOPLE_DB = 'f8ceb4420ed948a6b63df206d4b9ea00', NEWS_DB = 'a956fb4cc7df46d69ac41768e5195c5e';
   var WD = ['日', '月', '火', '水', '木', '金', '土'];
@@ -271,24 +273,43 @@
   }
   // ---- ポッドキャスト ----
   // トップ: おすすめの下に番組の案内。人物のページ: その人物を取り上げた回へのリンク
-  function podCard(main) {
-    if (main.querySelector(':scope > .jf-pod')) return;
-    var box = el('aside', 'jf-pod'), img = el('img'), body = el('div'), links = el('p', 'jf-pod-links');
-    img.src = SHOW.art; img.alt = ''; img.width = 96; img.height = 96; img.loading = 'lazy'; img.decoding = 'async';
-    body.appendChild(el('span', 'jf-pod-label', 'ポッドキャスト')); body.appendChild(el('strong', null, 'ジュウジュツニワカ')); body.appendChild(el('span', 'jf-pod-sub', 'あした道場で話したくなる話'));
-    links.appendChild(out('Spotify', SHOW.spotify)); links.appendChild(out('Apple Podcast', SHOW.apple)); links.appendChild(out('Amazon Music', SHOW.amazon));
-    body.appendChild(links); box.appendChild(img); box.appendChild(body); main.appendChild(box);
+  var feedState = 0;
+  function mergeFeed(found) {
+    Object.keys(found).forEach(function (p) {
+      var have = EPISODES[p] || (EPISODES[p] = []);
+      found[p].forEach(function (x) { if (!have.some(function (h) { return h[0] === x[0]; })) have.push(x); });
+      have.sort(function (a, b) { return (parseInt(a[0].slice(1), 10) || 0) - (parseInt(b[0].slice(1), 10) || 0); });
+    });
+  }
+  function loadFeed() {
+    if (feedState) return;
+    feedState = 1;
+    try { var saved = JSON.parse(localStorage.getItem('jf-feed') || 'null'); if (saved && Date.now() - saved.at < 6 * 3600 * 1000) { mergeFeed(saved.found); setTimeout(apply, 0); return; } } catch (e) {}
+    var text = function (u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); }); };
+    Promise.all([text(SHOW.rss), text(SHOW.lookup).catch(function () { return '{}'; })]).then(function (r) {
+      var apple = {}, found = {};
+      try { (JSON.parse(r[1]).results || []).forEach(function (x) { if (x.trackName && x.trackId) apple[x.trackName.trim()] = SHOW.apple + '?i=' + x.trackId; }); } catch (e) {}
+      new DOMParser().parseFromString(r[0], 'text/xml').querySelectorAll('item').forEach(function (it) {
+        var t = txt(it.querySelector('title')), link = txt(it.querySelector('link'));
+        if (!t || !link) return;
+        Object.keys(PEOPLE).forEach(function (name) { if (t.indexOf(name) >= 0) (found[PEOPLE[name]] = found[PEOPLE[name]] || []).push([t, link, apple[t] || SHOW.apple, SHOW.amazon]); });
+      });
+      mergeFeed(found);
+      try { localStorage.setItem('jf-feed', JSON.stringify({ at: Date.now(), found: found })); } catch (e) {}
+      apply();
+    }).catch(function () {});
   }
   function episodes(c, path) {
     var eps = EPISODES[path], box = c.querySelector(':scope > .jf-ep');
     if (!eps) { if (box) box.remove(); return; }
-    if (box && box.getAttribute('data-path') === path) return;
+    var sig = path + '|' + eps.length;
+    if (box && box.getAttribute('data-path') === sig) return;
     if (box) box.remove();
-    box = el('div', 'jf-ep'); box.setAttribute('data-path', path);
+    box = el('div', 'jf-ep'); box.setAttribute('data-path', sig);
     box.appendChild(el('span', 'jf-pod-label', 'ポッドキャストで聴く'));
     eps.forEach(function (x) {
       var row = el('p'); row.appendChild(el('strong', null, x[0]));
-      var ls = el('span', 'jf-pod-links'); ls.appendChild(out('Spotify', x[1])); ls.appendChild(out('Apple Podcast', x[2])); row.appendChild(ls);
+      var ls = el('span', 'jf-pod-links'); ls.appendChild(out('Spotify', x[1])); ls.appendChild(out('Apple Podcast', x[2])); ls.appendChild(out('Amazon Music', x[3] || SHOW.amazon)); row.appendChild(ls);
       box.appendChild(row);
     });
     c.appendChild(box);
@@ -369,8 +390,7 @@
       else if (src && el.classList.contains('notion-list')) set(el, 'data-jf-src', '1');
       prev = el;
     });
-    var pod = document.querySelector('.jf-pod');
-    if (top && main) podCard(main); else if (pod) pod.remove();
+    if (mode === 'people' || mode === 'person') loadFeed();
     // 帯の色のページ: 説明の行に、ヘッドラインと同じ帯の絵を付ける
     if (mode === 'belts' && main) main.querySelectorAll(':scope > ul.notion-list').forEach(function (u, i) { set(u, 'data-jf-beltrow', String(i + 1)); });
     var day = document.querySelector('.jf-day');
