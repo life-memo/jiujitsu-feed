@@ -315,6 +315,7 @@
     c.appendChild(box);
   }
 
+  var tabPath = null;
   function apply() {
     var root = document.querySelector('.notion.page');
     if (!root) return;
@@ -323,6 +324,12 @@
     var now = new Date(), today = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate();
     var path = location.pathname.replace(/\/$/, '') || '/';
     document.querySelectorAll('.jf-tabs a').forEach(function (a) { set(a, 'aria-current', a.getAttribute('href') === path ? 'page' : null); });
+    // スマホのタブは横にスクロールできる。ページが替わったら、いまのタブが見える位置まで寄せる
+    if (tabPath !== path) {
+      tabPath = path;
+      var tin = document.querySelector('.jf-tabs-in'), cur = tin && tin.querySelector('a[aria-current="page"]');
+      if (tin) tin.scrollLeft = cur && cur.offsetParent ? Math.max(0, cur.offsetLeft - (tin.clientWidth - cur.offsetWidth) / 2) : 0;
+    }
     document.querySelectorAll('.notion-collection').forEach(function (c, ci) {
       var recs = top && ci > 0, last = null, group = 0;
       set(c, 'data-jf-recs', recs ? '1' : null);
