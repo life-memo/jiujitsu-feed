@@ -259,3 +259,13 @@ html .page-_top .contents > .notion-collection[data-jf-date]::before { top: 32px
   html .page-_top .contents > .notion-collection ~ .notion-h2 { margin-top: 34px; }
   html .page-_top .contents > .notion-collection[data-jf-date]::before { top: 36px; }
 }
+
+/* v11: タブは中央ぞろえ。スマホは5つを横幅いっぱいに等分(アーカイブなどはPCだけ)。区切りの線はなし。コピーライトは右ぞろえ */
+html .jf-tabs-in { gap: 0; padding-inline: 8px; }
+html .jf-tabs a { flex: 1 1 0; min-width: 0; padding-inline: 4px; }
+html .jf-tabs .jf-gap { display: none !important; }
+html .jf-legal { text-align: right; }
+@media (min-width: 1000px) {
+  html .jf-tabs-in { justify-content: center; gap: 4px; }
+  html .jf-tabs a { flex: none; min-width: 92px; padding-inline: 10px; }
+}
