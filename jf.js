@@ -7,6 +7,13 @@
   document.body.insertAdjacentHTML('beforeend', '<div class="jf-chrome">' + "<nav class=\"jf-tabs\" aria-label=\"カテゴリー\"><div class=\"jf-tabs-in\">\n<a href=\"/\">トップ</a>\n<a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a>\n<a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a>\n<a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a>\n<a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a>\n<span class=\"jf-gap\"></span>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a>\n<a class=\"jf-extra\" href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a>\n</div></nav>\n<button type=\"button\" class=\"jf-menu-btn\" aria-label=\"メニュー\" aria-expanded=\"false\" aria-controls=\"jf-drawer\"><i aria-hidden=\"true\"><span></span><span></span><span></span></i></button>\n<div class=\"jf-shade\"></div>\n<nav class=\"jf-drawer\" id=\"jf-drawer\" aria-label=\"メニュー\">\n<h2>ニュース</h2>\n<ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a></li>\n<li><a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a></li>\n<li><a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a></li>\n<li><a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n</ul>\n<h2>このサイトについて</h2>\n<ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n</ul>\n</nav>\n<footer class=\"jf-foot\"><div class=\"jf-foot-in\">\n<div class=\"jf-brand\"><strong>ジュウジュツフィード</strong><span>あした道場で話したくなるニュース。</span>\n<span class=\"jf-icons\">\n<a href=\"https://open.spotify.com/show/54049CgarXju0SngOoZ8Zn\" target=\"_blank\" rel=\"noopener\" aria-label=\"Spotifyで聴く\" title=\"Spotify\"><img src=\"https://life-memo.github.io/jiujitsu-feed/icons/spotify.png\" width=\"24\" height=\"24\" alt=\"\"></a>\n<a href=\"https://podcasts.apple.com/jp/podcast/id1853188871\" target=\"_blank\" rel=\"noopener\" aria-label=\"Apple Podcastで聴く\" title=\"Apple Podcast\"><img src=\"https://life-memo.github.io/jiujitsu-feed/icons/apple.png\" width=\"24\" height=\"24\" alt=\"\"></a>\n<a href=\"https://music.amazon.co.jp/search/%E3%82%B8%E3%83%A5%E3%82%A6%E3%82%B8%E3%83%A5%E3%83%84%E3%83%8B%E3%83%AF%E3%82%AB\" target=\"_blank\" rel=\"noopener\" aria-label=\"Amazon Musicで聴く\" title=\"Amazon Music\"><img src=\"https://life-memo.github.io/jiujitsu-feed/icons/amazon.png\" width=\"24\" height=\"24\" alt=\"\"></a>\n</span></div>\n<div class=\"jf-cols\">\n<nav aria-label=\"ニュース\"><h2>ニュース</h2><ul>\n<li><a href=\"/\">今日のヘッドライン</a></li>\n<li><a href=\"/3f4a6fb1972b8111b35acde92edb95c6\">試合</a></li>\n<li><a href=\"/3f4a6fb1972b81acafb0c003a41de503\">動向</a></li>\n<li><a href=\"/3f4a6fb1972b81278c42ca7be73c9d33\">運営</a></li>\n<li><a href=\"/3f4a6fb1972b81d5967bc73bcd7a5e0c\">文化</a></li>\n<li><a href=\"/3f4a6fb1972b8180ae98e5da079356b7\">アーカイブ</a></li>\n<li><a href=\"/3f4a6fb1972b81ef88f3f81eb2192323\">人物から探す</a></li>\n</ul></nav>\n<nav aria-label=\"このサイトについて\"><h2>このサイトについて</h2><ul>\n<li><a href=\"/3f4a6fb1972b814197a3c91977d78b35\">運用方針</a></li>\n<li><a href=\"/3f4a6fb1972b81bbbd91efa7948132e5\">帯の色について</a></li>\n<li><a href=\"/3f4a6fb1972b815da4cad0cf18063583\">カテゴリーについて</a></li>\n</ul></nav>\n</div>\n<p class=\"jf-legal\">© 2026 ジュウジュツフィード</p>\n</div></footer>\n" + '</div>');
   // 人物の名前 → その人物のページ。Notionの「人物」に足したら、ここにも1行足す
   var PEOPLE = {"ゴードン・ライアン": "/3f4a6fb1972b81099802c4a490bd8aaf", "マイキー・ムスメシ": "/3f4a6fb1972b81acaae9de24d8e7104e", "ジョン・ダナハー": "/3f4a6fb1972b81298fd0cb39c97db5b7", "ヒクソン・グレイシー": "/3f4a6fb1972b81c292fee369024358f6", "クラウディア・ガデーリャ": "/3f4a6fb1972b81af9256ed72083093ea", "ヴィクトル・ウーゴ": "/3f4a6fb1972b817bbd39d9f0b08d5343", "ヘレナ・クレバー": "/3f4a6fb1972b814bb861c4e4f47145e1", "ギルバート・バーンズ": "/3f4a6fb1972b81a2a617ca519b492599", "ガブリエル・アルメイダ": "/3f4a6fb1972b812f8adef03d2524b8b1", "サラ・ガウヴァオン": "/3f4a6fb1972b81639c7fcdb2d25a71c3"};
+  // ポッドキャストで取り上げた人物 → その回。回が増えたら、ここに1行足す(人物のページのアドレス: [回の題, Spotifyのリンク, Apple Podcastのリンク])
+  var SHOW = { art: 'https://is1-ssl.mzstatic.com/image/thumb/Podcasts211/v4/b4/41/10/b44110f5-e8a0-6d21-4ea7-0cdd03ad4736/mza_4669245238295162244.jpg/240x240bb.jpg', spotify: 'https://open.spotify.com/show/54049CgarXju0SngOoZ8Zn', apple: 'https://podcasts.apple.com/jp/podcast/id1853188871', amazon: 'https://music.amazon.co.jp/search/%E3%82%B8%E3%83%A5%E3%82%A6%E3%82%B8%E3%83%A5%E3%83%84%E3%83%8B%E3%83%AF%E3%82%AB' };
+  var EPISODES = {
+    '/3f4a6fb1972b81099802c4a490bd8aaf': [['#1 ゴードン・ライアン：最強はなぜ最強か', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/1-e3aqh7f', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000736843508']],
+    '/3f4a6fb1972b81acaae9de24d8e7104e': [['#12 マイキー・ムスメシ（前編）：世界一の技術オタク', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/12-e3dqp3k', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000750780712'], ['#13 マイキー・ムスメシ（後編）：世界一の技術オタク', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/13-e3dqpbl', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000752077507']],
+    '/3f4a6fb1972b81c292fee369024358f6': [['#25 ヒクソン・グレイシー：不敗の神話、一族最強の男', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/25-e3ig1f9', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000770319415']]
+  };
   var BELTS = '3f4a6fb1972b81bbbd91efa7948132e5', ARCHIVE = '3f4a6fb1972b8180ae98e5da079356b7', PEOPLE_PAGE = '3f4a6fb1972b81ef88f3f81eb2192323', PEOPLE_DB = 'f8ceb4420ed948a6b63df206d4b9ea00', NEWS_DB = 'a956fb4cc7df46d69ac41768e5195c5e';
   var WD = ['日', '月', '火', '水', '木', '金', '土'];
   var ROWS = [['あ', 'アイウエオヴ'], ['か', 'カキクケコガギグゲゴ'], ['さ', 'サシスセソザジズゼゾ'], ['た', 'タチツテトダヂヅデド'], ['な', 'ナニヌネノ'], ['は', 'ハヒフヘホバビブベボパピプペポ'], ['ま', 'マミムメモ'], ['や', 'ヤユヨ'], ['ら', 'ラリルレロ'], ['わ', 'ワヲン']];
@@ -191,44 +198,100 @@
     }).catch(function () {});
   }
 
-  // ---- アーカイブのカレンダー ----
-  // ニュースのある日だけ押せる。押すと、その日が入っているページに切り替えて、その日の見出しまで移る。
-  var calOpen = false, calMonth = null;
-  function calendar(c, days, page, path) {
-    var box = c.querySelector(':scope > .jf-cal');
-    if (!days.length) { if (box) box.remove(); return; }
+  var out = function (text, href) { var a = el('a', null, text); a.href = href; a.target = '_blank'; a.rel = 'noopener'; return a; };
+  // ---- アーカイブの絞り込み(キーワード・日付・帯の色) ----
+  var BELT_NAMES = ['黒帯', '茶帯', '紫帯', '青帯', '白帯'];
+  var fQ = '', fBelt = 0, fOpen = '', calMonth = null;
+  var filtering = function () { return !!(fBelt || fQ.trim()); };
+  function filterBar(c, days, page, path, hits) {
+    var box = c.querySelector(':scope > .jf-filter');
+    if (!box) {
+      box = el('div', 'jf-filter');
+      var row = el('div', 'jf-filter-row'), q = el('input');
+      q.type = 'search'; q.placeholder = 'キーワードで探す'; q.setAttribute('aria-label', 'キーワードで探す'); q.value = fQ;
+      q.addEventListener('input', function () { fQ = q.value; pageNow[path] = 1; apply(); });
+      row.appendChild(q);
+      [['cal', '日付'], ['belt', '帯の色']].forEach(function (x) {
+        var b = el('button', 'jf-filter-btn', x[1]); b.type = 'button'; b.setAttribute('data-k', x[0]);
+        b.addEventListener('click', function () { fOpen = fOpen === x[0] ? '' : x[0]; apply(); });
+        row.appendChild(b);
+      });
+      box.appendChild(row); box.appendChild(el('div', 'jf-filter-panel')); box.appendChild(el('p', 'jf-filter-note'));
+      c.appendChild(box);
+    }
     var ym = function (d) { var p = d.split('/').map(Number); return p[0] * 12 + p[1] - 1; };
-    var newest = ym(days[0]), oldest = ym(days[days.length - 1]);
-    if (calMonth == null || calMonth > newest || calMonth < oldest) calMonth = ym(days[Math.min((page - 1) * DAYS_PER_PAGE, days.length - 1)]);
-    var sig = [days.length, days[0], page, calOpen, calMonth].join('|');
-    if (box && box.getAttribute('data-sig') === sig) return;
-    if (!box) { box = el('div', 'jf-cal'); c.appendChild(box); }
+    var newest = days.length ? ym(days[0]) : 0, oldest = days.length ? ym(days[days.length - 1]) : 0;
+    if (calMonth == null || calMonth > newest || calMonth < oldest) calMonth = newest;
+    var sig = [days.length, days[0], page, fOpen, calMonth, fBelt, fQ, hits].join('|');
+    if (box.getAttribute('data-sig') === sig) return;
     box.setAttribute('data-sig', sig);
-    box.textContent = '';
-    var redo = function () { box.setAttribute('data-sig', ''); apply(); };
-    var tg = el('button', 'jf-cal-toggle', calOpen ? '閉じる' : '日付から選ぶ'); tg.type = 'button'; tg.setAttribute('aria-expanded', calOpen ? 'true' : 'false');
-    tg.addEventListener('click', function () { calOpen = !calOpen; redo(); });
-    box.appendChild(tg);
-    if (!calOpen) return;
-    var y = Math.floor(calMonth / 12), m = calMonth % 12, panel = el('div', 'jf-cal-panel'), head = el('div', 'jf-cal-head'), grid = el('div', 'jf-cal-grid');
-    var step = function (label, to, aria) { var b = el('button', null, label); b.type = 'button'; b.setAttribute('aria-label', aria); b.disabled = to < oldest || to > newest; b.addEventListener('click', function () { calMonth = to; redo(); }); return b; };
+    var inp = box.querySelector('input'); if (inp.value !== fQ) inp.value = fQ;
+    box.querySelectorAll('.jf-filter-btn').forEach(function (b) {
+      var k = b.getAttribute('data-k');
+      b.setAttribute('aria-expanded', fOpen === k ? 'true' : 'false');
+      if (k === 'belt') { b.textContent = fBelt ? BELT_NAMES[fBelt - 1] : '帯の色'; set(b, 'data-on', fBelt ? '1' : null); }
+    });
+    var note = box.querySelector('.jf-filter-note'); note.textContent = '';
+    if (filtering()) {
+      note.appendChild(document.createTextNode(hits ? hits + '本のニュースが見つかりました。' : '当てはまるニュースがありません。'));
+      var clr = el('button', null, '絞り込みをやめる'); clr.type = 'button';
+      clr.addEventListener('click', function () { fQ = ''; fBelt = 0; fOpen = ''; pageNow[path] = 1; apply(); });
+      note.appendChild(clr);
+    }
+    var panel = box.querySelector('.jf-filter-panel'); panel.textContent = ''; set(panel, 'data-k', fOpen || null);
+    if (fOpen === 'belt') {
+      BELT_NAMES.forEach(function (name, i) {
+        var b = el('button', 'jf-belt-chip', name); b.type = 'button'; b.setAttribute('data-rank', String(i + 1));
+        if (fBelt === i + 1) b.setAttribute('aria-pressed', 'true');
+        b.addEventListener('click', function () { fBelt = fBelt === i + 1 ? 0 : i + 1; fOpen = ''; pageNow[path] = 1; apply(); });
+        panel.appendChild(b);
+      });
+    }
+    if (fOpen !== 'cal' || !days.length) return;
+    // カレンダー: ニュースのある日だけ押せる。押すと、その日が入っているページに切り替えて、その日の見出しまで移る
+    var y = Math.floor(calMonth / 12), m = calMonth % 12, head = el('div', 'jf-cal-head'), grid = el('div', 'jf-cal-grid');
+    var step = function (label, to, aria) { var b = el('button', null, label); b.type = 'button'; b.setAttribute('aria-label', aria); b.disabled = to < oldest || to > newest; b.addEventListener('click', function () { calMonth = to; apply(); }); return b; };
     head.appendChild(step('←', calMonth - 1, '前の月')); head.appendChild(el('strong', null, y + '年' + (m + 1) + '月')); head.appendChild(step('→', calMonth + 1, '次の月'));
     WD.forEach(function (w) { grid.appendChild(el('span', 'jf-cal-wd', w)); });
     for (var i = 0, lead = new Date(y, m, 1).getDay(); i < lead; i++) grid.appendChild(el('span'));
-    var shown = days.slice((page - 1) * DAYS_PER_PAGE, page * DAYS_PER_PAGE);
+    var shown = filtering() ? [] : days.slice((page - 1) * DAYS_PER_PAGE, page * DAYS_PER_PAGE);
     for (var d = 1, n = new Date(y, m + 1, 0).getDate(); d <= n; d++) (function (d) {
       var key = y + '/' + (m + 1) + '/' + d, at = days.indexOf(key);
       if (at < 0) { grid.appendChild(el('span', 'jf-cal-none', String(d))); return; }
       var b = el('button', shown.indexOf(key) >= 0 ? 'jf-cal-on' : null, String(d)); b.type = 'button'; b.setAttribute('aria-label', (m + 1) + '月' + d + '日のニュース');
       b.addEventListener('click', function () {
-        pageNow[path] = Math.floor(at / DAYS_PER_PAGE) + 1; calOpen = false; redo();
+        fQ = ''; fBelt = 0; fOpen = ''; pageNow[path] = Math.floor(at / DAYS_PER_PAGE) + 1; apply();
         var hit = null;
         c.querySelectorAll('a.notion-list-item[data-jf-first]').forEach(function (a) { var x = a.querySelector('.notion-property-date-item'); if (x && x.textContent.trim() === key) hit = a; });
         if (hit) window.scrollTo(0, hit.getBoundingClientRect().top + window.pageYOffset - 170);
       });
       grid.appendChild(b);
     })(d);
-    panel.appendChild(head); panel.appendChild(grid); box.appendChild(panel);
+    panel.appendChild(head); panel.appendChild(grid);
+  }
+  // ---- ポッドキャスト ----
+  // トップ: おすすめの下に番組の案内。人物のページ: その人物を取り上げた回へのリンク
+  function podCard(main) {
+    if (main.querySelector(':scope > .jf-pod')) return;
+    var box = el('aside', 'jf-pod'), img = el('img'), body = el('div'), links = el('p', 'jf-pod-links');
+    img.src = SHOW.art; img.alt = ''; img.width = 96; img.height = 96; img.loading = 'lazy'; img.decoding = 'async';
+    body.appendChild(el('span', 'jf-pod-label', 'ポッドキャスト')); body.appendChild(el('strong', null, 'ジュウジュツニワカ')); body.appendChild(el('span', 'jf-pod-sub', 'あした道場で話したくなる話'));
+    links.appendChild(out('Spotify', SHOW.spotify)); links.appendChild(out('Apple Podcast', SHOW.apple)); links.appendChild(out('Amazon Music', SHOW.amazon));
+    body.appendChild(links); box.appendChild(img); box.appendChild(body); main.appendChild(box);
+  }
+  function episodes(c, path) {
+    var eps = EPISODES[path], box = c.querySelector(':scope > .jf-ep');
+    if (!eps) { if (box) box.remove(); return; }
+    if (box && box.getAttribute('data-path') === path) return;
+    if (box) box.remove();
+    box = el('div', 'jf-ep'); box.setAttribute('data-path', path);
+    box.appendChild(el('span', 'jf-pod-label', 'ポッドキャストで聴く'));
+    eps.forEach(function (x) {
+      var row = el('p'); row.appendChild(el('strong', null, x[0]));
+      var ls = el('span', 'jf-pod-links'); ls.appendChild(out('Spotify', x[1])); ls.appendChild(out('Apple Podcast', x[2])); row.appendChild(ls);
+      box.appendChild(row);
+    });
+    c.appendChild(box);
   }
 
   function apply() {
@@ -245,14 +308,27 @@
       // トップの見出しの右に出す日付(いちばん新しい日)
       var d0 = top && !recs ? c.querySelector('a.notion-list-item .notion-property-date-item') : null, p0 = d0 ? d0.textContent.trim().split('/') : [];
       set(c, 'data-jf-date', p0.length === 3 ? p0[0] + '年' + Number(p0[1]) + '月' + Number(p0[2]) + '日' : null);
-      var paged = mode === 'list' || mode === 'person', items = c.querySelectorAll('a.notion-list-item'), arch = mode === 'archive', days = [];
-      // アーカイブは3日分ずつ。日付の並びを先に数えておく
-      if (arch) items.forEach(function (a) { var d = a.querySelector('.notion-property-date-item'), t = d ? d.textContent.trim() : ''; if (t && days[days.length - 1] !== t) days.push(t); });
-      var pages = paged ? Math.ceil(items.length / PER_PAGE) : arch ? Math.ceil(days.length / DAYS_PER_PAGE) : 0, page = Math.min(Math.max(pageNow[path] || 1, 1), pages || 1);
+      var paged = mode === 'list' || mode === 'person', items = c.querySelectorAll('a.notion-list-item'), arch = mode === 'archive', days = [], pageOf = [], hits = 0;
+      // アーカイブ: ふだんは3日分ずつ。絞り込んでいるときは、当てはまる記事を10本ずつ
+      if (arch) {
+        var words = fQ.toLowerCase().split(/[\s\u3000]+/).filter(Boolean), on = filtering();
+        items.forEach(function (a, i) {
+          var d = a.querySelector('.notion-property-date-item'), t = d ? d.textContent.trim() : '', n = a.querySelector('.notion-property-number');
+          if (t && days[days.length - 1] !== t) days.push(t);
+          if (!on) { pageOf[i] = Math.ceil(days.length / DAYS_PER_PAGE); return; }
+          var text = a.textContent.toLowerCase(), ok = (!fBelt || (n && n.textContent.trim() === String(fBelt))) && words.every(function (w) { return text.indexOf(w) >= 0; });
+          pageOf[i] = ok ? Math.ceil(++hits / PER_PAGE) : 0;
+        });
+      }
+      var pages = paged ? Math.ceil(items.length / PER_PAGE) : arch ? (filtering() ? Math.ceil(hits / PER_PAGE) : Math.ceil(days.length / DAYS_PER_PAGE)) : 0, page = Math.min(Math.max(pageNow[path] || 1, 1), pages || 1);
       pager(c, pages, page, path);
-      if (arch) calendar(c, days, page, path);
+      var stale = c.querySelector(':scope > .jf-filter'), ep = c.querySelector(':scope > .jf-ep');
+      if (arch) filterBar(c, days, page, path, hits); else if (stale) stale.remove();
+      if (mode === 'person' && ci === 0) episodes(c, path); else if (ep) ep.remove();
       items.forEach(function (a, idx) {
         set(a, 'data-jf-off', paged && Math.floor(idx / PER_PAGE) + 1 !== page ? '1' : null);
+        set(a, 'data-jf-pod', mode === 'people' && EPISODES[(a.getAttribute('href') || '').split('?')[0]] ? '1' : null);
+        if (arch && pageOf[idx] !== page) { set(a, 'data-jf-off', '1'); set(a, 'data-jf-first', null); set(a, 'data-day', null); return; }
         var d = a.querySelector('.notion-property-date-item'), n = a.querySelector('.notion-property-number');
         var date = d ? d.textContent.trim() : '', key, first;
         if (mode === 'people') {
@@ -269,7 +345,6 @@
         }
         first = date !== last;
         if (first) group++;
-        if (arch) set(a, 'data-jf-off', Math.ceil(group / DAYS_PER_PAGE) !== page ? '1' : null);
         var belted = top || mode === 'archive';
         set(a, 'data-rank', belted && n ? n.textContent.trim() : null);
         set(a, 'data-jf-belt', belted ? '1' : null);
@@ -294,6 +369,8 @@
       else if (src && el.classList.contains('notion-list')) set(el, 'data-jf-src', '1');
       prev = el;
     });
+    var pod = document.querySelector('.jf-pod');
+    if (top && main) podCard(main); else if (pod) pod.remove();
     // 帯の色のページ: 説明の行に、ヘッドラインと同じ帯の絵を付ける
     if (mode === 'belts' && main) main.querySelectorAll(':scope > ul.notion-list').forEach(function (u, i) { set(u, 'data-jf-beltrow', String(i + 1)); });
     var day = document.querySelector('.jf-day');

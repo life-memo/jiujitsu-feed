@@ -338,12 +338,29 @@ html .jf-drawer ul, html .jf-drawer ul:first-child { padding: 6px 0 14px; border
 html .jf-pager { align-items: center; }
 html .jf-pager span { color: var(--jf-muted); font-size: 0.86rem; }
 
-/* アーカイブ: 日付から選ぶカレンダー(一覧の上に出す) */
-html [data-jf-page="archive"] .notion-collection { display: flex; flex-direction: column; }
-html .jf-cal { order: -1; margin-top: 22px; }
-html .jf-cal-toggle { height: 40px; padding: 0 18px; border: 1px solid var(--jf-line); border-radius: 20px; background: #fff; font: inherit; font-size: 0.84rem; letter-spacing: 0.04em; color: var(--jf-text); cursor: pointer; transition: border-color 0.3s; }
-html .jf-cal-toggle:hover { border-color: var(--jf-text); }
-html .jf-cal-panel { max-width: 340px; margin-top: 12px; padding: 16px; border: 1px solid var(--jf-line); border-radius: 14px; background: #fff; }
+/* アーカイブ: 絞り込みの列(キーワード・日付・帯の色)。一覧の上に出す */
+html [data-jf-page="archive"] .notion-collection, html [data-jf-page="person"] .notion-collection { display: flex; flex-direction: column; }
+html .jf-filter { order: -1; margin-top: 22px; }
+html .jf-filter-row { display: flex; align-items: center; gap: 8px; }
+html .jf-filter input { flex: 1 1 0; min-width: 0; height: 42px; margin: 0; padding: 0 16px; border: 1px solid var(--jf-line); border-radius: 21px; background: #fff; font: inherit; font-size: 16px; color: var(--jf-text); -webkit-appearance: none; appearance: none; outline: none; transition: border-color 0.3s; }
+html .jf-filter input:focus { border-color: var(--jf-text); }
+html .jf-filter input::placeholder { color: var(--jf-muted); font-size: 0.86rem; }
+html .jf-filter-btn { flex: none; height: 42px; padding: 0 16px; border: 1px solid var(--jf-line); border-radius: 21px; background: #fff; font: inherit; font-size: 0.84rem; letter-spacing: 0.04em; white-space: nowrap; color: var(--jf-text); cursor: pointer; transition: border-color 0.3s, background 0.3s, color 0.3s; }
+html .jf-filter-btn:hover, html .jf-filter-btn[aria-expanded="true"] { border-color: var(--jf-text); }
+html .jf-filter-btn[data-on] { background: var(--jf-text); border-color: var(--jf-text); color: #fff; }
+html .jf-filter-panel:empty, html .jf-filter-note:empty { display: none; }
+html .jf-filter-panel[data-k="cal"] { max-width: 340px; margin: 12px 0 0 auto; padding: 16px; border: 1px solid var(--jf-line); border-radius: 14px; background: #fff; }
+html .jf-filter-panel[data-k="belt"] { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+html .jf-belt-chip { --c: #fff; position: relative; height: 40px; padding: 0 16px 0 36px; border: 1px solid var(--jf-line); border-radius: 20px; background: #fff; font: inherit; font-size: 0.84rem; color: var(--jf-text); cursor: pointer; transition: border-color 0.3s; }
+html .jf-belt-chip::before { content: ""; position: absolute; left: 13px; top: 50%; width: 14px; height: 14px; margin-top: -7px; border: 1px solid var(--jf-faint); border-radius: 50%; background: var(--c); }
+html .jf-belt-chip[data-rank="1"] { --c: #111; }
+html .jf-belt-chip[data-rank="2"] { --c: #8a5527; }
+html .jf-belt-chip[data-rank="3"] { --c: #7a3da8; }
+html .jf-belt-chip[data-rank="4"] { --c: #1f5fc4; }
+html .jf-belt-chip:hover, html .jf-belt-chip[aria-pressed="true"] { border-color: var(--jf-text); }
+html .jf-belt-chip[aria-pressed="true"] { box-shadow: 0 0 0 1px var(--jf-text); }
+html .jf-filter-note { margin: 14px 0 0; font-size: 0.8rem; color: var(--jf-muted); }
+html .jf-filter-note button { margin-left: 12px; padding: 0; border: 0; background: none; font: inherit; color: var(--jf-text); text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
 html .jf-cal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 html .jf-cal-head strong { font-size: 0.95rem; font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
 html .jf-cal-head button { width: 36px; height: 36px; padding: 0; border: 1px solid var(--jf-line); border-radius: 18px; background: #fff; font: inherit; color: var(--jf-text); cursor: pointer; }
@@ -366,3 +383,26 @@ html .contents > ul[data-jf-beltrow] li { margin: 0; padding: 0; font-size: 0.92
 html .contents > ul[data-jf-beltrow] li::before, html .contents > ul[data-jf-beltrow] li::marker { content: none; }
 html .contents > ul[data-jf-beltrow] b { font-size: 1.02rem; }
 html .contents > .notion-text a { color: var(--jf-text); text-decoration: underline; text-underline-offset: 4px; }
+
+/* v15: ポッドキャスト。トップのおすすめの下に番組の案内、人物のページにその回へのリンク、人物の一覧に印 */
+html .jf-pod { display: flex; align-items: center; gap: 16px; margin-top: 28px; padding: 16px; border: 1px solid var(--jf-line); border-radius: 14px; background: #fff; }
+html .jf-pod img { flex: none; width: 84px; height: 84px; border-radius: 10px; object-fit: cover; background: #f0f0f0; }
+html .jf-pod > div { display: flex; flex-direction: column; min-width: 0; }
+html .jf-pod strong { font-size: 1.02rem; line-height: 1.5; }
+html .jf-pod-label { font-size: 0.68rem; letter-spacing: 0.14em; color: var(--jf-muted); }
+html .jf-pod-sub { font-size: 0.76rem; line-height: 1.6; color: var(--jf-muted); }
+html .jf-pod-links { display: flex; flex-wrap: wrap; gap: 2px 14px; margin: 6px 0 0; }
+html .jf-pod-links a { font-size: 0.78rem !important; color: var(--jf-text) !important; text-decoration: underline; text-decoration-color: var(--jf-faint); text-underline-offset: 4px; transition: text-decoration-color 0.3s; }
+html .jf-pod-links a:hover { text-decoration-color: var(--jf-text); }
+html .jf-ep { order: -1; margin-bottom: 20px; padding: 16px 18px; border: 1px solid var(--jf-line); border-radius: 14px; background: #f6f6f6; }
+html .jf-ep p { margin: 8px 0 0; }
+html .jf-ep p + p { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--jf-line); }
+html .jf-ep strong { display: block; font-size: 0.95rem; line-height: 1.55; }
+html .jf-ep .jf-pod-links { margin-top: 4px; }
+html [data-jf-page="people"] a.notion-list-item[data-jf-pod] .notion-page-title-text::after { content: "ポッドキャスト"; display: inline-block; margin-left: 10px; padding: 1px 9px 1px 24px; border: 1px solid var(--jf-line); border-radius: 11px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23767676' stroke-width='2' stroke-linecap='round'%3E%3Crect x='9' y='3' width='6' height='11' rx='3'/%3E%3Cpath d='M5 11a7 7 0 0 0 14 0M12 18v3'/%3E%3C/svg%3E") 8px center / 12px no-repeat; font-size: 0.66rem; font-weight: 400; letter-spacing: 0.04em; line-height: 1.7; color: var(--jf-muted); vertical-align: 2px; white-space: nowrap; }
+@media (min-width: 1000px) {
+  html .page-_top main.contents { grid-template-rows: auto auto auto 1fr; }
+  html .page-_top .contents > .notion-collection:not([data-jf-recs]) { grid-row: 1 / span 4; }
+  html .page-_top .contents > .jf-pod { grid-column: 2; grid-row: 4; margin-top: 22px; }
+  html .jf-pod img { width: 72px; height: 72px; }
+}
