@@ -125,8 +125,8 @@
     while ((n = w.nextNode())) nodes.push(n);
     nodes.forEach(scan);
   }
-  // 本文に出てくる大会の名前を「大会から探す」へのリンクにする(1つの記事で、同じ大会は最初の1回だけ)
-  var EVENT_WORDS = [['UFC BJJ', /UFC BJJ(?: \d+)?/], ['ADCC', /ADCC/], ['IBJJF', /IBJJF/], ['ONE', /ONE(?: Fight Night(?: \d+)?| Championship)?/], ['Polaris', /Polaris(?: \d+)?/], ['RAF', /RAF(?: \d+)?/]];
+  // 本文に出てくる大会の名前を「大会から探す」へのリンクにする(1つの記事で、同じ大会は最初の1回だけ。「UFC BJJ 12」の回の数字はリンクに含めない)
+  var EVENT_WORDS = [['UFC BJJ', /UFC BJJ/], ['ADCC', /ADCC/], ['IBJJF', /IBJJF/], ['ONE', /ONE/], ['Polaris', /Polaris/], ['RAF', /RAF/]];
   function linkEvents(nodes) {
     var used = {}, az = /[A-Za-z]/;
     var scan = function (tn) {
@@ -142,7 +142,7 @@
       used[tag] = 1;
       var rest = tn.splitText(at);
       rest.nodeValue = rest.nodeValue.slice(hit.length);
-      var a = document.createElement('a'); a.className = 'jf-who jf-ev'; a.href = '/' + EVENTS_PAGE + '#' + encodeURIComponent(tag); a.textContent = hit;
+      var a = document.createElement('a'); a.className = 'jf-who jf-ev'; a.setAttribute('data-jf-ev', tag); a.href = '/' + EVENTS_PAGE + '#' + encodeURIComponent(tag); a.textContent = hit;
       rest.parentNode.insertBefore(a, rest);
       scan(rest);
     };
@@ -214,7 +214,11 @@
       })).then(function (stories) {
         if (!alive() || shownKey !== key) return;
         list.textContent = '';
-        stories.forEach(function (s) { if (s && s.points.length) list.appendChild(storyCard(s, !plain && s.href === path)); });
+        stories.forEach(function (s) {
+          // 取り下げた記事(見出しが【削除】、または掲載日が別の日に変わったもの)は出さない
+          if (!s || !s.points.length || s.title.indexOf('【削除】') === 0 || (s !== me && s.date && s.date !== me.date)) return;
+          list.appendChild(storyCard(s, !plain && s.href === path));
+        });
         var mine = list.querySelector('.jf-picked');
         if (mine && mine !== list.firstElementChild) mine.scrollIntoView({ block: 'start' });
       });
@@ -363,7 +367,7 @@
 
   // ---- 大会から探す ----
   // 一覧の各記事に付いている大会の札を読み、札のボタンで絞り込む。札はNotionの「大会」の欄。
-  var evTag = '', evKey = null;
+  var evTag = '', evKey = null, evWant = null;
   var tagsOf = function (a) {
     var found = [];
     a.querySelectorAll('.notion-list-item-property, .notion-list-item-property *').forEach(function (x) {
@@ -490,11 +494,14 @@
         // 記事の中の大会名から来たときは、アドレスの # に付いた大会を選んだ状態で開く
         var hk = location.pathname + location.hash;
         if (hk !== evKey) {
+          var fresh = evKey === null, want = '';
           evKey = hk;
-          var want = ''; try { want = decodeURIComponent(location.hash.slice(1)); } catch (err) {}
-          evTag = EVENT_TAGS.indexOf(want) >= 0 ? want : '';
-          pageNow[path] = 1;
+          try { want = decodeURIComponent(location.hash.slice(1)); } catch (err) {}
+          if (EVENT_TAGS.indexOf(want) >= 0) { evTag = want; pageNow[path] = 1; }
+          else if (fresh) { evTag = ''; pageNow[path] = 1; }
         }
+        // 記事の中の大会名を押して来たときは、押した大会を選ぶ(アドレスの # が途中で落ちても効くように、押した時点で覚えておく)
+        if (evWant) { evTag = evWant; evWant = null; pageNow[path] = 1; }
         var counts = {};
         items.forEach(function (a, i) {
           var tags = tagsOf(a);
@@ -620,6 +627,7 @@
     if (!router) return;
     // 「前の日」「次の日」で移ったときは、その日のページを出すだけにする(「選んだニュース」の印は付けない)
     try { if (a.closest('.jf-daynav')) sessionStorage.setItem('jf-nopick', there); else sessionStorage.removeItem('jf-nopick'); } catch (err) {}
+    evWant = a.getAttribute('data-jf-ev') || null;
     e.preventDefault(); menu(false);
     if (there === here) { window.scrollTo(0, 0); return; }
     html.classList.add('jf-leaving');
