@@ -450,3 +450,17 @@ html .header__searchOpenBtn { display: none !important; }
 @media (max-width: 999px) {
   html .jf-story { scroll-margin-top: 14px; }
 }
+
+/* v22(試し): 黒帯の1本目に、自作の札を置く。黒い帯の布地に、人物の名前を大きく。右の赤は黒帯の赤い部分 */
+html .jf-art { container-type: inline-size; position: relative; display: block; aspect-ratio: 16 / 8; margin: 0 0 14px; border-radius: 9px; overflow: hidden; background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 6px), #111; color: #fff; }
+html .jf-art i { position: absolute; top: 0; bottom: 0; right: 8cqw; width: 11cqw; background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.12) 0 1px, transparent 1px 6px), #c8102e; }
+html .jf-art-tag { position: absolute; top: 5cqw; left: 6cqw; font-size: max(11px, 3.2cqw); font-weight: 500; letter-spacing: 0.14em; color: rgba(255, 255, 255, 0.72); }
+html .jf-art-name { position: absolute; left: 6cqw; bottom: 5cqw; right: 22cqw; display: flex; flex-direction: column; font-family: var(--jf-title); font-size: var(--stack); line-height: 1.08; letter-spacing: 0.02em; }
+html .jf-art-name b { font-weight: 400; white-space: nowrap; }
+@media (min-width: 1000px) {
+  html .jf-art { aspect-ratio: 16 / 5; margin-bottom: 18px; }
+  html .jf-art i { right: 5cqw; width: 7cqw; }
+  html .jf-art-tag { top: 3cqw; left: 4cqw; font-size: 13px; }
+  html .jf-art-name { left: 4cqw; bottom: 3cqw; right: 15cqw; flex-direction: row; font-size: var(--line); }
+  html .jf-art-name b + b::before { content: "・"; }
+}

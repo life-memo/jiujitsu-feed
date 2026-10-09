@@ -314,6 +314,31 @@
     c.appendChild(box);
   }
 
+  // ---- 黒帯(その日の1本目)の絵 ----
+  // 写真は使わず、人物の名前を大きく組んだ自作の札をカードの上に置く。名前は見出しから拾う(登録済みの人物の、フルネームか姓)。
+  // 人物が見つからないときは、見出しの最初のひと区切りを使う。
+  function leadArt(a, on, date) {
+    var art = a.querySelector(':scope > .jf-art');
+    if (!on) { if (art) art.remove(); return; }
+    var title = txt(a.querySelector('.notion-page-title-text')), sig = date + '|' + title;
+    if (art && art.getAttribute('data-sig') === sig) return;
+    if (art) art.remove();
+    var who = '', at = 1e9;
+    Object.keys(PEOPLE).forEach(function (name) {
+      var parts = name.split('・'), k = title.indexOf(name);
+      if (k < 0) k = title.indexOf(parts[parts.length - 1]);
+      if (k >= 0 && k < at) { at = k; who = name; }
+    });
+    var lines = who ? who.split('・') : [title.split(/[、。「 　]/)[0].slice(0, 10)];
+    var longest = lines.reduce(function (m, s) { return Math.max(m, s.length); }, 1), all = lines.join('・').length;
+    art = el('div', 'jf-art'); art.setAttribute('data-sig', sig); art.setAttribute('aria-hidden', 'true');
+    art.style.setProperty('--stack', Math.min(19, 74 / longest).toFixed(2) + 'cqw');
+    art.style.setProperty('--line', Math.min(11, 74 / all).toFixed(2) + 'cqw');
+    art.appendChild(el('span', 'jf-art-tag', '黒帯' + (date ? '　' + dayLabel(date) : '')));
+    var name = el('span', 'jf-art-name'); lines.forEach(function (s) { name.appendChild(el('b', null, s)); });
+    art.appendChild(name); art.appendChild(el('i'));
+    a.insertBefore(art, a.firstChild);
+  }
   var tabPath = null;
   function apply() {
     var root = document.querySelector('.notion.page');
@@ -379,6 +404,7 @@
         set(a, 'data-jf-old', top && group > 1 ? '1' : null);
         set(a, 'data-day', first && date ? (top && date === today ? '今日のヘッドライン' : dayLabel(date)) : null);
         set(a, 'data-jf-today', top && first ? '1' : null);
+        leadArt(a, top && first && group === 1, date);
         last = date;
       });
     });
