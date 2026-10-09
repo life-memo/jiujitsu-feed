@@ -332,7 +332,7 @@
     var lines = who ? who.split('・') : [title.split(/[、。「 　]/)[0].slice(0, 10)];
     var longest = lines.reduce(function (m, s) { return Math.max(m, s.length); }, 1), all = lines.join('・').length;
     art = el('div', 'jf-art'); art.setAttribute('data-sig', sig); art.setAttribute('aria-hidden', 'true');
-    art.style.setProperty('--stack', Math.min(19, 74 / longest).toFixed(2) + 'cqw');
+    art.style.setProperty('--stack', Math.min(15, 62 / longest).toFixed(2) + 'cqw');
     art.style.setProperty('--line', Math.min(11, 74 / all).toFixed(2) + 'cqw');
     art.appendChild(el('span', 'jf-art-tag', '黒帯' + (date ? '　' + dayLabel(date) : '')));
     var name = el('span', 'jf-art-name'); lines.forEach(function (s) { name.appendChild(el('b', null, s)); });
