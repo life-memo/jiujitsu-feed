@@ -241,3 +241,21 @@ html .contents > .notion-list-disc[data-jf-src] a:hover { color: var(--jf-text) 
 html .notion.page { min-height: 0 !important; }
 html body { min-height: 100vh; display: flex; flex-direction: column; }
 html body > .jf-chrome { margin-top: auto; }
+
+/* v10: カテゴリーと人物のページは10本ずつ、下にページ番号 */
+html a.notion-list-item[data-jf-off] { display: none !important; }
+html .jf-pager { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 28px; }
+html .jf-pager button { min-width: 40px; height: 40px; padding: 0 8px; border: 1px solid var(--jf-line); border-radius: 20px; background: #fff; font: inherit; font-size: 0.86rem; font-variant-numeric: tabular-nums; text-align: center; color: var(--jf-muted); cursor: pointer; transition: color 0.3s, border-color 0.3s; }
+html .jf-pager button:hover { color: var(--jf-text); border-color: var(--jf-text); }
+html .jf-pager button[aria-current="page"] { background: var(--jf-text); border-color: var(--jf-text); color: #fff; }
+
+/* v10: サイト名を大きく。見出しまわりのすき間の調整 */
+html .header .breadcrumb__title { font-size: clamp(1.4rem, 5.6vw, 1.75rem); line-height: 1; }
+html .titleSection .title { margin-top: 6px; }
+html [data-jf-page="article"] .titleSection .title { margin-top: 0; }
+html .page-_top a.notion-list-item[data-jf-first] { margin-top: 64px; }
+html .page-_top .contents > .notion-collection[data-jf-date]::before { top: 32px; }
+@media (min-width: 1000px) {
+  html .page-_top .contents > .notion-collection ~ .notion-h2 { margin-top: 34px; }
+  html .page-_top .contents > .notion-collection[data-jf-date]::before { top: 36px; }
+}

@@ -44,6 +44,23 @@
       nodes.forEach(scan);
     });
   }
+  // カテゴリーと人物のページは10本ずつ。11本以上あるときは、一覧の下に 1 2 3 のページ番号を出す
+  var PER_PAGE = 10, pageNow = {};
+  function pager(c, pages, page, path) {
+    var nav = c.querySelector(':scope > .jf-pager'), sig = pages + ':' + page;
+    if (pages < 2) { if (nav) nav.remove(); return; }
+    if (nav && nav.getAttribute('data-sig') === sig) return;
+    if (!nav) { nav = document.createElement('nav'); nav.className = 'jf-pager'; nav.setAttribute('aria-label', 'ページ'); c.appendChild(nav); }
+    nav.setAttribute('data-sig', sig);
+    nav.textContent = '';
+    for (var k = 1; k <= pages; k++) {
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = String(k);
+      b.setAttribute('aria-label', k + 'ページ目');
+      if (k === page) b.setAttribute('aria-current', 'page');
+      b.addEventListener('click', (function (k) { return function () { pageNow[path] = k; apply(); window.scrollTo(0, 0); }; })(k));
+      nav.appendChild(b);
+    }
+  }
   function apply() {
     var root = document.querySelector('.notion.page');
     if (!root) return;
@@ -58,7 +75,11 @@
       // トップの見出しの右に出す日付(いちばん新しい日)
       var d0 = top && !recs ? c.querySelector('a.notion-list-item .notion-property-date-item') : null, p0 = d0 ? d0.textContent.trim().split('/') : [];
       set(c, 'data-jf-date', p0.length === 3 ? p0[0] + '年' + Number(p0[1]) + '月' + Number(p0[2]) + '日' : null);
-      c.querySelectorAll('a.notion-list-item').forEach(function (a) {
+      var paged = mode === 'list' || mode === 'person', items = c.querySelectorAll('a.notion-list-item');
+      var pages = paged ? Math.ceil(items.length / PER_PAGE) : 0, page = Math.min(Math.max(pageNow[path] || 1, 1), pages || 1);
+      pager(c, pages, page, path);
+      items.forEach(function (a, idx) {
+        set(a, 'data-jf-off', paged && Math.floor(idx / PER_PAGE) + 1 !== page ? '1' : null);
         var d = a.querySelector('.notion-property-date-item'), n = a.querySelector('.notion-property-number');
         var date = d ? d.textContent.trim() : '', key, first;
         if (mode === 'people') {
