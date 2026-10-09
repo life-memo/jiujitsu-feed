@@ -318,6 +318,20 @@
     })(d);
     panel.appendChild(head); panel.appendChild(grid);
   }
+  // ---- タブのアイコン ----
+  // Wraptasの初期アイコンを、サイトのアイコン(黒地にJF)に差し替える。
+  var ICON = 'https://life-memo.github.io/jiujitsu-feed/icons/favicon.png?v=1';
+  var setIcon = function () {
+    var links = document.head.querySelectorAll('link[rel~="icon"], link[rel="apple-touch-icon"]'), ok = false;
+    links.forEach(function (l) { if (l.getAttribute('href') === ICON) ok = true; else l.remove(); });
+    if (ok) return;
+    ['icon', 'apple-touch-icon'].forEach(function (rel) {
+      var l = document.createElement('link'); l.rel = rel; l.href = ICON; if (rel === 'icon') l.type = 'image/png';
+      document.head.appendChild(l);
+    });
+  };
+  setIcon();
+
   // ---- 大会から探す ----
   // 一覧の各記事に付いている大会の札を読み、札のボタンで絞り込む。札はNotionの「大会」の欄。
   var evTag = '';
