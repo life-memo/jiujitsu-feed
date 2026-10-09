@@ -236,3 +236,8 @@ html .contents > .notion-list-disc[data-jf-src] li::before, html .contents > .no
 html .contents > .notion-list-disc[data-jf-src] a { color: var(--jf-muted) !important; font-size: inherit !important; text-decoration: underline; text-decoration-color: var(--jf-line); text-underline-offset: 4px; border: 0; transition: color 0.3s, text-decoration-color 0.3s; }
 html .contents > .notion-list-disc[data-jf-src] a::after { content: " ↗"; }
 html .contents > .notion-list-disc[data-jf-src] a:hover { color: var(--jf-text) !important; text-decoration-color: var(--jf-text); }
+
+/* v9: 本文と黒い帯のあいだが空きすぎないようにする(Wraptasは本文を画面の高さまで引き伸ばす)。短いページでは黒い帯を画面の下に付ける */
+html .notion.page { min-height: 0 !important; }
+html body { min-height: 100vh; display: flex; flex-direction: column; }
+html body > .jf-chrome { margin-top: auto; }
