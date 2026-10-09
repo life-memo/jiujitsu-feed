@@ -24,8 +24,8 @@
   }
   // 箇条書きの中の人物名を、その人物のページへのリンクにする(1本の記事で、同じ人は最初の1回だけ)
   function linkNames(main) {
-    if (main.getAttribute('data-jf-linked')) return;
-    main.setAttribute('data-jf-linked', '1');
+    if (main.getAttribute('data-jf-linked') === location.pathname) return;
+    main.setAttribute('data-jf-linked', location.pathname);
     var used = {}, names = Object.keys(PEOPLE);
     var scan = function (tn) {
       var t = tn.nodeValue, who = null, at = -1;
@@ -120,6 +120,14 @@
       prev = el;
     });
     if (mode === 'article' && main) linkNames(main);
+    // ページが替わったら、本文をふわっと出し直す(a と b を交互に付けると、そのたびにアニメーションがかかる)
+    if (main && (shownPath !== path || !main.getAttribute('data-jf-in'))) {
+      shownPath = path; fadeTurn = fadeTurn === 'a' ? 'b' : 'a';
+      main.setAttribute('data-jf-in', fadeTurn);
+      html.classList.remove('jf-leaving');
+      menu(false);
+    }
+    html.classList.add('jf-ready');
   }
   // 三本線のメニュー
   var html = document.documentElement, btn = document.querySelector('.jf-menu-btn'), shade = document.querySelector('.jf-shade');
@@ -127,7 +135,21 @@
   if (btn) btn.addEventListener('click', function () { menu(!html.classList.contains('jf-menu-open')); });
   if (shade) shade.addEventListener('click', function () { menu(false); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') menu(false); });
-  var t;
-  new MutationObserver(function () { clearTimeout(t); t = setTimeout(apply, 60); }).observe(document.body, { childList: true, subtree: true });
+  // サイト内のリンクは、ページを読み込み直さずに切り替える。切り替わるまで本文をふっと薄くする
+  var shownPath = null, fadeTurn = 'b', leaveTimer;
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest ? e.target.closest('a[href]') : null, href = a ? a.getAttribute('href') : '';
+    if (!a || a.target === '_blank' || href.charAt(0) !== '/' || href.charAt(1) === '/') return;
+    var mine = !!a.closest('.jf-chrome') || a.classList.contains('jf-who');
+    var here = location.pathname.replace(/\/$/, '') || '/', there = href.split(/[?#]/)[0].replace(/\/$/, '') || '/';
+    if (there === here) { if (mine) { e.preventDefault(); menu(false); window.scrollTo(0, 0); } return; }
+    var router = window.next && window.next.router;
+    if (mine && !router) return;
+    html.classList.add('jf-leaving');
+    clearTimeout(leaveTimer); leaveTimer = setTimeout(function () { html.classList.remove('jf-leaving'); }, 4000);
+    if (mine) { e.preventDefault(); menu(false); router.push(href); }
+  });
+  new MutationObserver(apply).observe(document.body, { childList: true, subtree: true });
   apply();
 })();

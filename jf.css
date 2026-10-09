@@ -269,3 +269,16 @@ html .jf-legal { text-align: right; }
   html .jf-tabs-in { justify-content: center; gap: 4px; }
   html .jf-tabs a { flex: none; min-width: 92px; padding-inline: 10px; }
 }
+
+/* v12: ページの切り替えをふわっと。読み込み中は本文を隠し、準備ができたら下からゆっくり出す */
+@keyframes jf-rise-a { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes jf-rise-b { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes jf-fallback { to { opacity: 1; } }
+html:not(.jf-ready) main.contents { opacity: 0; animation: jf-fallback 0.4s 3s forwards; }
+html main.contents[data-jf-in="a"] { animation: jf-rise-a 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+html main.contents[data-jf-in="b"] { animation: jf-rise-b 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+html.jf-leaving main.contents { opacity: 0 !important; transition: opacity 0.25s ease; animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  html main.contents[data-jf-in] { animation: none; }
+  html.jf-leaving main.contents { transition: none; }
+}
