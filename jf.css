@@ -464,3 +464,14 @@ html .jf-art-name b { font-weight: 400; white-space: nowrap; }
   html .jf-art-name { left: 4cqw; bottom: 3cqw; right: 15cqw; flex-direction: row; font-size: var(--line); }
   html .jf-art-name b + b::before { content: "・"; }
 }
+
+/* v23: 大会から探す。一覧の上に札のボタンを並べ、押した札の記事だけを出す */
+html .notion-collection[data-jf-events] { display: flex; flex-direction: column; }
+html .jf-events { order: -1; display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
+html .jf-event-chip { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px 0 16px; border: 1px solid var(--jf-line); border-radius: 20px; background: #fff; font: inherit; font-size: 0.86rem; font-weight: 500; letter-spacing: 0.02em; color: var(--jf-text); cursor: pointer; transition: border-color 0.3s, background 0.3s, color 0.3s; }
+html .jf-event-chip span { font-size: 0.72rem; font-weight: 400; font-variant-numeric: tabular-nums; color: var(--jf-muted); }
+html .jf-event-chip:hover { border-color: var(--jf-text); }
+html .jf-event-chip[aria-pressed="true"] { background: var(--jf-text); border-color: var(--jf-text); color: #fff; }
+html .jf-event-chip[aria-pressed="true"] span { color: rgba(255, 255, 255, 0.7); }
+html .jf-event-chip:disabled { color: var(--jf-faint); cursor: default; border-color: var(--jf-line); }
+html .jf-event-chip:disabled span { color: var(--jf-faint); }
