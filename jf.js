@@ -214,7 +214,7 @@
     try { if (dnum(me.date) > (Number(localStorage.getItem('jf-latest')) || 0)) localStorage.setItem('jf-latest', String(dnum(me.date))); } catch (e) {}
     box = el('div', 'jf-day'); box.setAttribute('data-path', path);
     var p = me.date.split('/').map(Number);
-    var h = el('h1', 'jf-day-title'); h.appendChild(el('span', null, p[0] + '年' + p[1] + '月' + p[2] + '日')); h.appendChild(document.createTextNode(p[1] + '月' + p[2] + '日のヘッドライン'));   // トップ(「今日のヘッドライン」)と見分けがつくように、今日の分でも日付で出す
+    var h = el('h1', 'jf-day-title'); h.appendChild(el('span', null, p[0] + '年')); h.appendChild(document.createTextNode(p[1] + '月' + p[2] + '日(' + WD[new Date(p[0], p[1] - 1, p[2]).getDay()] + ')のヘッドライン'));   // トップ(「今日のヘッドライン」)と見分けがつくように、今日の分でも日付で出す。上の小さい字は年だけ(日付を2回書かない)
     var list = el('ul', 'jf-stories'), nav = el('div', 'jf-daynav');
     box.appendChild(h); box.appendChild(list); box.appendChild(nav);
     list.appendChild(storyCard(me, !plain));
