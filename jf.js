@@ -94,8 +94,25 @@
     return cache[url];
   };
   var txt = function (el) { return el ? el.textContent.trim() : ''; };
+  // 記事の先頭に置いた画像(黒帯の記事に付けるトップ用の絵)のアドレスを返す。なければ空
+  function storyImg(main) {
+    var imgs = main.querySelectorAll('img');
+    for (var k = 0; k < imgs.length; k++) {
+      if (imgs[k].closest('.notion-collection-row-wrapper, .titleSection, ul, .notion-page-icon, .notion-collection, .jf-day')) continue;
+      var src = imgs[k].getAttribute('src') || imgs[k].getAttribute('data-src') || '';
+      if (!src || src.indexOf('data:') === 0) continue;
+      try { return new URL(src, location.origin).href; } catch (e) {}
+    }
+    return '';
+  }
+  var picture = function (cls, src) {
+    var d = el('div', cls), i = document.createElement('img');
+    i.src = src; i.alt = ''; i.decoding = 'async'; i.onerror = function () { d.remove(); };
+    d.appendChild(i);
+    return d;
+  };
   function readStory(main, href) {
-    var s = { href: href, title: txt(main.querySelector('h1.title')), cat: '', date: '', rank: '', points: [], srcs: [] }, src = false;
+    var s = { href: href, title: txt(main.querySelector('h1.title')), cat: '', date: '', rank: '', points: [], srcs: [], img: storyImg(main) }, src = false;
     main.querySelectorAll('.notion-collection-row-property').forEach(function (r) {
       var k = txt(r.querySelector('.notion-collection-column-title-body')), v = r.querySelector('.notion-collection-row-value');
       if (k === 'カテゴリー') s.cat = txt(v); else if (k === '掲載日') s.date = txt(r.querySelector('.notion-property-date-item')); else if (k === '並び順') s.rank = txt(v);
@@ -155,6 +172,8 @@
   function storyCard(s, picked) {
     var li = el('li', 'jf-story' + (picked ? ' jf-picked' : ''));
     if (s.rank) li.setAttribute('data-rank', s.rank);
+    // 黒帯の記事には、記事に付けた画像をいちばん上に出す
+    if (s.img && String(s.rank) === '1') li.appendChild(picture('jf-story-img', s.img));
     var meta = el('p', 'jf-story-meta', s.cat);
     li.appendChild(meta);
     li.appendChild(el('h2', null, s.title));
@@ -465,6 +484,22 @@
   // 写真は使わず、人物の名前を大きく組んだ自作の札をカードの上に置く。名前は見出しから拾う(登録済みの人物の、フルネームか姓)。
   // 人物が見つからないときは、見出しの最初のひと区切りを使う。
   var LEAD_ART = false;   // 試しの札は、いまは出さない(出すときは true)
+  // トップの黒帯の記事に、その記事に付けた画像を出す(画像は記事のページを読んで探す。なければ何も出さない)
+  var IMG = {};
+  function leadImg(a, on) {
+    var href = (a.getAttribute('href') || '').split('?')[0], box = a.querySelector(':scope > .jf-lead-img');
+    if (!on) { if (box) box.remove(); return; }
+    if (box && box.getAttribute('data-href') === href) return;
+    if (box) box.remove();
+    var put = function (src) {
+      if (!src || !a.isConnected || a.querySelector(':scope > .jf-lead-img')) return;
+      var d = picture('jf-lead-img', src); d.setAttribute('data-href', href);
+      a.insertBefore(d, a.firstChild);
+    };
+    if (href in IMG) { put(IMG[href]); return; }
+    IMG[href] = '';
+    getDoc(href).then(function (d) { var m = d.querySelector('main.contents'); IMG[href] = m ? storyImg(m) : ''; put(IMG[href]); if (IMG[href]) apply(); }).catch(function () {});
+  }
   function leadArt(a, on, date) {
     var art = a.querySelector(':scope > .jf-art');
     if (!on) { if (art) art.remove(); return; }
@@ -590,6 +625,7 @@
         set(a, 'data-day', first && date ? (top && date === today ? '今日のヘッドライン' : dayLabel(date)) : null);
         set(a, 'data-jf-today', top && first ? '1' : null);
         leadArt(a, LEAD_ART && top && first && group === 1, date);
+        leadImg(a, top && !recs && first && group === 1 && !!n && n.textContent.trim() === '1');
         last = date;
       });
     });
