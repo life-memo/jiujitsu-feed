@@ -486,7 +486,11 @@
       set(c, 'data-jf-recs', recs ? '1' : null);
       // トップの見出しの右に出す日付(いちばん新しい日)
       var d0 = top && !recs ? c.querySelector('a.notion-list-item .notion-property-date-item') : null, p0 = d0 ? d0.textContent.trim().split('/') : [];
-      set(c, 'data-jf-date', p0.length === 3 ? p0[0] + '年' + Number(p0[1]) + '月' + Number(p0[2]) + '日' : null);
+      // 日付の後ろに、その日の本数も出す(例: 2026年10月10日・3本)。スマホは幅がないので年を省く(見た目は jf.css)
+      var n0 = 0;
+      if (d0) c.querySelectorAll('a.notion-list-item .notion-property-date-item').forEach(function (x) { if (x.textContent.trim() === d0.textContent.trim()) n0++; });
+      set(c, 'data-jf-date', p0.length === 3 ? p0[0] + '年' + Number(p0[1]) + '月' + Number(p0[2]) + '日・' + n0 + '本' : null);
+      set(c, 'data-jf-date-s', p0.length === 3 ? Number(p0[1]) + '月' + Number(p0[2]) + '日・' + n0 + '本' : null);
       var events = root.className.indexOf('page_id-' + EVENTS_PAGE) >= 0;
       var paged = (mode === 'list' && !events) || mode === 'person', items = c.querySelectorAll('a.notion-list-item'), arch = mode === 'archive', days = [], pageOf = [], hits = 0;
       // 大会から探す: 選んだ札の記事だけを、10本ずつ

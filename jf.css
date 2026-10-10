@@ -475,3 +475,8 @@ html .jf-event-chip[aria-pressed="true"] { background: var(--jf-text); border-co
 html .jf-event-chip[aria-pressed="true"] span { color: rgba(255, 255, 255, 0.7); }
 html .jf-event-chip:disabled { color: var(--jf-faint); cursor: default; border-color: var(--jf-line); }
 html .jf-event-chip:disabled span { color: var(--jf-faint); }
+
+/* v24: トップの見出しの右は「日付・本数」。スマホは幅が足りないので年を省く */
+@media (max-width: 599px) {
+  html .page-_top .contents > .notion-collection[data-jf-date-s]::before { content: attr(data-jf-date-s); }
+}
