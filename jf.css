@@ -519,7 +519,7 @@ html .page-_top .jf-prev a:hover { text-decoration-color: var(--jf-text); }
 /* v31: パソコンのトップ。右の列の「おすすめ」の下に、人物と大会の入口を札で並べる(スマホでは出さない。上のタブにあるため) */
 html .jf-side { display: none; }
 @media (min-width: 1000px) {
-  html .jf-side { display: block; margin-top: 30px; padding-top: 4px; border-top: 1px solid var(--jf-line); }
+  html .jf-side { display: block; margin-top: 14px; }
   html .jf-side-h { margin: 20px 0 10px; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.14em; }
   html .jf-side-h a { color: var(--jf-muted) !important; font-size: inherit !important; text-decoration: none; }
   html .jf-side-h a:hover { color: var(--jf-text) !important; }
