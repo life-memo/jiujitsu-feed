@@ -541,6 +541,22 @@
       getDoc('/' + ARCHIVE).then(rowsFromDoc).then(function (r) { PREV_ROWS = r || []; apply(); }).catch(function () {});
     }
   }
+  // パソコンのトップ: 右の列の「おすすめ」の下が空くので、人物と大会の入口を札で並べる(見せるのはパソコンだけ。jf.css)
+  function sideLinks(c, on) {
+    var box = c.querySelector(':scope > .jf-side');
+    if (!on) { if (box) box.remove(); return; }
+    if (box) return;
+    box = el('div', 'jf-side');
+    var group = function (label, more, items) {
+      var h = el('p', 'jf-side-h'); var m = el('a', null, label); m.href = more; h.appendChild(m); box.appendChild(h);
+      var w = el('div', 'jf-side-chips');
+      items.forEach(function (x) { var a = el('a', null, x[0]); a.href = x[1]; if (x[2]) a.setAttribute('data-jf-ev', x[2]); w.appendChild(a); });
+      box.appendChild(w);
+    };
+    group('人物から探す', '/' + PEOPLE_PAGE, Object.keys(PEOPLE).map(function (n) { return [n, PEOPLE[n]]; }));
+    group('大会から探す', '/' + EVENTS_PAGE, EVENT_TAGS.filter(function (t) { return t !== 'その他の大会'; }).map(function (t) { return [t, '/' + EVENTS_PAGE + '#' + encodeURIComponent(t), t]; }));
+    c.appendChild(box);
+  }
   function leadArt(a, on, date) {
     var art = a.querySelector(':scope > .jf-art');
     if (!on) { if (art) art.remove(); return; }
@@ -590,6 +606,7 @@
       if (d0) c.querySelectorAll('a.notion-list-item:not([data-jf-gone]) .notion-property-date-item').forEach(function (x) { if (x.textContent.trim() === d0.textContent.trim()) n0++; });
       set(c, 'data-jf-date', p0.length === 3 ? p0[0] + '年' + Number(p0[1]) + '月' + Number(p0[2]) + '日・' + n0 + '本' : null);
       prevDayLink(c, top && !recs, d0 ? d0.textContent.trim() : '');
+      sideLinks(c, top && recs && ci === 1);
       set(c, 'data-jf-date-s', p0.length === 3 ? Number(p0[1]) + '月' + Number(p0[2]) + '日・' + n0 + '本' : null);
       var events = root.className.indexOf('page_id-' + EVENTS_PAGE) >= 0;
       var paged = (mode === 'list' && !events) || mode === 'person', items = [].slice.call(c.querySelectorAll('a.notion-list-item:not([data-jf-gone])')), arch = mode === 'archive', days = [], pageOf = [], hits = 0;
