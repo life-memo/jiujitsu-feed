@@ -486,7 +486,7 @@ html a.notion-list-item[data-jf-gone] { display: none !important; }
 
 /* v26: 記事ごとの共有(X、LINE、Threads、端末の共有メニュー)。区切りの線より上(箇条書きのすぐ下)に右寄せで置く。
    参照記事(灰色の細い字)と見分けがつくように、こちらは濃い色の太字で、下線なし */
-html .jf-share { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 6px 22px; margin-top: 18px; }
-html .jf-share a, html .jf-share button { display: inline-flex; align-items: center; gap: 5px; min-height: 28px; padding: 0; border: 0; background: none; font: inherit; font-size: 0.86rem !important; font-weight: 700; letter-spacing: 0.04em; line-height: 1; color: #3a3a3a !important; text-decoration: none; cursor: pointer; transition: color 0.3s; }
+html .jf-share { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 6px 18px; margin-top: 16px; }
+html .jf-share a, html .jf-share button { display: inline-flex; align-items: center; gap: 5px; min-height: 28px; padding: 0; border: 0; background: none; font: inherit; font-size: 0.74rem !important; font-weight: 700; letter-spacing: 0.04em; line-height: 1; color: #3a3a3a !important; text-decoration: none; cursor: pointer; transition: color 0.3s; }
 html .jf-share a:hover, html .jf-share button:hover { color: #000 !important; }
 html .jf-share svg { display: block; flex: none; }

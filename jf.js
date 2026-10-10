@@ -175,7 +175,7 @@
     });
     if (navigator.share) {
       var more = el('button'); more.type = 'button'; more.setAttribute('aria-label', '共有');
-      more.innerHTML = '<svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round" d="M12 15V3.500M7.500 7.500 12 3l4.500 4.500M6 11.500H5v9h14v-9h-1"/></svg>';
+      more.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round" d="M12 15V3.500M7.500 7.500 12 3l4.500 4.500M6 11.500H5v9h14v-9h-1"/></svg>';
       more.addEventListener('click', function () { try { navigator.share({ title: text, url: url }).catch(function () {}); } catch (e) {} });
       sh.appendChild(more);
     }
