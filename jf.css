@@ -510,3 +510,8 @@ html .jf-day-img { aspect-ratio: 16 / 9; margin: 18px 0 16px; }
 html .page-_top a.notion-list-item[data-jf-img] { margin-top: calc(var(--jf-base-mt, 64px) + var(--jf-img-h, 0px) + 16px) !important; }
 html .page-_top a.notion-list-item[data-jf-img]::before { bottom: calc(100% + 14px + var(--jf-img-h, 0px) + 16px); }
 html .jf-lead-img { position: absolute; left: 0; right: 0; bottom: calc(100% + 16px); height: var(--jf-img-h, 0px); }
+
+/* v30: トップの今日のヘッドラインの下に出す「前の日」へのリンク */
+html .page-_top .jf-prev { margin-top: 20px; padding-top: 0; border-top: 0; }
+html .page-_top .jf-prev a { font-size: 0.84rem !important; color: var(--jf-text) !important; text-decoration: underline; text-decoration-color: var(--jf-faint); text-underline-offset: 5px; }
+html .page-_top .jf-prev a:hover { text-decoration-color: var(--jf-text); }

@@ -511,6 +511,36 @@
     IMG[href] = '';
     getDoc(href).then(function (d) { var m = d.querySelector('main.contents'); IMG[href] = m ? storyImg(m) : ''; put(IMG[href]); }).catch(function () {});
   }
+  // トップの今日のヘッドラインの下に、「前の日」のページへのリンクを出す(例: ← 前の日 10月9日(金)のヘッドライン)。
+  // 前の日の記事は、これまでに見た一覧(端末に覚えてある分)と「記事を探す」のページから探す
+  var PREV_ROWS = null;
+  function prevDayLink(c, on, date) {
+    var box = c.querySelector(':scope > .jf-prev');
+    if (!on || !date) { if (box) box.remove(); return; }
+    var find = function (rows) {
+      var best = null;
+      rows.forEach(function (x) {
+        if (!x || !x.href || !x.date || GONE[x.href] || dnum(x.date) >= dnum(date)) return;
+        if (!best || dnum(x.date) > dnum(best.date) || (x.date === best.date && x.rank < best.rank)) best = x;
+      });
+      return best;
+    };
+    var draw = function () {
+      var hit = find(knownRows().concat(PREV_ROWS || [])), cur = c.querySelector(':scope > .jf-prev');
+      if (!hit) return;
+      if (cur && cur.getAttribute('data-href') === hit.href) return;
+      if (cur) cur.remove();
+      if (!c.isConnected) return;
+      var d = el('div', 'jf-daynav jf-prev'); d.setAttribute('data-href', hit.href);
+      var a = el('a', null, '← 前の日 ' + dayLabel(hit.date) + 'のヘッドライン'); a.href = hit.href;
+      d.appendChild(a); c.appendChild(d);
+    };
+    draw();
+    if (PREV_ROWS === null) {
+      PREV_ROWS = [];
+      getDoc('/' + ARCHIVE).then(rowsFromDoc).then(function (r) { PREV_ROWS = r || []; apply(); }).catch(function () {});
+    }
+  }
   function leadArt(a, on, date) {
     var art = a.querySelector(':scope > .jf-art');
     if (!on) { if (art) art.remove(); return; }
@@ -559,6 +589,7 @@
       var n0 = 0;
       if (d0) c.querySelectorAll('a.notion-list-item:not([data-jf-gone]) .notion-property-date-item').forEach(function (x) { if (x.textContent.trim() === d0.textContent.trim()) n0++; });
       set(c, 'data-jf-date', p0.length === 3 ? p0[0] + '年' + Number(p0[1]) + '月' + Number(p0[2]) + '日・' + n0 + '本' : null);
+      prevDayLink(c, top && !recs, d0 ? d0.textContent.trim() : '');
       set(c, 'data-jf-date-s', p0.length === 3 ? Number(p0[1]) + '月' + Number(p0[2]) + '日・' + n0 + '本' : null);
       var events = root.className.indexOf('page_id-' + EVENTS_PAGE) >= 0;
       var paged = (mode === 'list' && !events) || mode === 'person', items = [].slice.call(c.querySelectorAll('a.notion-list-item:not([data-jf-gone])')), arch = mode === 'archive', days = [], pageOf = [], hits = 0;
