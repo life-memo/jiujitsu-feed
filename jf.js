@@ -40,12 +40,11 @@
   function linkNames(main) {
     if (main.getAttribute('data-jf-linked') === location.pathname) return;
     main.setAttribute('data-jf-linked', location.pathname);
-    var used = {}, names = Object.keys(PEOPLE);
+    var names = Object.keys(PEOPLE);
     var scan = function (tn) {
       var t = tn.nodeValue, who = null, at = -1;
-      names.forEach(function (p) { if (used[p]) return; var k = t.indexOf(p); if (k >= 0 && (at < 0 || k < at)) { at = k; who = p; } });
+      names.forEach(function (p) { var k = t.indexOf(p); if (k >= 0 && (at < 0 || k < at)) { at = k; who = p; } });
       if (!who) return;
-      used[who] = 1;
       var rest = tn.splitText(at);
       rest.nodeValue = rest.nodeValue.slice(who.length);
       var a = document.createElement('a'); a.className = 'jf-who'; a.href = PEOPLE[who]; a.textContent = who;
@@ -112,12 +111,11 @@
     return s;
   }
   function linkWho(node) {
-    var used = {}, names = Object.keys(PEOPLE);
+    var names = Object.keys(PEOPLE);
     var scan = function (tn) {
       var t = tn.nodeValue, who = null, at = -1;
-      names.forEach(function (p) { if (used[p]) return; var k = t.indexOf(p); if (k >= 0 && (at < 0 || k < at)) { at = k; who = p; } });
+      names.forEach(function (p) { var k = t.indexOf(p); if (k >= 0 && (at < 0 || k < at)) { at = k; who = p; } });
       if (!who) return;
-      used[who] = 1;
       var rest = tn.splitText(at);
       rest.nodeValue = rest.nodeValue.slice(who.length);
       var a = document.createElement('a'); a.className = 'jf-who'; a.href = PEOPLE[who]; a.textContent = who;
@@ -128,21 +126,19 @@
     while ((n = w.nextNode())) nodes.push(n);
     nodes.forEach(scan);
   }
-  // 本文に出てくる大会の名前を「大会から探す」へのリンクにする(1つの記事で、同じ大会は最初の1回だけ。「UFC BJJ 12」の回の数字はリンクに含めない)
+  // 本文に出てくる大会の名前を「大会から探す」へのリンクにする(出てくるたびに全部。「UFC BJJ 12」の回の数字はリンクに含めない)
   var EVENT_WORDS = [['UFC BJJ', /UFC BJJ/], ['ADCC', /ADCC/], ['IBJJF', /IBJJF/], ['ONE', /ONE/], ['Polaris', /Polaris/], ['RAF', /RAF/]];
   function linkEvents(nodes) {
-    var used = {}, az = /[A-Za-z]/;
+    var az = /[A-Za-z]/;
     var scan = function (tn) {
       if (tn.parentNode.closest('a')) return;
       var t = tn.nodeValue, hit = null, at = -1, tag = null;
       EVENT_WORDS.forEach(function (w) {
-        if (used[w[0]]) return;
         var m = w[1].exec(t);
         if (!m || az.test(t.charAt(m.index - 1)) || az.test(t.charAt(m.index + m[0].length))) return;
         if (at < 0 || m.index < at) { at = m.index; hit = m[0]; tag = w[0]; }
       });
       if (!hit) return;
-      used[tag] = 1;
       var rest = tn.splitText(at);
       rest.nodeValue = rest.nodeValue.slice(hit.length);
       var a = document.createElement('a'); a.className = 'jf-who jf-ev'; a.setAttribute('data-jf-ev', tag); a.href = '/' + EVENTS_PAGE + '#' + encodeURIComponent(tag); a.textContent = hit;
@@ -167,12 +163,7 @@
     linkWho(ul);
     linkEvents([ul]);
     li.appendChild(ul);
-    if (s.srcs.length) {
-      var d = el('div', 'jf-srcs'); d.appendChild(el('span', null, '参照記事'));
-      s.srcs.forEach(function (x) { var a = el('a', null, x[0] + ' ↗'); a.href = x[1]; a.target = '_blank'; a.rel = 'noopener'; d.appendChild(a); });
-      li.appendChild(d);
-    }
-    // 共有: X、LINE、リンクのコピー(記事ごとのアドレスを渡す)
+    // 共有: X、LINE、リンクのコピー(記事ごとのアドレスを渡す)。参照記事と混ざらないよう、区切りの線より上に置く
     var url = location.origin + s.href, sh = el('div', 'jf-srcs jf-share');
     sh.appendChild(el('span', null, '共有'));
     [['X', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(s.title + '｜ジュウジュツフィード') + '&url=' + encodeURIComponent(url)], ['LINE', 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url)]].forEach(function (x) {
@@ -186,6 +177,11 @@
     });
     sh.appendChild(cp);
     li.appendChild(sh);
+    if (s.srcs.length) {
+      var d = el('div', 'jf-srcs'); d.appendChild(el('span', null, '参照記事'));
+      s.srcs.forEach(function (x) { var a = el('a', null, x[0] + ' ↗'); a.href = x[1]; a.target = '_blank'; a.rel = 'noopener'; d.appendChild(a); });
+      li.appendChild(d);
+    }
     return li;
   }
   function dayView(root, main, path) {
