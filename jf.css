@@ -480,3 +480,6 @@ html .jf-event-chip:disabled span { color: var(--jf-faint); }
 @media (max-width: 599px) {
   html .page-_top .contents > .notion-collection[data-jf-date-s]::before { content: attr(data-jf-date-s); }
 }
+
+/* v25: 取り下げた記事は、どの一覧にも出さない */
+html a.notion-list-item[data-jf-gone] { display: none !important; }

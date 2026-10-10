@@ -17,6 +17,9 @@
     '/3f4a6fb1972b81c292fee369024358f6': [['#25 ヒクソン・グレイシー：不敗の神話、一族最強の男', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/25-e3ig1f9', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000770319415', SHOW.amazon + '/episodes/4214226b-fe45-495b-b6a9-689cdcaeb1dd']]
   };
   var EVENTS_PAGE = '3f4a6fb1972b81759becfdc7d44f99d3', EVENT_TAGS = ['UFC BJJ', 'ADCC', 'IBJJF', 'ONE', 'Polaris', 'RAF', 'その他の大会'];
+  // 取り下げた記事(ほかの記事にまとめたもの)。サイト側の一覧が古いままでも、どの一覧にも出さない
+  var GONE = { '/3f4a6fb1972b81048cd9faa5ab7edeb8': 1, '/3f4a6fb1972b8102a2dbeddf35840c1f': 1 };
+  var isGone = function (a) { return !!GONE[(a.getAttribute('href') || '').split('?')[0]] || a.textContent.trim().indexOf('【削除】') === 0; };
   var BELTS = '3f4a6fb1972b81bbbd91efa7948132e5', ARCHIVE = '3f4a6fb1972b8180ae98e5da079356b7', PEOPLE_PAGE = '3f4a6fb1972b81ef88f3f81eb2192323', PEOPLE_DB = 'f8ceb4420ed948a6b63df206d4b9ea00', NEWS_DB = 'a956fb4cc7df46d69ac41768e5195c5e';
   var WD = ['日', '月', '火', '水', '木', '金', '土'];
   var ROWS = [['あ', 'アイウエオヴ'], ['か', 'カキクケコガギグゲゴ'], ['さ', 'サシスセソザジズゼゾ'], ['た', 'タチツテトダヂヅデド'], ['な', 'ナニヌネノ'], ['は', 'ハヒフヘホバビブベボパピプペポ'], ['ま', 'マミムメモ'], ['や', 'ヤユヨ'], ['ら', 'ラリルレロ'], ['わ', 'ワヲン']];
@@ -193,7 +196,7 @@
     var shownKey = '';
     var show = function (all) {
       if (!alive()) return;
-      var byHref = {}; all.forEach(function (x) { if (x && x.href && x.date) byHref[x.href] = x; });
+      var byHref = {}; all.forEach(function (x) { if (x && x.href && x.date && !GONE[x.href]) byHref[x.href] = x; });
       if (!byHref[path]) byHref[path] = { href: path, date: me.date, rank: Number(me.rank) || 99, cat: me.cat };
       all = Object.keys(byHref).map(function (k) { return byHref[k]; });
       var byRank = function (a, b) { return a.rank - b.rank; };
@@ -254,10 +257,10 @@
   var ROWS = null, rowsDirty = null;
   function knownRows() {
     if (!ROWS) { ROWS = {}; try { (JSON.parse(localStorage.getItem('jf-rows') || '[]') || []).forEach(function (x) { if (x && x.href) ROWS[x.href] = x; }); } catch (e) {} }
-    return Object.keys(ROWS).map(function (k) { return ROWS[k]; });
+    return Object.keys(ROWS).filter(function (k) { return !GONE[k]; }).map(function (k) { return ROWS[k]; });
   }
   function remember(href, date, rank, cat) {
-    if (!href || !date || !rank) return;
+    if (!href || !date || !rank || GONE[href]) return;
     knownRows();
     var o = ROWS[href];
     if (o && o.date === date && o.rank === rank && o.cat === cat) return;
@@ -483,16 +486,17 @@
     if (root.className.indexOf('page_id-' + EVENTS_PAGE) < 0) evKey = null;
     document.querySelectorAll('.notion-collection').forEach(function (c, ci) {
       var recs = top && ci > 0, last = null, group = 0;
+      c.querySelectorAll('a.notion-list-item').forEach(function (a) { set(a, 'data-jf-gone', isGone(a) ? '1' : null); });
       set(c, 'data-jf-recs', recs ? '1' : null);
       // トップの見出しの右に出す日付(いちばん新しい日)
-      var d0 = top && !recs ? c.querySelector('a.notion-list-item .notion-property-date-item') : null, p0 = d0 ? d0.textContent.trim().split('/') : [];
+      var d0 = top && !recs ? c.querySelector('a.notion-list-item:not([data-jf-gone]) .notion-property-date-item') : null, p0 = d0 ? d0.textContent.trim().split('/') : [];
       // 日付の後ろに、その日の本数も出す(例: 2026年10月10日・3本)。スマホは幅がないので年を省く(見た目は jf.css)
       var n0 = 0;
-      if (d0) c.querySelectorAll('a.notion-list-item .notion-property-date-item').forEach(function (x) { if (x.textContent.trim() === d0.textContent.trim()) n0++; });
+      if (d0) c.querySelectorAll('a.notion-list-item:not([data-jf-gone]) .notion-property-date-item').forEach(function (x) { if (x.textContent.trim() === d0.textContent.trim()) n0++; });
       set(c, 'data-jf-date', p0.length === 3 ? p0[0] + '年' + Number(p0[1]) + '月' + Number(p0[2]) + '日・' + n0 + '本' : null);
       set(c, 'data-jf-date-s', p0.length === 3 ? Number(p0[1]) + '月' + Number(p0[2]) + '日・' + n0 + '本' : null);
       var events = root.className.indexOf('page_id-' + EVENTS_PAGE) >= 0;
-      var paged = (mode === 'list' && !events) || mode === 'person', items = c.querySelectorAll('a.notion-list-item'), arch = mode === 'archive', days = [], pageOf = [], hits = 0;
+      var paged = (mode === 'list' && !events) || mode === 'person', items = [].slice.call(c.querySelectorAll('a.notion-list-item:not([data-jf-gone])')), arch = mode === 'archive', days = [], pageOf = [], hits = 0;
       // 大会から探す: 選んだ札の記事だけを、10本ずつ
       if (events) {
         // 記事の中の大会名から来たときは、アドレスの # に付いた大会を選んだ状態で開く
