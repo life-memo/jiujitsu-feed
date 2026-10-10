@@ -490,3 +490,9 @@ html .jf-share { display: flex; flex-wrap: wrap; justify-content: flex-end; alig
 html .jf-share a, html .jf-share button { display: inline-flex; align-items: center; gap: 5px; min-height: 28px; padding: 0; border: 0; background: none; font: inherit; font-size: 0.74rem !important; font-weight: 700; letter-spacing: 0.04em; line-height: 1; color: #3a3a3a !important; text-decoration: none; cursor: pointer; transition: color 0.3s; }
 html .jf-share a:hover, html .jf-share button:hover { color: #000 !important; }
 html .jf-share svg { display: block; flex: none; }
+
+/* v27: ページ切り替え中に上に伸びる線(Wraptas標準の進み具合の線)を、帯の色のグラデーションにする。
+   白帯→青帯→紫帯→茶帯→黒帯の順で、先頭が黒。元の水色の光は消す */
+html #nprogress .bar { height: 3px !important; background: linear-gradient(90deg, #d9d9d9 0%, #1f5fc4 28%, #7a3da8 52%, #8a5527 76%, #111 100%) !important; }
+html #nprogress .peg { box-shadow: none !important; }
+html #nprogress .spinner-icon { border-top-color: #111 !important; border-left-color: #111 !important; }
