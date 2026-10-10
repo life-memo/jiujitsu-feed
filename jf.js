@@ -172,8 +172,6 @@
   function storyCard(s, picked) {
     var li = el('li', 'jf-story' + (picked ? ' jf-picked' : ''));
     if (s.rank) li.setAttribute('data-rank', s.rank);
-    // 黒帯の記事には、記事に付けた画像をいちばん上に出す
-    if (s.img && String(s.rank) === '1') li.appendChild(picture('jf-story-img', s.img));
     var meta = el('p', 'jf-story-meta', s.cat);
     li.appendChild(meta);
     li.appendChild(el('h2', null, s.title));
@@ -249,6 +247,10 @@
       })).then(function (stories) {
         if (!alive() || shownKey !== key) return;
         list.textContent = '';
+        // 黒帯の記事に画像があれば、その日の見出しのすぐ下に大きく出す(枠の中には入れない)
+        var old = box.querySelector(':scope > .jf-day-img'), lead = stories.filter(function (s) { return s && String(s.rank) === '1' && s.img; })[0];
+        if (old) old.remove();
+        if (lead) box.insertBefore(picture('jf-day-img', lead.img), list);
         stories.forEach(function (s) {
           // 取り下げた記事(見出しが【削除】、または掲載日が別の日に変わったもの)は出さない
           if (!s || !s.points.length || s.title.indexOf('【削除】') === 0 || (s !== me && s.date && s.date !== me.date)) return;
@@ -484,21 +486,30 @@
   // 写真は使わず、人物の名前を大きく組んだ自作の札をカードの上に置く。名前は見出しから拾う(登録済みの人物の、フルネームか姓)。
   // 人物が見つからないときは、見出しの最初のひと区切りを使う。
   var LEAD_ART = false;   // 試しの札は、いまは出さない(出すときは true)
-  // トップの黒帯の記事に、その記事に付けた画像を出す(画像は記事のページを読んで探す。なければ何も出さない)
+  // トップの黒帯の記事に付けた画像を、「今日のヘッドライン」の見出しのすぐ下に大きく出す(黒帯の枠の中には入れない)。
+  // 画像は記事のページを読んで探す。なければ何も出さない。
+  // 見出しは黒帯の枠の上に載せているので、画像の高さぶん枠を下げ、見出しを同じだけ上に戻す(高さは --jf-img-h。見た目は jf.css)
   var IMG = {};
   function leadImg(a, on) {
     var href = (a.getAttribute('href') || '').split('?')[0], box = a.querySelector(':scope > .jf-lead-img');
-    if (!on) { if (box) box.remove(); return; }
-    if (box && box.getAttribute('data-href') === href) return;
-    if (box) box.remove();
+    var size = function () {
+      if (!a.hasAttribute('data-jf-img')) { a.style.setProperty('--jf-base-mt', getComputedStyle(a).marginTop); a.setAttribute('data-jf-img', '1'); }
+      a.style.setProperty('--jf-img-h', Math.round(a.offsetWidth * 9 / 16) + 'px');
+    };
+    var clear = function () { if (box) box.remove(); if (a.hasAttribute('data-jf-img')) { a.removeAttribute('data-jf-img'); a.style.removeProperty('--jf-img-h'); a.style.removeProperty('--jf-base-mt'); } };
+    if (!on) { clear(); return; }
+    if (box && box.getAttribute('data-href') === href) { size(); return; }
+    clear(); box = null;
     var put = function (src) {
       if (!src || !a.isConnected || a.querySelector(':scope > .jf-lead-img')) return;
       var d = picture('jf-lead-img', src); d.setAttribute('data-href', href);
+      d.querySelector('img').addEventListener('error', function () { a.removeAttribute('data-jf-img'); });
       a.insertBefore(d, a.firstChild);
+      size();
     };
     if (href in IMG) { put(IMG[href]); return; }
     IMG[href] = '';
-    getDoc(href).then(function (d) { var m = d.querySelector('main.contents'); IMG[href] = m ? storyImg(m) : ''; put(IMG[href]); if (IMG[href]) apply(); }).catch(function () {});
+    getDoc(href).then(function (d) { var m = d.querySelector('main.contents'); IMG[href] = m ? storyImg(m) : ''; put(IMG[href]); }).catch(function () {});
   }
   function leadArt(a, on, date) {
     var art = a.querySelector(':scope > .jf-art');
@@ -699,6 +710,7 @@
     router.push(href);
   });
   window.addEventListener('hashchange', apply);
+  window.addEventListener('resize', apply);
   // ---- ページ切り替え中の線 ----
   // Wraptasは、ページを切り替えるあいだ、いちばん上に水色の進み具合の線を出す(絵として描いているので、色はCSSでは変えられない)。
   // その線は隠して(jf.css)、同じ進み具合・同じ消え方で、帯の色(白→青→紫→茶→黒)の線を代わりに出す。

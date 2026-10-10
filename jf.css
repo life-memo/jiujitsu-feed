@@ -502,9 +502,11 @@ html .jf-bar { position: fixed; left: 0; right: 0; top: 0; z-index: 100002; heig
   html .page-_top .contents > .notion-collection { align-self: start !important; }
 }
 
-/* v29: 黒帯の記事の画像。トップの黒帯の枠と、記事を開いたときの黒帯の枠のいちばん上に、横長(16:9)で出す */
-html .jf-lead-img, html .jf-story-img { display: block; aspect-ratio: 16 / 9; margin: 0 0 14px; border-radius: 9px; overflow: hidden; background: #f1f1f1; }
-html .jf-lead-img img, html .jf-story-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
-@media (min-width: 1000px) {
-  html .jf-lead-img { aspect-ratio: 16 / 7; margin-bottom: 18px; }
-}
+/* v29: 黒帯の記事の画像。枠の中には入れず、見出し(今日のヘッドライン／○月○日のヘッドライン)のすぐ下に、横長(16:9)で大きく出す。
+   トップでは、見出しを黒帯の枠の上に載せているので、画像の高さ(--jf-img-h)ぶん枠を下げ、見出しを同じだけ上に戻している(値は jf.js が入れる) */
+html .jf-lead-img, html .jf-day-img { display: block; border-radius: 14px; overflow: hidden; background: #f1f1f1; }
+html .jf-lead-img img, html .jf-day-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+html .jf-day-img { aspect-ratio: 16 / 9; margin: 18px 0 16px; }
+html .page-_top a.notion-list-item[data-jf-img] { margin-top: calc(var(--jf-base-mt, 64px) + var(--jf-img-h, 0px) + 16px) !important; }
+html .page-_top a.notion-list-item[data-jf-img]::before { bottom: calc(100% + 14px + var(--jf-img-h, 0px) + 16px); }
+html .jf-lead-img { position: absolute; left: 0; right: 0; bottom: calc(100% + 16px); height: var(--jf-img-h, 0px); }
