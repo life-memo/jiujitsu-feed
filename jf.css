@@ -496,3 +496,9 @@ html .jf-share svg { display: block; flex: none; }
 html #nprogress .bar { height: 3px !important; background: linear-gradient(90deg, #d9d9d9 0%, #1f5fc4 28%, #7a3da8 52%, #8a5527 76%, #111 100%) !important; }
 html #nprogress .peg { box-shadow: none !important; }
 html #nprogress .spinner-icon { border-top-color: #111 !important; border-left-color: #111 !important; }
+
+/* v28: パソコンのトップ。左の「今日のヘッドライン」が右の「おすすめ」より短い日(3本の日など)に、
+   左の列が上下の真ん中に置かれてタブとの間が空いていた。どちらの列も上にそろえる */
+@media (min-width: 1000px) {
+  html .page-_top .contents > .notion-collection { align-self: start !important; }
+}
