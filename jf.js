@@ -168,9 +168,22 @@
     sh.setAttribute('aria-label', '共有');
     var ICON_F = '<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M13.6 22v-8.2h2.8l.4-3.3h-3.2V8.4c0-.9.3-1.6 1.6-1.6h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.300v2.400H7.400v3.300h2.800V22z"/></svg>';
     var ICON_L = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M10 14a4.500 4.500 0 0 0 6.400 0l3-3a4.500 4.500 0 0 0-6.400-6.400l-1 1M14 10a4.500 4.500 0 0 0-6.400 0l-3 3a4.500 4.500 0 0 0 6.400 6.400l1-1"/></svg>';
-    [['Facebook', ICON_F, 'https://www.facebook.com/sharer/sharer.php?u=' + u], ['X', 'X', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(s.title + '｜ジュウジュツフィード') + '&url=' + u], ['LINE', 'LINE', 'https://social-plugins.line.me/lineit/share?url=' + u]].forEach(function (x) {
+    // スマホでは、FacebookとLINEの「Web用の共有ページ」はアプリに横取りされて、アプリが開くだけで共有にならない。
+    // そこでスマホは LINE をアプリ向けのアドレスにし、Facebook の代わりに「ほか」(端末の共有メニュー。Facebookやメールなどを選べる)を出す。
+    var phone = false; try { phone = window.matchMedia('(pointer: coarse)').matches; } catch (e) {}
+    var text = s.title + '｜ジュウジュツフィード';
+    var ICON_S = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M12 15V3.500M7.500 7.500 12 3l4.500 4.500M6 11.500H5v9h14v-9h-1"/></svg>';
+    var links = [['X', 'X', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + u],
+      ['LINE', 'LINE', phone ? 'https://line.me/R/share?text=' + encodeURIComponent(text + '\n' + url) : 'https://social-plugins.line.me/lineit/share?url=' + u]];
+    if (!phone) links.unshift(['Facebook', ICON_F, 'https://www.facebook.com/sharer/sharer.php?u=' + u]);
+    links.forEach(function (x) {
       var a = el('a'); a.innerHTML = x[1]; a.href = x[2]; a.target = '_blank'; a.rel = 'noopener'; a.setAttribute('aria-label', x[0] + 'で共有'); sh.appendChild(a);
     });
+    if (phone && navigator.share) {
+      var more = el('button'); more.type = 'button'; more.innerHTML = ICON_S + '<span>ほか</span>'; more.setAttribute('aria-label', 'ほかのアプリで共有');
+      more.addEventListener('click', function () { try { navigator.share({ title: text, url: url }).catch(function () {}); } catch (e) {} });
+      sh.appendChild(more);
+    }
     var cp = el('button'); cp.type = 'button'; cp.innerHTML = ICON_L + '<span>COPY</span>'; cp.setAttribute('aria-label', 'リンクをコピー');
     cp.addEventListener('click', function () {
       var label = cp.querySelector('span'), done = function () { label.textContent = 'COPIED'; setTimeout(function () { label.textContent = 'COPY'; }, 2000); };
