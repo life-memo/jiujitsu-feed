@@ -163,15 +163,17 @@
     linkWho(ul);
     linkEvents([ul]);
     li.appendChild(ul);
-    // 共有: X、LINE、リンクのコピー(記事ごとのアドレスを渡す)。参照記事と混ざらないよう、区切りの線より上に置く
-    var url = location.origin + s.href, sh = el('div', 'jf-share');
-    sh.appendChild(el('span', null, '共有'));
-    [['X', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(s.title + '｜ジュウジュツフィード') + '&url=' + encodeURIComponent(url)], ['LINE', 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url)]].forEach(function (x) {
-      var a = el('a', null, x[0]); a.href = x[1]; a.target = '_blank'; a.rel = 'noopener'; sh.appendChild(a);
+    // 共有: Facebook、X、LINE、リンクのコピー(記事ごとのアドレスを渡す)。参照記事と混ざらないよう、区切りの線より上に右寄せで置く
+    var url = location.origin + s.href, sh = el('div', 'jf-share'), u = encodeURIComponent(url);
+    sh.setAttribute('aria-label', '共有');
+    var ICON_F = '<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path fill="currentColor" d="M13.6 22v-8.2h2.8l.4-3.3h-3.2V8.4c0-.9.3-1.6 1.6-1.6h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.300v2.400H7.400v3.300h2.800V22z"/></svg>';
+    var ICON_L = '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M10 14a4.500 4.500 0 0 0 6.400 0l3-3a4.500 4.500 0 0 0-6.400-6.400l-1 1M14 10a4.500 4.500 0 0 0-6.400 0l-3 3a4.500 4.500 0 0 0 6.400 6.400l1-1"/></svg>';
+    [['Facebook', ICON_F, 'https://www.facebook.com/sharer/sharer.php?u=' + u], ['X', 'X', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(s.title + '｜ジュウジュツフィード') + '&url=' + u], ['LINE', 'LINE', 'https://social-plugins.line.me/lineit/share?url=' + u]].forEach(function (x) {
+      var a = el('a'); a.innerHTML = x[1]; a.href = x[2]; a.target = '_blank'; a.rel = 'noopener'; a.setAttribute('aria-label', x[0] + 'で共有'); sh.appendChild(a);
     });
-    var cp = el('button', null, 'リンクをコピー'); cp.type = 'button';
+    var cp = el('button'); cp.type = 'button'; cp.innerHTML = ICON_L + '<span>COPY</span>'; cp.setAttribute('aria-label', 'リンクをコピー');
     cp.addEventListener('click', function () {
-      var done = function () { cp.textContent = 'コピーしました'; setTimeout(function () { cp.textContent = 'リンクをコピー'; }, 2000); };
+      var label = cp.querySelector('span'), done = function () { label.textContent = 'COPIED'; setTimeout(function () { label.textContent = 'COPY'; }, 2000); };
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () {});
       else { var t = document.createElement('textarea'); t.value = url; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) {} t.remove(); }
     });
