@@ -180,8 +180,8 @@
     if (!me.date || !me.points.length) return;                 // 中身が読めないときは、ふつうの記事ページのままにする
     try { if (dnum(me.date) > (Number(localStorage.getItem('jf-latest')) || 0)) localStorage.setItem('jf-latest', String(dnum(me.date))); } catch (e) {}
     box = el('div', 'jf-day'); box.setAttribute('data-path', path);
-    var p = me.date.split('/').map(Number), now = new Date(), isToday = now.getFullYear() === p[0] && now.getMonth() + 1 === p[1] && now.getDate() === p[2];
-    var h = el('h1', 'jf-day-title'); h.appendChild(el('span', null, p[0] + '年' + p[1] + '月' + p[2] + '日')); h.appendChild(document.createTextNode(isToday ? '今日のヘッドライン' : p[1] + '月' + p[2] + '日のヘッドライン'));
+    var p = me.date.split('/').map(Number);
+    var h = el('h1', 'jf-day-title'); h.appendChild(el('span', null, p[0] + '年' + p[1] + '月' + p[2] + '日')); h.appendChild(document.createTextNode(p[1] + '月' + p[2] + '日のヘッドライン'));   // トップ(「今日のヘッドライン」)と見分けがつくように、今日の分でも日付で出す
     var list = el('ul', 'jf-stories'), nav = el('div', 'jf-daynav');
     box.appendChild(h); box.appendChild(list); box.appendChild(nav);
     list.appendChild(storyCard(me, !plain));
