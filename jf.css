@@ -491,11 +491,10 @@ html .jf-share a, html .jf-share button { display: inline-flex; align-items: cen
 html .jf-share a:hover, html .jf-share button:hover { color: #000 !important; }
 html .jf-share svg { display: block; flex: none; }
 
-/* v27: ページ切り替え中に上に伸びる線(Wraptas標準の進み具合の線)を、帯の色のグラデーションにする。
-   白帯→青帯→紫帯→茶帯→黒帯の順で、先頭が黒。元の水色の光は消す */
-html #nprogress .bar { height: 3px !important; background: linear-gradient(90deg, #d9d9d9 0%, #1f5fc4 28%, #7a3da8 52%, #8a5527 76%, #111 100%) !important; }
-html #nprogress .peg { box-shadow: none !important; }
-html #nprogress .spinner-icon { border-top-color: #111 !important; border-left-color: #111 !important; }
+/* v27: ページ切り替え中に上に伸びる線。Wraptas標準の水色の線は隠し、同じ動きで帯の色の線を出す(動かすのは jf.js)。
+   白帯→青帯→紫帯→茶帯→黒帯の順で、読み込みが進むほど黒帯に近づく */
+html body > canvas[style*="100001"] { visibility: hidden !important; }
+html .jf-bar { position: fixed; left: 0; right: 0; top: 0; z-index: 100002; height: 3px; opacity: 0; pointer-events: none; clip-path: inset(0 100% 0 0); background: linear-gradient(90deg, #d9d9d9 0%, #1f5fc4 28%, #7a3da8 52%, #8a5527 76%, #111 100%); }
 
 /* v28: パソコンのトップ。左の「今日のヘッドライン」が右の「おすすめ」より短い日(3本の日など)に、
    左の列が上下の真ん中に置かれてタブとの間が空いていた。どちらの列も上にそろえる */

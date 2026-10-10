@@ -663,6 +663,26 @@
     router.push(href);
   });
   window.addEventListener('hashchange', apply);
+  // ---- ページ切り替え中の線 ----
+  // Wraptasは、ページを切り替えるあいだ、いちばん上に水色の進み具合の線を出す(絵として描いているので、色はCSSでは変えられない)。
+  // その線は隠して(jf.css)、同じ進み具合・同じ消え方で、帯の色(白→青→紫→茶→黒)の線を代わりに出す。
+  var bar = document.createElement('div'); bar.className = 'jf-bar'; document.body.appendChild(bar);
+  var barOn = false;
+  var barStep = function () {
+    var c = document.querySelector('body > canvas[style*="100001"]'), on = !!c && c.style.display !== 'none';
+    if (on) {
+      var w = 0;
+      try {
+        var d = c.getContext('2d').getImageData(0, Math.min(1, c.height - 1), c.width, 1).data;
+        for (var x = c.width - 1; x >= 0; x--) if (d[x * 4 + 3] > 20) { w = (x + 1) / c.width; break; }
+      } catch (e) {}
+      bar.style.clipPath = 'inset(0 ' + (100 - w * 100).toFixed(2) + '% 0 0)';
+      bar.style.opacity = c.style.opacity === '' ? '1' : c.style.opacity;
+    } else if (barOn) bar.style.opacity = '0';
+    barOn = on;
+    requestAnimationFrame(barStep);
+  };
+  requestAnimationFrame(barStep);
   new MutationObserver(apply).observe(document.body, { childList: true, subtree: true });
   apply();
 })();
