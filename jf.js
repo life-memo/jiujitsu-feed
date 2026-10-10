@@ -172,6 +172,20 @@
       s.srcs.forEach(function (x) { var a = el('a', null, x[0] + ' ↗'); a.href = x[1]; a.target = '_blank'; a.rel = 'noopener'; d.appendChild(a); });
       li.appendChild(d);
     }
+    // 共有: X、LINE、リンクのコピー(記事ごとのアドレスを渡す)
+    var url = location.origin + s.href, sh = el('div', 'jf-srcs jf-share');
+    sh.appendChild(el('span', null, '共有'));
+    [['X', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(s.title + '｜ジュウジュツフィード') + '&url=' + encodeURIComponent(url)], ['LINE', 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url)]].forEach(function (x) {
+      var a = el('a', null, x[0] + ' ↗'); a.href = x[1]; a.target = '_blank'; a.rel = 'noopener'; sh.appendChild(a);
+    });
+    var cp = el('button', null, 'リンクをコピー'); cp.type = 'button';
+    cp.addEventListener('click', function () {
+      var done = function () { cp.textContent = 'コピーしました'; setTimeout(function () { cp.textContent = 'リンクをコピー'; }, 2000); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () {});
+      else { var t = document.createElement('textarea'); t.value = url; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) {} t.remove(); }
+    });
+    sh.appendChild(cp);
+    li.appendChild(sh);
     return li;
   }
   function dayView(root, main, path) {

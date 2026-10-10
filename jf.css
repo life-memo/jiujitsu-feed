@@ -483,3 +483,9 @@ html .jf-event-chip:disabled span { color: var(--jf-faint); }
 
 /* v25: 取り下げた記事は、どの一覧にも出さない */
 html a.notion-list-item[data-jf-gone] { display: none !important; }
+
+/* v26: 記事ごとの共有(X、LINE、リンクのコピー)。参照記事の行と同じ見た目で、その下に置く */
+html .jf-share { margin-top: 8px; padding-top: 0; border-top: 0; }
+html .jf-story .jf-share:first-of-type { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--jf-line); }
+html .jf-share button { padding: 0; border: 0; background: none; font: inherit; color: var(--jf-muted); text-decoration: underline; text-decoration-color: var(--jf-line); text-underline-offset: 4px; cursor: pointer; transition: color 0.3s, text-decoration-color 0.3s; }
+html .jf-share button:hover { color: var(--jf-text); text-decoration-color: var(--jf-text); }
