@@ -164,10 +164,10 @@
     linkEvents([ul]);
     li.appendChild(ul);
     // 共有: X、LINE、リンクのコピー(記事ごとのアドレスを渡す)。参照記事と混ざらないよう、区切りの線より上に置く
-    var url = location.origin + s.href, sh = el('div', 'jf-srcs jf-share');
+    var url = location.origin + s.href, sh = el('div', 'jf-share');
     sh.appendChild(el('span', null, '共有'));
     [['X', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(s.title + '｜ジュウジュツフィード') + '&url=' + encodeURIComponent(url)], ['LINE', 'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(url)]].forEach(function (x) {
-      var a = el('a', null, x[0] + ' ↗'); a.href = x[1]; a.target = '_blank'; a.rel = 'noopener'; sh.appendChild(a);
+      var a = el('a', null, x[0]); a.href = x[1]; a.target = '_blank'; a.rel = 'noopener'; sh.appendChild(a);
     });
     var cp = el('button', null, 'リンクをコピー'); cp.type = 'button';
     cp.addEventListener('click', function () {
