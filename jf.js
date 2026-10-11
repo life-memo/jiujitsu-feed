@@ -575,30 +575,16 @@
     group('大会から探す', '/' + EVENTS_PAGE, EVENT_TAGS.filter(function (t) { return t !== 'その他の大会'; }).map(function (t) { return [t, '/' + EVENTS_PAGE + '#' + encodeURIComponent(t), t]; }));
     c.appendChild(box);
   }
-  // 共有するときの文面(その日まるごと): 「10月11日(日)のヘッドライン｜ジュウジュツフィード」のあとに、上から3本を 1. 2. 3. で並べ、残りは「ほか何本」。
-  // 上限(limit、数え方は weigh)に収まらないときは、順に縮める: サイト名を外す → 見出しを全角の空白の前までにする → それでも長ければ「…」で切る
+  // 共有するときの文面(その日まるごと): 「10月11日(日)のヘッドライン｜ジュウジュツフィード」+ 改行 + 黒帯の見出し + ほか何本。
+  // 上限(limit、数え方は weigh)に収まらないときだけ、サイト名を外し、それでも長ければ見出しを「…」で切る
   function dayText(date, titles, count) {
     return function (limit, weigh) {
-      var top = titles.slice(0, 3), rest = count - top.length;
-      var build = function (head, ts) {
-        return head + '\n' + ts.map(function (t, i) { return (i + 1) + '. ' + t; }).join('\n') + (rest > 0 ? '\nほか' + rest + '本' : '');
-      };
-      var long = dayLabel(date) + 'のヘッドライン｜ジュウジュツフィード', short = dayLabel(date) + 'のヘッドライン';
-      var out = build(long, top);
+      var tail = count > 1 ? ' ほか' + (count - 1) + '本' : '', t = titles[0] || '';
+      var out = dayLabel(date) + 'のヘッドライン｜ジュウジュツフィード\n' + t + tail;
       if (weigh(out) <= limit) return out;
-      out = build(short, top);
-      if (weigh(out) <= limit) return out;
-      var cut = top.map(function (t) { var i = t.indexOf('\u3000'); return i > 6 ? t.slice(0, i) : t; });
-      out = build(short, cut);
-      if (weigh(out) <= limit) return out;
-      // まだ長い: 見出し以外に使うぶんを引いた残りを、長い見出しから1文字ずつ削る
-      var arr = cut.map(function (t) { return Array.from(t); }), done = cut.map(function () { return false; });
-      for (var guard = 0; guard < 400 && weigh(out) > limit; guard++) {
-        var k = 0; arr.forEach(function (a, i) { if (a.length > arr[k].length) k = i; });
-        if (arr[k].length <= 8) break;
-        arr[k].pop(); done[k] = true;
-        out = build(short, arr.map(function (a, i) { return a.join('') + (done[i] ? '…' : ''); }));
-      }
+      var head = dayLabel(date) + 'のヘッドライン\n', arr = Array.from(t);
+      out = head + t + tail;
+      while (weigh(out) > limit && arr.length > 8) { arr.pop(); out = head + arr.join('') + '…' + tail; }
       return out;
     };
   }
