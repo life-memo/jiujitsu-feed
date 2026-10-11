@@ -266,7 +266,7 @@
         // その日まるごとの共有(黒帯の記事のアドレスに #day を付けたものを渡す。開くと、どの記事にも印のないその日のページになる)
         var oldShare = box.querySelector(':scope > .jf-share-day'), shown = stories.filter(function (s) { return s && s.points.length && !GONE[s.href] && s.title.indexOf('【削除】') !== 0; });
         if (oldShare) oldShare.remove();
-        if (shown.length) box.insertBefore(shareRow(dayText(me.date, shown[0].title, shown.length), location.origin + shown[0].href + '#day', 'この日のヘッドラインを共有'), nav);
+        if (shown.length) box.insertBefore(shareRow(dayText(me.date, shown[0].title, shown.length), location.origin + shown[0].href + '#day', 'この日のヘッドラインを共有'), box.querySelector(':scope > .jf-day-img') || list);
         var mine = list.querySelector('.jf-picked');
         if (mine && mine !== list.firstElementChild) mine.scrollIntoView({ block: 'start' });
       });
@@ -501,20 +501,28 @@
   // 画像は記事のページを読んで探す。なければ何も出さない。
   // 見出しは黒帯の枠の上に載せているので、画像の高さぶん枠を下げ、見出しを同じだけ上に戻す(高さは --jf-img-h。見た目は jf.css)
   var IMG = {};
+  // 黒帯の枠の、もともとの上の余白を覚えておく(画像や共有の行を見出しとの間に挟むとき、そのぶんを足すため)。
+  // まだ何も挟んでいないときにだけ測る
+  function topBase(c, a) {
+    if (!a.hasAttribute('data-jf-img') && !a.hasAttribute('data-jf-dshare')) c.style.setProperty('--jf-base-mt', getComputedStyle(a).marginTop);
+  }
   function leadImg(a, on) {
     var href = (a.getAttribute('href') || '').split('?')[0], box = a.querySelector(':scope > .jf-lead-img');
+    var c = a.closest('.notion-collection') || a;
+    var noImg = function () { a.removeAttribute('data-jf-img'); c.style.removeProperty('--jf-img-h'); c.style.removeProperty('--jf-img-gap'); };
     var size = function () {
-      if (!a.hasAttribute('data-jf-img')) { a.style.setProperty('--jf-base-mt', getComputedStyle(a).marginTop); a.setAttribute('data-jf-img', '1'); }
-      a.style.setProperty('--jf-img-h', Math.round(a.offsetWidth * 9 / 16) + 'px');
+      topBase(c, a);
+      a.setAttribute('data-jf-img', '1');
+      c.style.setProperty('--jf-img-h', Math.round(a.offsetWidth * 9 / 16) + 'px'); c.style.setProperty('--jf-img-gap', '16px');
     };
-    var clear = function () { if (box) box.remove(); if (a.hasAttribute('data-jf-img')) { a.removeAttribute('data-jf-img'); a.style.removeProperty('--jf-img-h'); a.style.removeProperty('--jf-base-mt'); } };
+    var clear = function () { if (box) box.remove(); if (a.hasAttribute('data-jf-img')) noImg(); };
     if (!on) { clear(); return; }
     if (box && box.getAttribute('data-href') === href) { size(); return; }
     clear(); box = null;
     var put = function (src) {
       if (!src || !a.isConnected || a.querySelector(':scope > .jf-lead-img')) return;
       var d = picture('jf-lead-img', src); d.setAttribute('data-href', href);
-      d.querySelector('img').addEventListener('error', function () { a.removeAttribute('data-jf-img'); });
+      d.querySelector('img').addEventListener('error', noImg);
       a.insertBefore(d, a.firstChild);
       size();
     };
@@ -572,18 +580,27 @@
   function dayText(date, title, count) {
     return dayLabel(date) + 'のヘッドライン｜ジュウジュツフィード\n' + title + (count > 1 ? ' ほか' + (count - 1) + '本' : '');
   }
-  // トップ: 今日のヘッドラインの下に、その日まるごとの共有の行を出す
+  // トップ: 今日のヘッドラインの見出しのすぐ下(画像の上)に、その日まるごとの共有の行を小さく出す
   function topShare(c, on, date, today) {
     var box = c.querySelector(':scope > .jf-share-day');
     var first = on ? c.querySelector('a.notion-list-item[data-jf-today]:not([data-jf-gone])') : null;
-    if (!first || !date) { if (box) box.remove(); return; }
+    if (!first || !date) {
+      if (box) box.remove();
+      c.querySelectorAll('a[data-jf-dshare]').forEach(function (x) { x.removeAttribute('data-jf-dshare'); });
+      c.style.removeProperty('--jf-share-h');
+      return;
+    }
+    // 共有の行は、見出しと画像(なければ黒帯の枠)の間に小さく置く。そのぶん枠を下げる(見た目は jf.css)
+    topBase(c, first);
+    if (!first.hasAttribute('data-jf-dshare')) first.setAttribute('data-jf-dshare', '1');
+    c.style.setProperty('--jf-share-h', '32px');
     var n = 0; c.querySelectorAll('a.notion-list-item:not([data-jf-gone]) .notion-property-date-item').forEach(function (x) { if (x.textContent.trim() === date) n++; });
     var href = (first.getAttribute('href') || '').split('?')[0], title = txt(first.querySelector('.notion-page-title-text')), sig = href + '|' + n + '|' + title;
     if (box && box.getAttribute('data-sig') === sig) return;
     if (box) box.remove();
     box = shareRow(dayText(date, title, n), location.origin + href + '#day', date === today ? '今日のヘッドラインを共有' : 'この日のヘッドラインを共有');
     box.setAttribute('data-sig', sig);
-    c.insertBefore(box, c.querySelector(':scope > .jf-prev'));
+    c.appendChild(box);
   }
   function leadArt(a, on, date) {
     var art = a.querySelector(':scope > .jf-art');

@@ -288,7 +288,7 @@ html.jf-leaving main.contents { opacity: 0 !important; transition: opacity 0.25s
 html [data-jf-day] main.contents { display: none !important; }
 html .jf-day { padding-top: 20px; animation: jf-rise-a 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
 html.jf-leaving .jf-day { opacity: 0; transition: opacity 0.25s ease; animation: none; }
-html .jf-day-title { margin: 6px 0 0; padding: 0; border: 0; font-size: clamp(1.6rem, 6.4vw, 2.1rem); font-weight: 700; line-height: 1.35; letter-spacing: 0.02em; }
+html .jf-day-title { margin: 6px 0 0; padding: 0; border: 0; font-size: clamp(1.3rem, 5.5vw, 2.1rem); font-weight: 700; line-height: 1.35; letter-spacing: 0.02em; }
 html .jf-day-title span { display: block; margin-bottom: 4px; font-size: 0.5em; font-weight: 400; letter-spacing: 0.08em; color: var(--jf-muted); font-variant-numeric: tabular-nums; }
 html .jf-stories { list-style: none; margin: 24px 0 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
 html .jf-story { --c: #fff; --b: #111; position: relative; margin: 0; padding: 22px 20px 22px 40px; border: 1px solid var(--jf-line); border-radius: 14px; background: linear-gradient(to top, var(--c) 0 20px, var(--b) 20px 60px, var(--c) 60px) left / 22px 100% no-repeat, #fff; scroll-margin-top: 112px; transition: border-color 0.6s, box-shadow 0.6s; }
@@ -507,8 +507,8 @@ html .jf-bar { position: fixed; left: 0; right: 0; top: 0; z-index: 100002; heig
 html .jf-lead-img, html .jf-day-img { display: block; border-radius: 14px; overflow: hidden; background: #f1f1f1; }
 html .jf-lead-img img, html .jf-day-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
 html .jf-day-img { aspect-ratio: 16 / 9; margin: 18px 0 16px; }
-html .page-_top a.notion-list-item[data-jf-img] { margin-top: calc(var(--jf-base-mt, 64px) + var(--jf-img-h, 0px) + 16px) !important; }
-html .page-_top a.notion-list-item[data-jf-img]::before { bottom: calc(100% + 14px + var(--jf-img-h, 0px) + 16px); }
+html .page-_top a.notion-list-item[data-jf-img], html .page-_top a.notion-list-item[data-jf-dshare] { margin-top: calc(var(--jf-base-mt, 64px) + var(--jf-share-h, 0px) + var(--jf-img-h, 0px) + var(--jf-img-gap, 0px)) !important; }
+html .page-_top a.notion-list-item[data-jf-img]::before, html .page-_top a.notion-list-item[data-jf-dshare]::before { bottom: calc(100% + 14px + var(--jf-share-h, 0px) + var(--jf-img-h, 0px) + var(--jf-img-gap, 0px)); }
 html .jf-lead-img { position: absolute; left: 0; right: 0; bottom: calc(100% + 16px); height: var(--jf-img-h, 0px); }
 
 /* v30: トップの今日のヘッドラインの下に出す「前の日」へのリンク */
@@ -528,6 +528,11 @@ html .jf-side { display: none; }
   html .jf-side-chips a:hover { border-color: var(--jf-text); }
 }
 
-/* v32: その日まるごとの共有の行(トップの今日のヘッドラインの下、その日のページの一覧の下)。左に小さい説明を付ける */
-html .jf-share-day { margin-top: 20px; }
-html .jf-share-label { margin-right: auto; font-size: 0.72rem; letter-spacing: 0.08em; color: var(--jf-muted); }
+/* v32: その日まるごとの共有の行。見出しのすぐ下(画像の上)に小さく置く。左に小さい説明を付ける。
+   トップでは、見出しと画像の間に --jf-share-h ぶんのすき間を空けて、そこに重ねている(値は jf.js が入れる) */
+html .jf-share-day { margin: 10px 0 0; gap: 4px 16px; }
+html .jf-share-day a, html .jf-share-day button { min-height: 24px; font-size: 0.68rem !important; }
+html .jf-share-day svg { width: 14px; height: 14px; }
+html .jf-share-label { margin-right: auto; font-size: 0.66rem; letter-spacing: 0.08em; color: var(--jf-muted); }
+html .page-_top .jf-share-day { position: absolute; left: 0; right: 0; top: calc(var(--jf-base-mt, 64px) - 6px); margin: 0; }
+html .jf-day .jf-day-img { margin-top: 10px; }
