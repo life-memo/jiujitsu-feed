@@ -527,3 +527,7 @@ html .jf-side { display: none; }
   html .jf-side-chips a { display: inline-block; padding: 5px 11px; border: 1px solid var(--jf-line); border-radius: 15px; font-size: 0.76rem !important; line-height: 1.4; color: var(--jf-text) !important; text-decoration: none; background: #fff; transition: border-color 0.3s; }
   html .jf-side-chips a:hover { border-color: var(--jf-text); }
 }
+
+/* v32: その日まるごとの共有の行(トップの今日のヘッドラインの下、その日のページの一覧の下)。左に小さい説明を付ける */
+html .jf-share-day { margin-top: 20px; }
+html .jf-share-label { margin-right: auto; font-size: 0.72rem; letter-spacing: 0.08em; color: var(--jf-muted); }

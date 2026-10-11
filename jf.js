@@ -169,19 +169,11 @@
     });
   }
   var el = function (tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
-  function storyCard(s, picked) {
-    var li = el('li', 'jf-story' + (picked ? ' jf-picked' : ''));
-    if (s.rank) li.setAttribute('data-rank', s.rank);
-    var meta = el('p', 'jf-story-meta', s.cat);
-    li.appendChild(meta);
-    li.appendChild(el('h2', null, s.title));
-    var ul = el('ul', 'jf-points');
-    s.points.forEach(function (p) { ul.appendChild(el('li', null, p)); });
-    linkWho(ul);
-    linkEvents([ul]);
-    li.appendChild(ul);
-    // 共有: X、LINE、Threads と、端末の共有メニュー(iPhoneの共有ボタンと同じもの)。参照記事と混ざらないよう、区切りの線より上に右寄せで置く
-    var url = location.origin + s.href, sh = el('div', 'jf-share'), u = encodeURIComponent(url), text = s.title + '｜ジュウジュツフィード';
+  // 共有の行: X、LINE、Threads と、端末の共有メニュー(iPhoneの共有ボタンと同じもの)。
+  // label を渡すと、左に小さい説明を付ける(「今日のヘッドラインを共有」など、その日まるごとの共有に使う)
+  function shareRow(text, url, label) {
+    var sh = el('div', 'jf-share' + (label ? ' jf-share-day' : '')), u = encodeURIComponent(url);
+    if (label) sh.appendChild(el('span', 'jf-share-label', label));
     sh.setAttribute('aria-label', '共有');
     // スマホでは、LINEの「Web用の共有ページ」はアプリに横取りされて共有にならないので、アプリ向けのアドレスを使う
     var phone = false; try { phone = window.matchMedia('(pointer: coarse)').matches; } catch (e) {}
@@ -196,7 +188,21 @@
       more.addEventListener('click', function () { try { navigator.share({ title: text, url: url }).catch(function () {}); } catch (e) {} });
       sh.appendChild(more);
     }
-    li.appendChild(sh);
+    return sh;
+  }
+  function storyCard(s, picked) {
+    var li = el('li', 'jf-story' + (picked ? ' jf-picked' : ''));
+    if (s.rank) li.setAttribute('data-rank', s.rank);
+    var meta = el('p', 'jf-story-meta', s.cat);
+    li.appendChild(meta);
+    li.appendChild(el('h2', null, s.title));
+    var ul = el('ul', 'jf-points');
+    s.points.forEach(function (p) { ul.appendChild(el('li', null, p)); });
+    linkWho(ul);
+    linkEvents([ul]);
+    li.appendChild(ul);
+    // 共有(記事ごと)。参照記事と混ざらないよう、区切りの線より上に右寄せで置く
+    li.appendChild(shareRow(s.title + '｜ジュウジュツフィード', location.origin + s.href));
     if (s.srcs.length) {
       var d = el('div', 'jf-srcs'); d.appendChild(el('span', null, '参照記事'));
       s.srcs.forEach(function (x) { var a = el('a', null, x[0] + ' ↗'); a.href = x[1]; a.target = '_blank'; a.rel = 'noopener'; d.appendChild(a); });
@@ -210,6 +216,7 @@
     if (box) box.remove();
     var me = readStory(main, path), plain = false;
     try { plain = sessionStorage.getItem('jf-nopick') === path; } catch (e) {}
+    if (location.hash === '#day') plain = true;   // 「その日のヘッドライン」として共有されたリンクから来たときは、どの記事にも印を付けない
     if (!me.date || !me.points.length) return;                 // 中身が読めないときは、ふつうの記事ページのままにする
     try { if (dnum(me.date) > (Number(localStorage.getItem('jf-latest')) || 0)) localStorage.setItem('jf-latest', String(dnum(me.date))); } catch (e) {}
     box = el('div', 'jf-day'); box.setAttribute('data-path', path);
@@ -256,6 +263,10 @@
           if (!s || !s.points.length || s.title.indexOf('【削除】') === 0 || (s !== me && s.date && s.date !== me.date)) return;
           list.appendChild(storyCard(s, !plain && s.href === path));
         });
+        // その日まるごとの共有(黒帯の記事のアドレスに #day を付けたものを渡す。開くと、どの記事にも印のないその日のページになる)
+        var oldShare = box.querySelector(':scope > .jf-share-day'), shown = stories.filter(function (s) { return s && s.points.length && !GONE[s.href] && s.title.indexOf('【削除】') !== 0; });
+        if (oldShare) oldShare.remove();
+        if (shown.length) box.insertBefore(shareRow(dayText(me.date, shown[0].title, shown.length), location.origin + shown[0].href + '#day', 'この日のヘッドラインを共有'), nav);
         var mine = list.querySelector('.jf-picked');
         if (mine && mine !== list.firstElementChild) mine.scrollIntoView({ block: 'start' });
       });
@@ -557,6 +568,23 @@
     group('大会から探す', '/' + EVENTS_PAGE, EVENT_TAGS.filter(function (t) { return t !== 'その他の大会'; }).map(function (t) { return [t, '/' + EVENTS_PAGE + '#' + encodeURIComponent(t), t]; }));
     c.appendChild(box);
   }
+  // 共有するときの文面(その日まるごと): 「10月11日(日)のヘッドライン｜ジュウジュツフィード」+ 黒帯の見出し + ほか何本
+  function dayText(date, title, count) {
+    return dayLabel(date) + 'のヘッドライン｜ジュウジュツフィード\n' + title + (count > 1 ? ' ほか' + (count - 1) + '本' : '');
+  }
+  // トップ: 今日のヘッドラインの下に、その日まるごとの共有の行を出す
+  function topShare(c, on, date, today) {
+    var box = c.querySelector(':scope > .jf-share-day');
+    var first = on ? c.querySelector('a.notion-list-item[data-jf-today]:not([data-jf-gone])') : null;
+    if (!first || !date) { if (box) box.remove(); return; }
+    var n = 0; c.querySelectorAll('a.notion-list-item:not([data-jf-gone]) .notion-property-date-item').forEach(function (x) { if (x.textContent.trim() === date) n++; });
+    var href = (first.getAttribute('href') || '').split('?')[0], title = txt(first.querySelector('.notion-page-title-text')), sig = href + '|' + n + '|' + title;
+    if (box && box.getAttribute('data-sig') === sig) return;
+    if (box) box.remove();
+    box = shareRow(dayText(date, title, n), location.origin + href + '#day', date === today ? '今日のヘッドラインを共有' : 'この日のヘッドラインを共有');
+    box.setAttribute('data-sig', sig);
+    c.insertBefore(box, c.querySelector(':scope > .jf-prev'));
+  }
   function leadArt(a, on, date) {
     var art = a.querySelector(':scope > .jf-art');
     if (!on) { if (art) art.remove(); return; }
@@ -687,6 +715,7 @@
         leadImg(a, top && !recs && first && group === 1 && !!n && n.textContent.trim() === '1');
         last = date;
       });
+      topShare(c, top && !recs, d0 ? d0.textContent.trim() : '', today);
     });
     document.querySelectorAll('.notion-collection-row-property').forEach(function (r) {
       var t = r.querySelector('.notion-collection-column-title-body'), k = t ? t.textContent.trim() : null;
