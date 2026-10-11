@@ -507,9 +507,9 @@ html .jf-bar { position: fixed; left: 0; right: 0; top: 0; z-index: 100002; heig
 html .jf-lead-img, html .jf-day-img { display: block; border-radius: 14px; overflow: hidden; background: #f1f1f1; }
 html .jf-lead-img img, html .jf-day-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
 html .jf-day-img { aspect-ratio: 16 / 9; margin: 18px 0 16px; }
-html .page-_top a.notion-list-item[data-jf-img], html .page-_top a.notion-list-item[data-jf-dshare] { margin-top: calc(var(--jf-base-mt, 64px) + var(--jf-share-h, 0px) + var(--jf-img-h, 0px) + var(--jf-img-gap, 0px)) !important; }
+html .page-_top a.notion-list-item[data-jf-img], html .page-_top a.notion-list-item[data-jf-dshare] { margin-top: calc(64px + var(--jf-share-h, 0px) + var(--jf-img-h, 0px) + var(--jf-img-gap, 0px)) !important; }
 html .page-_top a.notion-list-item[data-jf-img]::before, html .page-_top a.notion-list-item[data-jf-dshare]::before { bottom: calc(100% + 14px + var(--jf-share-h, 0px) + var(--jf-img-h, 0px) + var(--jf-img-gap, 0px)); }
-html .jf-lead-img { position: absolute; left: 0; right: 0; bottom: calc(100% + 16px); height: var(--jf-img-h, 0px); }
+html .jf-lead-img { position: absolute; left: 0; right: 0; bottom: calc(100% + 16px + var(--jf-share-h, 0px)); height: var(--jf-img-h, 0px); }
 
 /* v30: トップの今日のヘッドラインの下に出す「前の日」へのリンク */
 html .page-_top .jf-prev { margin-top: 20px; padding-top: 0; border-top: 0; }
@@ -528,11 +528,11 @@ html .jf-side { display: none; }
   html .jf-side-chips a:hover { border-color: var(--jf-text); }
 }
 
-/* v32: その日まるごとの共有の行。見出しのすぐ下(画像の上)に小さく置く。左に小さい説明を付ける。
-   トップでは、見出しと画像の間に --jf-share-h ぶんのすき間を空けて、そこに重ねている(値は jf.js が入れる) */
-html .jf-share-day { margin: 10px 0 0; gap: 4px 16px; }
+/* v32: その日まるごとの共有の行。画像のすぐ下(画像がなければ見出しのすぐ下)に、右寄せで小さく置く。説明の文字は付けない。
+   トップでは、画像と黒帯の枠の間に --jf-share-h ぶんのすき間を空けて、そこに重ねている(値は jf.js が入れる) */
+html .jf-share-day { margin: 0; gap: 4px 16px; }
+html .jf-share-day + .jf-stories { margin-top: 12px; }
 html .jf-share-day a, html .jf-share-day button { min-height: 24px; font-size: 0.68rem !important; }
 html .jf-share-day svg { width: 14px; height: 14px; }
-html .jf-share-label { margin-right: auto; font-size: 0.66rem; letter-spacing: 0.08em; color: var(--jf-muted); }
-html .page-_top .jf-share-day { position: absolute; left: 0; right: 0; top: calc(var(--jf-base-mt, 64px) - 6px); margin: 0; }
-html .jf-day .jf-day-img { margin-top: 10px; }
+html .page-_top .jf-share-day { position: absolute; left: 0; right: 0; top: calc(58px + var(--jf-img-h, 0px) + var(--jf-img-gap, 0px)); margin: 0; }
+html .jf-day .jf-day-img { margin: 14px 0 10px; }
