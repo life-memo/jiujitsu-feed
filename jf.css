@@ -537,7 +537,7 @@ html .jf-share-day svg { width: 14px; height: 14px; }
 html .page-_top .jf-share-day { position: absolute; left: 0; right: 0; top: calc(58px + var(--jf-img-h, 0px) + var(--jf-img-gap, 0px)); margin: 0; }
 html .jf-day .jf-day-img { margin: 14px 0 10px; }
 
-/* v33: メニュー(左上の三本線)のいちばん上に「ジュウジュツフィードとは」を出す */
+/* v33: メニュー(左上の三本線)のいちばん上に「ジュウジュツフィードについて」を出す */
 html .jf-drawer .jf-drawer-top { padding: 0 0 10px; }
 html .jf-drawer .jf-drawer-top a { font-weight: 700; }
 
