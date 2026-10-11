@@ -537,11 +537,9 @@ html .jf-share-day svg { width: 14px; height: 14px; }
 html .page-_top .jf-share-day { position: absolute; left: 0; right: 0; top: calc(58px + var(--jf-img-h, 0px) + var(--jf-img-gap, 0px)); margin: 0; }
 html .jf-day .jf-day-img { margin: 14px 0 10px; }
 
-/* v33: トップのいちばん上に、このサイトが何をしているかをひとこと(「ジュウジュツフィードとは」のページへのリンクつき) */
-html .jf-about { margin: 14px 0 0; padding: 0; font-size: 0.74rem; line-height: 1.75; letter-spacing: 0.04em; color: var(--jf-muted); }
-html .jf-about a { margin-left: 8px; font-size: inherit !important; color: var(--jf-text) !important; text-decoration: underline; text-decoration-color: var(--jf-faint); text-underline-offset: 4px; white-space: nowrap; }
-html .jf-about a:hover { text-decoration-color: var(--jf-text); }
-@media (min-width: 1000px) { html .jf-about { margin-top: 22px; font-size: 0.8rem; } }
+/* v33: メニュー(左上の三本線)のいちばん上に「ジュウジュツフィードとは」を出す */
+html .jf-drawer .jf-drawer-top { padding: 0 0 10px; }
+html .jf-drawer .jf-drawer-top a { font-weight: 700; }
 
 /* v34: タブの文字の間を広げる。パソコンではタブどうしの間も広げる */
 html .jf-tabs a { letter-spacing: 0.16em; text-indent: 0.16em; }
