@@ -540,10 +540,3 @@ html .jf-day .jf-day-img { margin: 14px 0 10px; }
 /* v34: タブの文字の間を広げる。パソコンではタブどうしの間も広げる */
 html .jf-tabs a { letter-spacing: 0.16em; text-indent: 0.16em; }
 @media (min-width: 1000px) { html .jf-tabs a { min-width: 108px; } }
-
-/* v35: フッターのいちばん下に、利用規約・プライバシーポリシー・特定商取引法に基づく表記・お問い合わせへのリンクを並べる(右にコピーライト) */
-html .jf-legal { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px 24px; text-align: left; }
-html .jf-legal-links { display: flex; flex-wrap: wrap; gap: 8px 20px; }
-html .jf-legal-links a { font-size: inherit !important; color: #c8c8c8 !important; text-decoration: none; transition: color 0.3s; }
-html .jf-legal-links a:hover { color: #fff !important; }
-html .jf-legal > span:last-child { margin-left: auto; }
