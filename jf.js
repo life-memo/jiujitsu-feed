@@ -171,14 +171,20 @@
   var el = function (tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
   // 共有の行: X、LINE、Threads と、端末の共有メニュー(iPhoneの共有ボタンと同じもの)。
   // day が真なら、その日まるごとの共有の行(画像のすぐ下に小さく置く。説明の文字は付けない)
+  // text は、文字数の上限と数え方を受け取って文面を返す関数でもよい(Xは140字ぶんまでなので、長いときは縮めた文面にする)。
+  // リンクは文面の最後に、改行してから付ける
   function shareRow(text, url, day) {
+    var make = typeof text === 'function' ? text : function () { return text; };
     var sh = el('div', 'jf-share' + (day ? ' jf-share-day' : '')), u = encodeURIComponent(url);
+    // X: 全角1文字を2と数えて280まで。リンクは長さに関係なく23、改行が1
+    var xText = make(280 - 23 - 1, xWeight), thText = make(500 - url.length - 1, plainLen);
+    text = make(5000, plainLen);
     sh.setAttribute('aria-label', '共有');
     // スマホでは、LINEの「Web用の共有ページ」はアプリに横取りされて共有にならないので、アプリ向けのアドレスを使う
     var phone = false; try { phone = window.matchMedia('(pointer: coarse)').matches; } catch (e) {}
-    [['X', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + u],
+    [['X', 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(xText + '\n' + url)],
       ['LINE', phone ? 'https://line.me/R/share?text=' + encodeURIComponent(text + '\n' + url) : 'https://social-plugins.line.me/lineit/share?url=' + u],
-      ['Threads', 'https://www.threads.net/intent/post?text=' + encodeURIComponent(text + '\n' + url)]].forEach(function (x) {
+      ['Threads', 'https://www.threads.net/intent/post?text=' + encodeURIComponent(thText + '\n' + url)]].forEach(function (x) {
       var a = el('a', null, x[0]); a.href = x[1]; a.target = '_blank'; a.rel = 'noopener'; a.setAttribute('aria-label', x[0] + 'で共有'); sh.appendChild(a);
     });
     if (navigator.share) {
@@ -265,7 +271,7 @@
         // その日まるごとの共有(黒帯の記事のアドレスに #day を付けたものを渡す。開くと、どの記事にも印のないその日のページになる)
         var oldShare = box.querySelector(':scope > .jf-share-day'), shown = stories.filter(function (s) { return s && s.points.length && !GONE[s.href] && s.title.indexOf('【削除】') !== 0; });
         if (oldShare) oldShare.remove();
-        if (shown.length) box.insertBefore(shareRow(dayText(me.date, shown[0].title, shown.length), location.origin + shown[0].href + '#day', true), list);
+        if (shown.length) box.insertBefore(shareRow(dayText(me.date, shown.map(function (s) { return s.title; }), shown.length), location.origin + shown[0].href + '#day', true), list);
         var mine = list.querySelector('.jf-picked');
         if (mine && mine !== list.firstElementChild) mine.scrollIntoView({ block: 'start' });
       });
@@ -569,10 +575,40 @@
     group('大会から探す', '/' + EVENTS_PAGE, EVENT_TAGS.filter(function (t) { return t !== 'その他の大会'; }).map(function (t) { return [t, '/' + EVENTS_PAGE + '#' + encodeURIComponent(t), t]; }));
     c.appendChild(box);
   }
-  // 共有するときの文面(その日まるごと): 「10月11日(日)のヘッドライン｜ジュウジュツフィード」+ 黒帯の見出し + ほか何本
-  function dayText(date, title, count) {
-    return dayLabel(date) + 'のヘッドライン｜ジュウジュツフィード\n' + title + (count > 1 ? ' ほか' + (count - 1) + '本' : '');
+  // 共有するときの文面(その日まるごと): 「10月11日(日)のヘッドライン｜ジュウジュツフィード」のあとに、上から3本を 1. 2. 3. で並べ、残りは「ほか何本」。
+  // 上限(limit、数え方は weigh)に収まらないときは、順に縮める: サイト名を外す → 見出しを全角の空白の前までにする → それでも長ければ「…」で切る
+  function dayText(date, titles, count) {
+    return function (limit, weigh) {
+      var top = titles.slice(0, 3), rest = count - top.length;
+      var build = function (head, ts) {
+        return head + '\n' + ts.map(function (t, i) { return (i + 1) + '. ' + t; }).join('\n') + (rest > 0 ? '\nほか' + rest + '本' : '');
+      };
+      var long = dayLabel(date) + 'のヘッドライン｜ジュウジュツフィード', short = dayLabel(date) + 'のヘッドライン';
+      var out = build(long, top);
+      if (weigh(out) <= limit) return out;
+      out = build(short, top);
+      if (weigh(out) <= limit) return out;
+      var cut = top.map(function (t) { var i = t.indexOf('\u3000'); return i > 6 ? t.slice(0, i) : t; });
+      out = build(short, cut);
+      if (weigh(out) <= limit) return out;
+      // まだ長い: 見出し以外に使うぶんを引いた残りを、長い見出しから1文字ずつ削る
+      var arr = cut.map(function (t) { return Array.from(t); }), done = cut.map(function () { return false; });
+      for (var guard = 0; guard < 400 && weigh(out) > limit; guard++) {
+        var k = 0; arr.forEach(function (a, i) { if (a.length > arr[k].length) k = i; });
+        if (arr[k].length <= 8) break;
+        arr[k].pop(); done[k] = true;
+        out = build(short, arr.map(function (a, i) { return a.join('') + (done[i] ? '…' : ''); }));
+      }
+      return out;
+    };
   }
+  // Xの数え方: 半角の英数や記号は1、全角(日本語など)は2
+  function xWeight(t) {
+    var n = 0;
+    Array.from(String(t)).forEach(function (ch) { var c = ch.codePointAt(0); n += (c <= 0x10FF || (c >= 0x2000 && c <= 0x200D) || (c >= 0x2010 && c <= 0x201F) || (c >= 0x2032 && c <= 0x2037)) ? 1 : 2; });
+    return n;
+  }
+  function plainLen(t) { return Array.from(String(t)).length; }
   // トップ: 画像のすぐ下(画像がなければ見出しのすぐ下)に、その日まるごとの共有の行を小さく出す
   function topShare(c, on, date, today) {
     var box = c.querySelector(':scope > .jf-share-day');
@@ -586,11 +622,11 @@
     // 共有の行は、画像と黒帯の枠の間に小さく置く。そのぶん枠を下げる(見た目は jf.css)
     if (!first.hasAttribute('data-jf-dshare')) first.setAttribute('data-jf-dshare', '1');
     c.style.setProperty('--jf-share-h', '32px');
-    var n = 0; c.querySelectorAll('a.notion-list-item:not([data-jf-gone]) .notion-property-date-item').forEach(function (x) { if (x.textContent.trim() === date) n++; });
-    var href = (first.getAttribute('href') || '').split('?')[0], title = txt(first.querySelector('.notion-page-title-text')), sig = href + '|' + n + '|' + title;
+    var titles = []; c.querySelectorAll('a.notion-list-item:not([data-jf-gone])').forEach(function (x) { var d = x.querySelector('.notion-property-date-item'); if (d && d.textContent.trim() === date) titles.push(txt(x.querySelector('.notion-page-title-text'))); });
+    var n = titles.length, href = (first.getAttribute('href') || '').split('?')[0], sig = href + '|' + n + '|' + titles.slice(0, 3).join('|');
     if (box && box.getAttribute('data-sig') === sig) return;
     if (box) box.remove();
-    box = shareRow(dayText(date, title, n), location.origin + href + '#day', true);
+    box = shareRow(dayText(date, titles, n), location.origin + href + '#day', true);
     box.setAttribute('data-sig', sig);
     c.appendChild(box);
   }
