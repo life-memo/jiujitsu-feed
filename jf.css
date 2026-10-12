@@ -83,7 +83,7 @@ html .container { padding-top: 47px; }
 /* カテゴリーのページ: 見出しと説明 */
 html .notion:not(.page-_top) .titleSection .title { letter-spacing: 0.02em; }
 /* 題名のすぐ下の一文は小さく灰色にする。ただし「ジュウジュツフィードとは」「運用方針」「利用規約」などの説明ページは、本文と同じ黒い文字のままにする */
-html .notion:not(.page_id-3f6a6fb1972b811c992dee5a7ea6c75e):not(.page_id-3f4a6fb1972b814197a3c91977d78b35):not(.page_id-3f6a6fb1972b818ba0e6ebcea19448d9):not(.page_id-3f6a6fb1972b810ebbf9cde20f9a1f15):not(.page_id-3f6a6fb1972b815d9ab3f55f0ecb8280):not(.page_id-3f6a6fb1972b817db828cec4c514d573) .contents > .titleSection + .notion-text { margin: 10px 0 0; font-size: 0.82rem; color: var(--jf-muted); }
+html .notion:not(.page_id-3f6a6fb1972b811c992dee5a7ea6c75e):not(.page_id-3f4a6fb1972b814197a3c91977d78b35):not(.page_id-3f6a6fb1972b818ba0e6ebcea19448d9):not(.page_id-3f6a6fb1972b810ebbf9cde20f9a1f15):not(.page_id-3f6a6fb1972b815d9ab3f55f0ecb8280):not(.page_id-3f6a6fb1972b817db828cec4c514d573):not(.page_id-3f4a6fb1972b815da4cad0cf18063583) .contents > .titleSection + .notion-text { margin: 10px 0 0; font-size: 0.82rem; color: var(--jf-muted); }
 /* トップの下の一覧から、カテゴリーのページは外す(タブから行ける) */
 html .contents > a.notion-page-link[href$="3f4a6fb1972b8111b35acde92edb95c6"], html .contents > a.notion-page-link[href$="3f4a6fb1972b81acafb0c003a41de503"], html .contents > a.notion-page-link[href$="3f4a6fb1972b81278c42ca7be73c9d33"], html .contents > a.notion-page-link[href$="3f4a6fb1972b81d5967bc73bcd7a5e0c"] { display: none !important; }
 
