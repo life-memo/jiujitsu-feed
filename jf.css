@@ -548,3 +548,8 @@ html .header { background: #fff !important; -webkit-backdrop-filter: none !impor
 /* v36: メニューを開いたときの×印。三本線を動かして作るのをやめ、三本線を消して×だけを出す(線が重なって見えるのを防ぐ) */
 html.jf-menu-open .jf-menu-btn i { display: none; }
 html.jf-menu-open .jf-menu-btn::after { content: ""; display: block; width: 16px; height: 16px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 3l10 10M13 3L3 13' fill='none' stroke='%23111' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat; }
+
+/* v38: スマホで横にずれない(横スクロールさせない)。はみ出した要素があっても画面の幅で切る */
+html, html body { max-width: 100%; overflow-x: hidden; }
+@supports (overflow: clip) { html, html body { overflow-x: clip; } }
+html .notion-text, html .notion-list li, html .jf-story, html .jf-story li, html .jf-srcs a { overflow-wrap: anywhere; }
