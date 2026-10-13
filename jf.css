@@ -558,3 +558,15 @@ html .notion-text, html .notion-list li, html .jf-story, html .jf-story li, html
 html .jf-daynav.jf-daynav-top { margin: 0 0 6px; padding-top: 0; border-top: 0; }
 html .jf-daynav.jf-daynav-top + .jf-share-day { margin-top: 0; }
 html .jf-daynav.jf-daynav-top:empty { display: none; }
+
+/* v40: スマホ(指で触る端末)では、押したあとの「なぞった状態」の色が次のページに残ってしまう。
+   指の端末では、なぞったときの色の変化を出さない */
+@media (hover: none) {
+  html .jf-daynav a:hover { color: var(--jf-muted) !important; }
+  html .jf-tabs a:hover:not([aria-current="page"]) { color: var(--jf-muted); }
+  html .jf-share a:hover, html .jf-share button:hover { color: #3a3a3a !important; }
+  html .jf-srcs a:hover { color: var(--jf-muted) !important; text-decoration-color: var(--jf-line); }
+  html .page-_top .contents > .notion-collection[data-jf-recs] ~ .notion-text a:hover { color: var(--jf-muted) !important; }
+  html a.notion-list-item:hover { transform: none; box-shadow: none; }
+  html .jf-drawer a:hover { transform: none; }
+}
