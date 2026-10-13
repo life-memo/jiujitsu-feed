@@ -652,6 +652,18 @@
   }
   var tabPath = null;
   // 本文の中の Notion のページへのリンク(app.notion.com/p/… や notion.so/…)を、このサイトの中のページへのリンクに置きかえる
+  // 引用(Notionの「引用」ブロック)の最後の「──『○○』より」は、出典として小さく右に寄せる
+  function quoteCite() {
+    document.querySelectorAll('main.contents blockquote').forEach(function (q) {
+      if (q.querySelector('.jf-cite')) return;
+      var w = document.createTreeWalker(q, NodeFilter.SHOW_TEXT), n, hit = null;
+      while ((n = w.nextNode())) if (/^\s*──/.test(n.nodeValue)) hit = n;
+      if (!hit) return;
+      var c = document.createElement('span'); c.className = 'jf-cite'; c.textContent = hit.nodeValue.trim();
+      var prev = hit.previousSibling; if (prev && prev.nodeName === 'BR') prev.remove();
+      hit.parentNode.replaceChild(c, hit);
+    });
+  }
   function fixNotionLinks() {
     document.querySelectorAll('main.contents a[href*="notion.com/"], main.contents a[href*="notion.so/"], main.contents a[href*="notion.site/"]').forEach(function (a) {
       var m = (a.getAttribute('href') || '').match(/([0-9a-f]{32})(?:[?#]|$)/);
@@ -663,6 +675,7 @@
   }
   function apply() {
     fixNotionLinks();
+    quoteCite();
     var root = document.querySelector('.notion.page');
     if (!root) return;
     var mode = pageMode(root), top = mode === 'top';
