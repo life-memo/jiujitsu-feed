@@ -232,8 +232,9 @@
     box = el('div', 'jf-day'); box.setAttribute('data-path', path);
     var p = me.date.split('/').map(Number);
     var h = el('h1', 'jf-day-title'); h.appendChild(el('span', null, p[0] + '年')); h.appendChild(document.createTextNode(p[1] + '月' + p[2] + '日(' + WD[new Date(p[0], p[1] - 1, p[2]).getDay()] + ')のヘッドライン'));   // トップ(「今日のヘッドライン」)と見分けがつくように、今日の分でも日付で出す。上の小さい字は年だけ(日付を2回書かない)
-    var list = el('ul', 'jf-stories'), nav = el('div', 'jf-daynav');
-    box.appendChild(h); box.appendChild(list); box.appendChild(nav);
+    // 前の日・次の日のリンクは、いちばん下と、題名のすぐ下の2か所に出す(長いページでも下まで行かずに移れるように)
+    var list = el('ul', 'jf-stories'), nav = el('div', 'jf-daynav'), navTop = el('div', 'jf-daynav jf-daynav-top');
+    box.appendChild(h); box.appendChild(navTop); box.appendChild(list); box.appendChild(nav);
     list.appendChild(storyCard(me, !plain));
     main.parentNode.appendChild(box);
     root.setAttribute('data-jf-day', '1');
@@ -255,9 +256,11 @@
       shownKey = key;
       var di = dates.indexOf(me.date), first = function (d) { return all.filter(function (x) { return x.date === d; }).sort(byRank)[0]; };
       var short = function (d) { var q = d.split('/').map(Number); return q[1] + '月' + q[2] + '日(' + WD[new Date(q[0], q[1] - 1, q[2]).getDay()] + ')'; };
-      nav.textContent = '';
-      if (dates[di + 1]) { var a1 = el('a', null, '← 前の日 ' + short(dates[di + 1])); a1.href = first(dates[di + 1]).href; nav.appendChild(a1); }
-      if (di > 0) { var a2 = el('a', 'jf-next', '次の日 ' + short(dates[di - 1]) + ' →'); a2.href = first(dates[di - 1]).href; nav.appendChild(a2); }
+      [nav, navTop].forEach(function (n) {
+        n.textContent = '';
+        if (dates[di + 1]) { var a1 = el('a', null, '← 前の日 ' + short(dates[di + 1])); a1.href = first(dates[di + 1]).href; n.appendChild(a1); }
+        if (di > 0) { var a2 = el('a', 'jf-next', '次の日 ' + short(dates[di - 1]) + ' →'); a2.href = first(dates[di - 1]).href; n.appendChild(a2); }
+      });
       Promise.all(mates.map(function (x) {
         if (x.href === path) return me;
         return getDoc(x.href).then(function (d) { var m = d.querySelector('main.contents'); var s = m ? readStory(m, x.href) : null; if (s) { s.rank = s.rank || String(x.rank); s.cat = s.cat || x.cat; } return s; }).catch(function () { return null; });
