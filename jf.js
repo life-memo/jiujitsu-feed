@@ -111,8 +111,12 @@
     d.appendChild(i);
     return d;
   };
+  // 黒帯の記事の画像を、Wraptasの取り込みを待たずに差しかえるときの一覧(記事のアドレス → 画像)。取り込みが追いついたら消してよい
+  var IMG_FIX = {
+    '/3f7a6fb1972b81ecba17ce709679c85e': 'https://life-memo.github.io/jiujitsu-feed/img/allen-20261013.jpg'
+  };
   function readStory(main, href) {
-    var s = { href: href, title: txt(main.querySelector('h1.title')), cat: '', date: '', rank: '', points: [], srcs: [], img: storyImg(main) }, src = false;
+    var s = { href: href, title: txt(main.querySelector('h1.title')), cat: '', date: '', rank: '', points: [], srcs: [], img: IMG_FIX[href] || storyImg(main) }, src = false;
     main.querySelectorAll('.notion-collection-row-property').forEach(function (r) {
       var k = txt(r.querySelector('.notion-collection-column-title-body')), v = r.querySelector('.notion-collection-row-value');
       if (k === 'カテゴリー') s.cat = txt(v); else if (k === '掲載日') s.date = txt(r.querySelector('.notion-property-date-item')); else if (k === '並び順') s.rank = txt(v);
@@ -525,6 +529,7 @@
       a.insertBefore(d, a.firstChild);
       size();
     };
+    if (IMG_FIX[href]) IMG[href] = IMG_FIX[href];
     if (href in IMG) { put(IMG[href]); return; }
     IMG[href] = '';
     getDoc(href).then(function (d) { var m = d.querySelector('main.contents'); IMG[href] = m ? storyImg(m) : ''; put(IMG[href]); }).catch(function () {});
