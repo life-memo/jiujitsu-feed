@@ -4,14 +4,18 @@
   if (window.__jfLoaded) return;
   window.__jfLoaded = true;
   // Googleアナリティクス(測定ID G-QPTXKBEJ1Q)。ページの移動は、アナリティクス側の「ブラウザの履歴に基づくページの変更」で数える
+  // Wraptasが自分用のgtagを先に入れているので、それがあっても止めずに、こちらの測定IDを足す
   (function () {
     var GA = 'G-QPTXKBEJ1Q';
-    if (window.gtag || document.querySelector('script[src*="googletagmanager.com/gtag/js"]')) return;
-    var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA;
-    document.head.appendChild(s);
+    if (!document.querySelector('script[src*="gtag/js?id=' + GA + '"]')) {
+      var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA;
+      document.head.appendChild(s);
+    }
     window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { window.dataLayer.push(arguments); };
-    window.gtag('js', new Date());
+    if (typeof window.gtag !== 'function') {
+      window.gtag = function () { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+    }
     window.gtag('config', GA);
   })();
   // タブ・三本線のメニュー・フッター
