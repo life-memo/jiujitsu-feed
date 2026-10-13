@@ -680,6 +680,22 @@
       hit.parentNode.replaceChild(c, hit);
     });
   }
+  // 「ジュウジュツフィードとは」: 冒頭の目的の一文を大きくし、「パンピー→ニワカ→マニア」を矢印でつないだ図にして見せる
+  function aboutDecor() {
+    var page = document.querySelector('.notion.page_id-3f6a6fb1972b811c992dee5a7ea6c75e');
+    if (!page) return;
+    var first = page.querySelector('.contents > .titleSection + .notion-text');
+    if (first) first.classList.add('jf-about-lead');
+    if (page.querySelector('.jf-evo')) return;
+    var hit = Array.prototype.find.call(page.querySelectorAll('.contents > .notion-text'), function (p) { return /パンピー\s*→\s*ニワカ\s*→\s*マニア/.test(p.textContent); });
+    if (!hit) return;
+    var evo = el('div', 'jf-evo');
+    [['パンピー', 'a'], ['ニワカ', 'b'], ['マニア', 'c']].forEach(function (x, i) {
+      if (i) evo.appendChild(el('span', 'jf-evo-arrow', '→'));
+      evo.appendChild(el('span', 'jf-evo-step jf-evo-' + x[1], x[0]));
+    });
+    hit.parentNode.insertBefore(evo, hit);
+  }
   function fixNotionLinks() {
     document.querySelectorAll('main.contents a[href*="notion.com/"], main.contents a[href*="notion.so/"], main.contents a[href*="notion.site/"]').forEach(function (a) {
       var m = (a.getAttribute('href') || '').match(/([0-9a-f]{32})(?:[?#]|$)/);
@@ -692,6 +708,7 @@
   function apply() {
     fixNotionLinks();
     quoteCite();
+    aboutDecor();
     var root = document.querySelector('.notion.page');
     if (!root) return;
     var mode = pageMode(root), top = mode === 'top';
