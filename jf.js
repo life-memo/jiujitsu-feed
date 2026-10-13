@@ -281,8 +281,8 @@
         var oldShare = box.querySelector(':scope > .jf-share-day'), shown = stories.filter(function (s) { return s && s.points.length && !GONE[s.href] && s.title.indexOf('【削除】') !== 0; });
         if (oldShare) oldShare.remove();
         if (shown.length) box.insertBefore(shareRow(dayText(me.date, shown.map(function (s) { return s.title; }), shown.length), location.origin + shown[0].href + '#day', true), list);
-        // 前の日・次の日(上の分)は、画像の下・共有の上に置く
-        box.insertBefore(navTop, box.querySelector(':scope > .jf-share-day') || list);
+        // 前の日・次の日(上の分)は、共有の下・ニュースの上に置く
+        box.insertBefore(navTop, list);
         var mine = list.querySelector('.jf-picked');
         if (mine && mine !== list.firstElementChild) mine.scrollIntoView({ block: 'start' });
       });
