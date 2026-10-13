@@ -114,7 +114,8 @@
   // 黒帯の記事の画像を、Wraptasの取り込みを待たずに差しかえるときの一覧(記事のアドレス → 画像)。取り込みが追いついたら消してよい
   var IMG_FIX = {
     '/3f7a6fb1972b81ecba17ce709679c85e': 'https://life-memo.github.io/jiujitsu-feed/img/allen-20261013.jpg',
-    '/3f6a6fb1972b8177bde5f1f1ae1f96da': 'https://life-memo.github.io/jiujitsu-feed/img/ruotolo-20261012.jpg'
+    '/3f6a6fb1972b8177bde5f1f1ae1f96da': 'https://life-memo.github.io/jiujitsu-feed/img/ruotolo-20261012.jpg',
+    '/3f5a6fb1972b81259d9df6114998299c': 'https://life-memo.github.io/jiujitsu-feed/img/musumeci-20261011.jpg'
   };
   function readStory(main, href) {
     var s = { href: href, title: txt(main.querySelector('h1.title')), cat: '', date: '', rank: '', points: [], srcs: [], img: IMG_FIX[href] || storyImg(main) }, src = false;
