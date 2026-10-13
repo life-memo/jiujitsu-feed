@@ -604,3 +604,7 @@ html .jf-foot .jf-xfollow { align-self: flex-start; margin-top: 0; border-color:
 html .jf-foot .jf-xfollow small { color: #a0a0a0; }
 html .jf-foot .jf-xfollow:hover { background: #1c1c1c; }
 @media (hover: none) { html .jf-xfollow:hover { background: none; } }
+
+/* v46: フッターのXは、ポッドキャストと同じ形(左に四角、右に小見出し・名前・リンク)にそろえる */
+html .jf-foot-xicon { flex: none; display: flex; align-items: center; justify-content: center; width: 72px; height: 72px; border-radius: 10px; background: #222; color: #fff; }
+html .jf-foot-x { margin-top: -8px; }
