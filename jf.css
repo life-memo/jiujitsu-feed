@@ -590,3 +590,6 @@ html :is(.page_id-3f6a6fb1972b811c992dee5a7ea6c75e, .page_id-3f4a6fb1972b814197a
 html .contents blockquote, html .contents .notion-quote { position: relative; margin: 1.2em 0 0 !important; padding: 1.4em 1.2em 1em 1.2em !important; border: 0 !important; border-radius: 10px; background: #f3f3f3; font-size: 0.9rem; line-height: 1.85; color: var(--jf-text); }
 html .contents blockquote::before, html .contents .notion-quote::before { content: "“"; position: absolute; left: 12px; top: -6px; font-family: Georgia, serif; font-size: 3rem; line-height: 1; color: #c4c4c4; }
 html .contents .jf-cite { display: block; margin-top: 0.5em; text-align: right; font-size: 0.74rem; letter-spacing: 0.04em; color: var(--jf-muted); }
+
+/* v44: 説明のページの見出しの上の線はなくし、余白だけで区切る(線で区切ると、小見出しまで別の項目に見えるため) */
+html :is(.page_id-3f6a6fb1972b811c992dee5a7ea6c75e, .page_id-3f4a6fb1972b814197a3c91977d78b35, .page_id-3f6a6fb1972b818ba0e6ebcea19448d9, .page_id-3f6a6fb1972b810ebbf9cde20f9a1f15, .page_id-3f6a6fb1972b815d9ab3f55f0ecb8280, .page_id-3f6a6fb1972b817db828cec4c514d573, .page_id-3f8a6fb1972b8170b22cfc20a75db18e, .page_id-3f4a6fb1972b81bbbd91efa7948132e5) .contents > :is(h2, h3, h4, .notion-h2, .notion-h3) { margin-top: 2.4em; padding-top: 0; border-top: 0; }
