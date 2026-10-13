@@ -259,8 +259,8 @@
       var short = function (d) { var q = d.split('/').map(Number); return q[1] + '月' + q[2] + '日(' + WD[new Date(q[0], q[1] - 1, q[2]).getDay()] + ')'; };
       [nav, navTop].forEach(function (n) {
         n.textContent = '';
-        if (dates[di + 1]) { var a1 = el('a', null, '← 前の日 ' + short(dates[di + 1])); a1.href = first(dates[di + 1]).href; n.appendChild(a1); }
-        if (di > 0) { var a2 = el('a', 'jf-next', '次の日 ' + short(dates[di - 1]) + ' →'); a2.href = first(dates[di - 1]).href; n.appendChild(a2); }
+        if (dates[di + 1]) { var a1 = el('a', null, '← 前の日'); a1.href = first(dates[di + 1]).href; n.appendChild(a1); }
+        if (di > 0) { var a2 = el('a', 'jf-next', '次の日 →'); a2.href = first(dates[di - 1]).href; n.appendChild(a2); }
       });
       Promise.all(mates.map(function (x) {
         if (x.href === path) return me;
@@ -541,7 +541,7 @@
     IMG[href] = '';
     getDoc(href).then(function (d) { var m = d.querySelector('main.contents'); IMG[href] = m ? storyImg(m) : ''; put(IMG[href]); }).catch(function () {});
   }
-  // トップの今日のヘッドラインの下に、「前の日」のページへのリンクを出す(例: ← 前の日 10月9日(金)のヘッドライン)。
+  // トップの今日のヘッドラインの下に、「前の日」のページへのリンクを出す(例: ← 前の日。日付は出さない)。
   // 前の日の記事は、これまでに見た一覧(端末に覚えてある分)と「記事を探す」のページから探す
   var PREV_ROWS = null;
   function prevDayLink(c, on, date) {
@@ -562,7 +562,7 @@
       if (cur) cur.remove();
       if (!c.isConnected) return;
       var d = el('div', 'jf-daynav jf-prev'); d.setAttribute('data-href', hit.href);
-      var a = el('a', null, '← 前の日 ' + dayLabel(hit.date) + 'のヘッドライン'); a.href = hit.href;
+      var a = el('a', null, '← 前の日'); a.href = hit.href;
       d.appendChild(a); c.appendChild(d);
     };
     draw();
