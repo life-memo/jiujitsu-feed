@@ -554,6 +554,7 @@ html, html body { max-width: 100%; overflow-x: hidden; }
 @supports (overflow: clip) { html, html body { overflow-x: clip; } }
 html .notion-text, html .notion-list li, html .jf-story, html .jf-story li, html .jf-srcs a { overflow-wrap: anywhere; }
 
-/* v39: その日のページの、題名のすぐ下に出す「前の日・次の日」。下の分と同じ見た目で、線は付けない */
-html .jf-daynav.jf-daynav-top { margin-top: 10px; padding-top: 0; border-top: 0; }
+/* v39: その日のページの、上に出す「前の日・次の日」(画像の下・共有の上)。下の分と同じ見た目で、線は付けない */
+html .jf-daynav.jf-daynav-top { margin: 0 0 6px; padding-top: 0; border-top: 0; }
+html .jf-daynav.jf-daynav-top + .jf-share-day { margin-top: 0; }
 html .jf-daynav.jf-daynav-top:empty { display: none; }

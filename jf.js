@@ -233,7 +233,7 @@
     box = el('div', 'jf-day'); box.setAttribute('data-path', path);
     var p = me.date.split('/').map(Number);
     var h = el('h1', 'jf-day-title'); h.appendChild(el('span', null, p[0] + '年')); h.appendChild(document.createTextNode(p[1] + '月' + p[2] + '日(' + WD[new Date(p[0], p[1] - 1, p[2]).getDay()] + ')のヘッドライン'));   // トップ(「今日のヘッドライン」)と見分けがつくように、今日の分でも日付で出す。上の小さい字は年だけ(日付を2回書かない)
-    // 前の日・次の日のリンクは、いちばん下と、題名のすぐ下の2か所に出す(長いページでも下まで行かずに移れるように)
+    // 前の日・次の日のリンクは、いちばん下と、上(画像の下・共有の上)の2か所に出す(長いページでも下まで行かずに移れるように)
     var list = el('ul', 'jf-stories'), nav = el('div', 'jf-daynav'), navTop = el('div', 'jf-daynav jf-daynav-top');
     box.appendChild(h); box.appendChild(navTop); box.appendChild(list); box.appendChild(nav);
     list.appendChild(storyCard(me, !plain));
@@ -281,6 +281,8 @@
         var oldShare = box.querySelector(':scope > .jf-share-day'), shown = stories.filter(function (s) { return s && s.points.length && !GONE[s.href] && s.title.indexOf('【削除】') !== 0; });
         if (oldShare) oldShare.remove();
         if (shown.length) box.insertBefore(shareRow(dayText(me.date, shown.map(function (s) { return s.title; }), shown.length), location.origin + shown[0].href + '#day', true), list);
+        // 前の日・次の日(上の分)は、画像の下・共有の上に置く
+        box.insertBefore(navTop, box.querySelector(':scope > .jf-share-day') || list);
         var mine = list.querySelector('.jf-picked');
         if (mine && mine !== list.firstElementChild) mine.scrollIntoView({ block: 'start' });
       });
