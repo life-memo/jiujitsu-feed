@@ -683,7 +683,7 @@
       if (box) box.remove();
       box = el('div', 'jf-mania'); box.setAttribute('data-v', String(avg));
       box.appendChild(el('p', 'jf-mania-q', '今日のヘッドラインは、ニワカ向け？マニア向け？'));
-      var row = el('div', 'jf-mania-row'), bar = el('div', 'jf-mania-bar'), dot = el('span', 'jf-mania-dot', String(avg));
+      var row = el('div', 'jf-mania-row'), bar = el('div', 'jf-mania-bar'), dot = el('span', 'jf-mania-dot');
       dot.style.left = avg + '%';
       for (var i = 0; i < 5; i++) bar.appendChild(el('span'));
       bar.appendChild(dot);
