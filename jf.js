@@ -652,6 +652,7 @@
     '/3f9a6fb1972b8199a293ee98aec8947b': 7, '/3f8a6fb1972b81f78ab6c512e1531347': 72
   };
   var MANIA = null;
+  var MANIA_ON = false;   // 10/14 ハヤトさん「バーいらん」で止めた。出すときは true
   function maniaFromDoc(doc) {
     var out = {};
     try {
@@ -867,7 +868,7 @@
         last = date;
       });
       topShare(c, top && !recs, d0 ? d0.textContent.trim() : '', today);
-      maniaMeter(c, top && !recs, d0 ? d0.textContent.trim() : '');
+      maniaMeter(c, MANIA_ON && top && !recs, d0 ? d0.textContent.trim() : '');
     });
     document.querySelectorAll('.notion-collection-row-property').forEach(function (r) {
       var t = r.querySelector('.notion-collection-column-title-body'), k = t ? t.textContent.trim() : null;
