@@ -508,9 +508,9 @@ html .jf-bar { position: fixed; left: 0; right: 0; top: 0; z-index: 100002; heig
 html .jf-lead-img, html .jf-day-img { display: block; border-radius: 14px; overflow: hidden; background: #f1f1f1; }
 html .jf-lead-img img, html .jf-day-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
 html .jf-day-img { aspect-ratio: 16 / 9; margin: 18px 0 16px; }
-html .page-_top a.notion-list-item[data-jf-img], html .page-_top a.notion-list-item[data-jf-dshare] { margin-top: calc(64px + var(--jf-share-h, 0px) + var(--jf-img-h, 0px) + var(--jf-img-gap, 0px)) !important; }
-html .page-_top a.notion-list-item[data-jf-img]::before, html .page-_top a.notion-list-item[data-jf-dshare]::before { bottom: calc(100% + 14px + var(--jf-share-h, 0px) + var(--jf-img-h, 0px) + var(--jf-img-gap, 0px)); }
-html .jf-lead-img { position: absolute; left: 0; right: 0; bottom: calc(100% + 16px + var(--jf-share-h, 0px)); height: var(--jf-img-h, 0px); }
+html .page-_top a.notion-list-item[data-jf-img], html .page-_top a.notion-list-item[data-jf-dshare] { margin-top: calc(64px + var(--jf-share-h, 0px) + var(--jf-meter-h, 0px) + var(--jf-img-h, 0px) + var(--jf-img-gap, 0px)) !important; }
+html .page-_top a.notion-list-item[data-jf-img]::before, html .page-_top a.notion-list-item[data-jf-dshare]::before { bottom: calc(100% + 14px + var(--jf-share-h, 0px) + var(--jf-meter-h, 0px) + var(--jf-img-h, 0px) + var(--jf-img-gap, 0px)); }
+html .jf-lead-img { position: absolute; left: 0; right: 0; bottom: calc(100% + 16px + var(--jf-share-h, 0px) + var(--jf-meter-h, 0px)); height: var(--jf-img-h, 0px); }
 
 /* v30: トップの今日のヘッドラインの下に出す「前の日」へのリンク */
 html .page-_top .jf-prev { margin-top: 20px; padding-top: 0; border-top: 0; }
@@ -618,3 +618,21 @@ html .jf-evo-b { background: #d62027; color: #fff; }
 html .jf-evo-c { background: #111; color: #fff; }
 html .jf-evo-arrow { font-size: 1rem; color: #bbb; }
 @media (max-width: 360px) { html .jf-evo { gap: 5px; } html .jf-evo-step { padding: 6px 10px; font-size: 0.78rem; } }
+
+/* v48: トップの今日のヘッドラインの「ニワカ向け？マニア向け？」の目盛り。共有の行の下、黒帯の枠の上に置く(高さ --jf-meter-h は jf.js が入れる)。
+   棒は左の赤(ニワカ)から右の黒(マニア)へ。数字の丸は、どちらにも寄らない白と灰色 */
+html .jf-mania { display: none; }
+html .page-_top .jf-mania { display: block; position: absolute; left: 0; right: 0; top: calc(58px + var(--jf-img-h, 0px) + var(--jf-img-gap, 0px) + var(--jf-share-h, 0px)); margin: 0; padding: 10px 14px 14px; background: #f5f5f3; border-radius: 10px; }
+html .jf-mania-q { margin: 0 0 16px !important; padding: 0 !important; font-size: 0.8rem !important; font-weight: 700; line-height: 1.5 !important; color: var(--jf-text); }
+html .jf-mania-row { display: flex; align-items: center; gap: 12px; }
+html .jf-mania-lo, html .jf-mania-hi { flex: none; font-size: 0.72rem; font-weight: 700; white-space: nowrap; }
+html .jf-mania-lo { color: #d62027; }
+html .jf-mania-hi { color: #111; }
+html .jf-mania-bar { position: relative; flex: 1; display: flex; height: 6px; border-radius: 3px; overflow: visible; }
+html .jf-mania-bar > span:not(.jf-mania-dot) { flex: 1; }
+html .jf-mania-bar > span:nth-child(1) { background: #d62027; border-radius: 3px 0 0 3px; }
+html .jf-mania-bar > span:nth-child(2) { background: #a3262a; }
+html .jf-mania-bar > span:nth-child(3) { background: #6b2224; }
+html .jf-mania-bar > span:nth-child(4) { background: #3a1a1b; }
+html .jf-mania-bar > span:nth-child(5) { background: #111; border-radius: 0 3px 3px 0; }
+html .jf-mania-dot { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 30px; height: 30px; border-radius: 50%; background: #fff; border: 2px solid #888; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 0.74rem; font-weight: 700; color: #444; font-variant-numeric: tabular-nums; }

@@ -645,6 +645,56 @@
     box.setAttribute('data-sig', sig);
     c.appendChild(box);
   }
+  // トップ: 今日のヘッドラインがニワカ向けかマニア向けかを、記事ごとの「マニア度」(0〜100)の平均で、共有の行の下に出す。
+  // 点数はトップのページに埋め込まれた一覧の情報から読む。Wraptasの反映が遅れる間は MANIA_FIX(記事のアドレス → 点数)を使う
+  var MANIA_FIX = {
+    '/3f8a6fb1972b81ab8851f5374b49216b': 38, '/3f8a6fb1972b81289f50d6514547b013': 38, '/3f8a6fb1972b8194bdf5d4f3cd121293': 44,
+    '/3f9a6fb1972b8199a293ee98aec8947b': 7, '/3f8a6fb1972b81f78ab6c512e1531347': 72
+  };
+  var MANIA = null;
+  function maniaFromDoc(doc) {
+    var out = {};
+    try {
+      var rm = JSON.parse(doc.getElementById('__NEXT_DATA__').textContent).props.pageProps.pageRecordMap;
+      var val = function (o) { while (o && o.value && !o.type && !o.schema) o = o.value; return o || {}; };
+      var key = null;
+      Object.keys(rm.collection || {}).forEach(function (c) { var sc = val(rm.collection[c]).schema || {}; Object.keys(sc).forEach(function (k) { if (sc[k].name === 'マニア度') key = k; }); });
+      if (!key) return out;
+      Object.keys(rm.block || {}).forEach(function (i) {
+        var pr = val(rm.block[i]).properties, v = pr && pr[key];
+        var n = v ? Number(v[0][0]) : NaN;
+        if (!isNaN(n)) out['/' + i.replace(/-/g, '')] = n;
+      });
+    } catch (e) {}
+    return out;
+  }
+  function maniaMeter(c, on, date) {
+    var box = c.querySelector(':scope > .jf-mania');
+    var hrefs = [];
+    if (on && date) c.querySelectorAll('a.notion-list-item:not([data-jf-gone])').forEach(function (x) { var d = x.querySelector('.notion-property-date-item'); if (d && d.textContent.trim() === date) hrefs.push((x.getAttribute('href') || '').split('?')[0]); });
+    if (MANIA === null && hrefs.length) {
+      MANIA = maniaFromDoc(document);
+      getDoc('/').then(function (d) { var m = maniaFromDoc(d); Object.keys(m).forEach(function (k) { MANIA[k] = m[k]; }); apply(); }).catch(function () {});
+    }
+    var got = hrefs.map(function (h) { return MANIA && h in MANIA ? MANIA[h] : MANIA_FIX[h]; }).filter(function (n) { return typeof n === 'number' && !isNaN(n); });
+    if (!got.length) { if (box) box.remove(); c.style.removeProperty('--jf-meter-h'); return; }
+    var avg = Math.max(0, Math.min(100, Math.round(got.reduce(function (a, b) { return a + b; }, 0) / got.length)));
+    if (!box || box.getAttribute('data-v') !== String(avg)) {
+      if (box) box.remove();
+      box = el('div', 'jf-mania'); box.setAttribute('data-v', String(avg));
+      box.appendChild(el('p', 'jf-mania-q', '今日のヘッドラインは、ニワカ向け？マニア向け？'));
+      var row = el('div', 'jf-mania-row'), bar = el('div', 'jf-mania-bar'), dot = el('span', 'jf-mania-dot', String(avg));
+      dot.style.left = avg + '%';
+      for (var i = 0; i < 5; i++) bar.appendChild(el('span'));
+      bar.appendChild(dot);
+      row.appendChild(el('span', 'jf-mania-lo', 'ニワカ向け')); row.appendChild(bar); row.appendChild(el('span', 'jf-mania-hi', 'マニア向け'));
+      box.appendChild(row);
+      box.setAttribute('aria-label', '今日のヘッドラインのマニア度 ' + avg + '(0がニワカ向け、100がマニア向け)');
+      c.appendChild(box);
+    }
+    var mh = (box.offsetHeight + 12) + 'px';
+    if (c.style.getPropertyValue('--jf-meter-h') !== mh) c.style.setProperty('--jf-meter-h', mh);
+  }
   function leadArt(a, on, date) {
     var art = a.querySelector(':scope > .jf-art');
     if (!on) { if (art) art.remove(); return; }
@@ -817,6 +867,7 @@
         last = date;
       });
       topShare(c, top && !recs, d0 ? d0.textContent.trim() : '', today);
+      maniaMeter(c, top && !recs, d0 ? d0.textContent.trim() : '');
     });
     document.querySelectorAll('.notion-collection-row-property').forEach(function (r) {
       var t = r.querySelector('.notion-collection-column-title-body'), k = t ? t.textContent.trim() : null;
