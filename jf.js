@@ -646,10 +646,10 @@
     c.appendChild(box);
   }
   // トップ: 今日のヘッドラインがニワカ向けかマニア向けかを、記事ごとの「マニア度」(0〜100)の平均で、共有の行の下に出す。
-  // 点数はトップのページに埋め込まれた一覧の情報から読む。Wraptasの反映が遅れる間は MANIA_FIX(記事のアドレス → 点数)を使う
+  // 点数はトップのページに埋め込まれた一覧の情報から読む。Wraptasの反映が遅れる間は MANIA_FIX(記事のアドレス → 点数)を優先して使う。反映が追いついたら消してよい
   var MANIA_FIX = {
-    '/3f8a6fb1972b81ab8851f5374b49216b': 38, '/3f8a6fb1972b81289f50d6514547b013': 38, '/3f8a6fb1972b8194bdf5d4f3cd121293': 44,
-    '/3f9a6fb1972b8199a293ee98aec8947b': 7, '/3f8a6fb1972b81f78ab6c512e1531347': 72
+    '/3f8a6fb1972b81ab8851f5374b49216b': 44, '/3f8a6fb1972b81289f50d6514547b013': 48, '/3f8a6fb1972b8194bdf5d4f3cd121293': 59,
+    '/3f9a6fb1972b8199a293ee98aec8947b': 10, '/3f8a6fb1972b81f78ab6c512e1531347': 79
   };
   var MANIA = null;
   function maniaFromDoc(doc) {
@@ -676,7 +676,7 @@
       MANIA = maniaFromDoc(document);
       getDoc('/').then(function (d) { var m = maniaFromDoc(d); Object.keys(m).forEach(function (k) { MANIA[k] = m[k]; }); apply(); }).catch(function () {});
     }
-    var got = hrefs.map(function (h) { return MANIA && h in MANIA ? MANIA[h] : MANIA_FIX[h]; }).filter(function (n) { return typeof n === 'number' && !isNaN(n); });
+    var got = hrefs.map(function (h) { return h in MANIA_FIX ? MANIA_FIX[h] : MANIA && MANIA[h]; }).filter(function (n) { return typeof n === 'number' && !isNaN(n); });
     if (!got.length) { if (box) box.remove(); c.style.removeProperty('--jf-meter-h'); return; }
     var avg = Math.max(0, Math.min(100, Math.round(got.reduce(function (a, b) { return a + b; }, 0) / got.length)));
     if (!box || box.getAttribute('data-v') !== String(avg)) {
