@@ -34,7 +34,7 @@
   };
   var EVENTS_PAGE = '3f4a6fb1972b81759becfdc7d44f99d3', EVENT_TAGS = ['UFC BJJ', 'ADCC', 'IBJJF', 'ONE', 'Polaris', 'RAF', 'その他の大会'];
   // 取り下げた記事(ほかの記事にまとめたもの)。サイト側の一覧が古いままでも、どの一覧にも出さない
-  var GONE = { '/3f4a6fb1972b81048cd9faa5ab7edeb8': 1, '/3f4a6fb1972b8102a2dbeddf35840c1f': 1 };
+  var GONE = { '/3f4a6fb1972b81048cd9faa5ab7edeb8': 1, '/3f4a6fb1972b8102a2dbeddf35840c1f': 1, '/3f8a6fb1972b81cdacbac55a34e73eec': 1 };  // 3つ目: 10/14ミカ(チェック不合格で下書きに戻した。Wraptasの反映待ちの間だけ隠す。合格して公開し直すときは消す)
   var isGone = function (a) { return !!GONE[(a.getAttribute('href') || '').split('?')[0]] || a.textContent.trim().indexOf('【削除】') === 0; };
   var BELTS = '3f4a6fb1972b81bbbd91efa7948132e5', ARCHIVE = '3f4a6fb1972b8180ae98e5da079356b7', PEOPLE_PAGE = '3f4a6fb1972b81ef88f3f81eb2192323', PEOPLE_DB = 'f8ceb4420ed948a6b63df206d4b9ea00', NEWS_DB = 'a956fb4cc7df46d69ac41768e5195c5e';
   var WD = ['日', '月', '火', '水', '木', '金', '土'];
