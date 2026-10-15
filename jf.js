@@ -38,10 +38,10 @@
   var isGone = function (a) { return !!GONE[(a.getAttribute('href') || '').split('?')[0]] || a.textContent.trim().indexOf('【削除】') === 0; };
   var BELTS = '3f4a6fb1972b81bbbd91efa7948132e5', ARCHIVE = '3f4a6fb1972b8180ae98e5da079356b7', PEOPLE_PAGE = '3f4a6fb1972b81ef88f3f81eb2192323', PEOPLE_DB = 'f8ceb4420ed948a6b63df206d4b9ea00', NEWS_DB = 'a956fb4cc7df46d69ac41768e5195c5e';
   var WD = ['日', '月', '火', '水', '木', '金', '土'];
-  var ROWS = [['あ', 'アイウエオヴ'], ['か', 'カキクケコガギグゲゴ'], ['さ', 'サシスセソザジズゼゾ'], ['た', 'タチツテトダヂヅデド'], ['な', 'ナニヌネノ'], ['は', 'ハヒフヘホバビブベボパピプペポ'], ['ま', 'マミムメモ'], ['や', 'ヤユヨ'], ['ら', 'ラリルレロ'], ['わ', 'ワヲン']];
+  var KANA_ROWS = [['あ', 'アイウエオヴ'], ['か', 'カキクケコガギグゲゴ'], ['さ', 'サシスセソザジズゼゾ'], ['た', 'タチツテトダヂヅデド'], ['な', 'ナニヌネノ'], ['は', 'ハヒフヘホバビブベボパピプペポ'], ['ま', 'マミムメモ'], ['や', 'ヤユヨ'], ['ら', 'ラリルレロ'], ['わ', 'ワヲン']];
   var set = function (el, k, v) { if (v == null) { if (el.hasAttribute(k)) el.removeAttribute(k); } else if (el.getAttribute(k) !== v) el.setAttribute(k, v); };
   var dayLabel = function (date) { var p = date.split('/').map(Number); return p[1] + '月' + p[2] + '日(' + WD[new Date(p[0], p[1] - 1, p[2]).getDay()] + ')'; };
-  var kanaRow = function (yomi) { var c = (yomi || '').charAt(0), r = ROWS.filter(function (x) { return x[1].indexOf(c) >= 0; })[0]; return r ? r[0] + '行' : 'そのほか'; };
+  var kanaRow = function (yomi) { var c = (yomi || '').charAt(0), r = KANA_ROWS.filter(function (x) { return x[1].indexOf(c) >= 0; })[0]; return r ? r[0] + '行' : 'そのほか'; };
   function pageMode(root) {
     var c = root.className;
     if (c.indexOf('page-_top') >= 0) return 'top';
