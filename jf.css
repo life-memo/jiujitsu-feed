@@ -607,7 +607,7 @@ html .jf-foot .jf-xfollow:hover { background: #1c1c1c; }
 
 /* v46: フッターのXは、ポッドキャストと同じ形(左に四角、右に小見出し・名前・リンク)にそろえる */
 html .jf-foot-xicon { flex: none; display: flex; align-items: center; justify-content: center; width: 72px; height: 72px; border-radius: 10px; background: #222; color: #fff; }
-html .jf-foot-x { margin-top: -8px; }
+html .jf-foot-x { margin-top: 0; }  /* 10/15 フッターのポッドキャスト欄を消したので、ブランド名との間はふつうの間隔に */
 
 /* v47: 「ジュウジュツフィードとは」の冒頭の一文を大きく、「パンピー→ニワカ→マニア」を図にする */
 html .contents > .notion-text.jf-about-lead { margin-top: 0.8em; font-size: 1.12rem !important; font-weight: 700; line-height: 1.75; letter-spacing: 0.02em; }
