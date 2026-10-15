@@ -27,6 +27,7 @@
   // 新しい回は、番組の配信データから自動で拾う(下の loadFeed)。題に人物の名前が入っていれば、その人物につながる。
   // 自動で拾った回は、Amazon Musicだけ番組のページに飛ぶ。回そのものに飛ばしたいときは、ここに1行足す
   var SHOW = { amazon: 'https://music.amazon.co.jp/podcasts/51f983ab-e8c8-4edb-8e82-a7852ed2e15d', rss: 'https://anchor.fm/s/10b36b274/podcast/rss', lookup: 'https://itunes.apple.com/lookup?id=1853188871&entity=podcastEpisode&limit=200&country=jp', apple: 'https://podcasts.apple.com/jp/podcast/id1853188871' };
+  var POD_ON = false;   // 10/15 ハヤトさん「ポッドキャストのリンクは全部付けない(サイトと切り離す)」。人物ページの回へのリンク・一覧の印・配信データの読み込みを止める。戻すときは true
   var EPISODES = {
     '/3f4a6fb1972b81099802c4a490bd8aaf': [['#1 ゴードン・ライアン：最強はなぜ最強か', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/1-e3aqh7f', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000736843508', SHOW.amazon + '/episodes/e384a0bf-067f-4e6a-bff8-f384ec1230ee']],
     '/3f4a6fb1972b81acaae9de24d8e7104e': [['#12 マイキー・ムスメシ（前編）：世界一の技術オタク', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/12-e3dqp3k', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000750780712', SHOW.amazon + '/episodes/16f0d5d9-dc2f-4ff7-afeb-1a03b29f0254'], ['#13 マイキー・ムスメシ（後編）：世界一の技術オタク', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/13-e3dqpbl', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000752077507', SHOW.amazon + '/episodes/b7d9d92f-c470-42ef-86a1-326f10b42c37']],
@@ -825,13 +826,13 @@
       pager(c, pages, page, path);
       var stale = c.querySelector(':scope > .jf-filter'), ep = c.querySelector(':scope > .jf-ep');
       if (arch) filterBar(c, days, page, path, hits); else if (stale) stale.remove();
-      if (mode === 'person' && ci === 0) episodes(c, path); else if (ep) ep.remove();
+      if (POD_ON && mode === 'person' && ci === 0) episodes(c, path); else if (ep) ep.remove();
       var evBox = c.querySelector(':scope > .jf-events');
       if (events) eventBar(c, counts, items.length, path); else if (evBox) evBox.remove();
       set(c, 'data-jf-events', events ? '1' : null);
       items.forEach(function (a, idx) {
         set(a, 'data-jf-off', paged && Math.floor(idx / PER_PAGE) + 1 !== page ? '1' : null);
-        set(a, 'data-jf-pod', mode === 'people' && EPISODES[(a.getAttribute('href') || '').split('?')[0]] ? '1' : null);
+        set(a, 'data-jf-pod', POD_ON && mode === 'people' && EPISODES[(a.getAttribute('href') || '').split('?')[0]] ? '1' : null);
         if (arch && pageOf[idx] !== page) { set(a, 'data-jf-off', '1'); set(a, 'data-jf-first', null); set(a, 'data-day', null); return; }
         if (events) set(a, 'data-jf-off', pageOf[idx] !== page ? '1' : null);
         var d = a.querySelector('.notion-property-date-item'), n = a.querySelector('.notion-property-number');
@@ -884,7 +885,7 @@
       else if (src && el.classList.contains('notion-list')) set(el, 'data-jf-src', '1');
       prev = el;
     });
-    if (mode === 'people' || mode === 'person') loadFeed();
+    if (POD_ON && (mode === 'people' || mode === 'person')) loadFeed();
     // 帯の色のページ: 説明の行に、ヘッドラインと同じ帯の絵を付ける
     if (mode === 'belts' && main) main.querySelectorAll(':scope > ul.notion-list').forEach(function (u, i) { set(u, 'data-jf-beltrow', String(i + 1)); });
     var day = document.querySelector('.jf-day');
