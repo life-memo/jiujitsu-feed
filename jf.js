@@ -736,12 +736,14 @@
   // 「ジュウジュツフィードとは」: 冒頭の目的の一文を大きくし、「パンピー→ニワカ→マニア」を矢印でつないだ図にして見せる
   function aboutDecor() {
     var page = document.querySelector('.notion.page_id-3f6a6fb1972b811c992dee5a7ea6c75e');
+    // ほかのページへ移ると、画面の部品が使い回されて図や大きな文字が残る(10/15)。このページ以外では消す
+    var first = page && page.querySelector('.contents > .titleSection + .notion-text');
+    document.querySelectorAll('.jf-about-lead').forEach(function (p) { if (p !== first) p.classList.remove('jf-about-lead'); });
+    var hit = page && Array.prototype.find.call(page.querySelectorAll('.contents > .notion-text'), function (p) { return /パンピー\s*→\s*ニワカ\s*→\s*マニア/.test(p.textContent); });
+    document.querySelectorAll('.jf-evo').forEach(function (e) { if (!hit || e.nextElementSibling !== hit) e.remove(); });
     if (!page) return;
-    var first = page.querySelector('.contents > .titleSection + .notion-text');
     if (first) first.classList.add('jf-about-lead');
-    if (page.querySelector('.jf-evo')) return;
-    var hit = Array.prototype.find.call(page.querySelectorAll('.contents > .notion-text'), function (p) { return /パンピー\s*→\s*ニワカ\s*→\s*マニア/.test(p.textContent); });
-    if (!hit) return;
+    if (!hit || hit.previousElementSibling && hit.previousElementSibling.classList.contains('jf-evo')) return;
     var evo = el('div', 'jf-evo');
     [['パンピー', 'a'], ['ニワカ', 'b'], ['マニア', 'c']].forEach(function (x, i) {
       if (i) evo.appendChild(el('span', 'jf-evo-arrow', '→'));
