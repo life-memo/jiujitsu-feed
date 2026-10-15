@@ -458,7 +458,7 @@
   // 一覧の各記事に付いている大会の札を読み、札のボタンで絞り込む。札はNotionの「大会」の欄。
   var evTag = '', evKey = null, evWant = null;
   // Notionで札を付け替えたのに、サイトにまだ出ていない記事(10/15 UFC Vegas 122の3本を「その他の大会」→「UFC」)。サイトに出たら消してよい
-  var EV_FIX = { '/3f7a6fb1972b81ecba17ce709679c85e': ['UFC'], '/3f6a6fb1972b812ca091c3dc44b52e2f': ['UFC'], '/3f6a6fb1972b8192a20ceb7653180df4': ['UFC'] };
+  var EV_FIX = { '/3f7a6fb1972b81ecba17ce709679c85e': ['UFC'], '/3f6a6fb1972b812ca091c3dc44b52e2f': ['UFC'], '/3f6a6fb1972b8192a20ceb7653180df4': ['UFC'], '/3f8a6fb1972b81289f50d6514547b013': ['UFC'], '/3f8a6fb1972b8194bdf5d4f3cd121293': ['UFC'] };   // 後ろ2つ: ハリソン(UFC 334)とペレイラ(UFC 335)。札なし→UFC
   var tagsOf = function (a) {
     var found = [];
     a.querySelectorAll('.notion-list-item-property, .notion-list-item-property *').forEach(function (x) {
