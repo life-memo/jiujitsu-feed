@@ -33,7 +33,7 @@
     '/3f4a6fb1972b81acaae9de24d8e7104e': [['#12 マイキー・ムスメシ（前編）：世界一の技術オタク', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/12-e3dqp3k', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000750780712', SHOW.amazon + '/episodes/16f0d5d9-dc2f-4ff7-afeb-1a03b29f0254'], ['#13 マイキー・ムスメシ（後編）：世界一の技術オタク', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/13-e3dqpbl', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000752077507', SHOW.amazon + '/episodes/b7d9d92f-c470-42ef-86a1-326f10b42c37']],
     '/3f4a6fb1972b81c292fee369024358f6': [['#25 ヒクソン・グレイシー：不敗の神話、一族最強の男', 'https://podcasters.spotify.com/pod/show/jiujitsuniwaka/episodes/25-e3ig1f9', 'https://podcasts.apple.com/jp/podcast/id1853188871?i=1000770319415', SHOW.amazon + '/episodes/4214226b-fe45-495b-b6a9-689cdcaeb1dd']]
   };
-  var EVENTS_PAGE = '3f4a6fb1972b81759becfdc7d44f99d3', EVENT_TAGS = ['UFC BJJ', 'ADCC', 'IBJJF', 'ONE', 'Polaris', 'RAF', 'その他の大会'];
+  var EVENTS_PAGE = '3f4a6fb1972b81759becfdc7d44f99d3', EVENT_TAGS = ['UFC', 'ADCC', 'IBJJF', 'ONE', 'Polaris', 'RAF', 'その他の大会'];
   // 取り下げた記事(ほかの記事にまとめたもの)。サイト側の一覧が古いままでも、どの一覧にも出さない
   var GONE = { '/3f4a6fb1972b81048cd9faa5ab7edeb8': 1, '/3f4a6fb1972b8102a2dbeddf35840c1f': 1, '/3f8a6fb1972b81cdacbac55a34e73eec': 1 };  // 3つ目: 10/14ミカ(チェック不合格で下書きに戻した。Wraptasの反映待ちの間だけ隠す。合格して公開し直すときは消す)
   var isGone = function (a) { return !!GONE[(a.getAttribute('href') || '').split('?')[0]] || a.textContent.trim().indexOf('【削除】') === 0; };
@@ -168,7 +168,7 @@
     nodes.forEach(scan);
   }
   // 本文に出てくる大会の名前を「大会から探す」へのリンクにする(出てくるたびに全部。「UFC BJJ 12」の回の数字はリンクに含めない)
-  var EVENT_WORDS = [['UFC BJJ', /UFC BJJ/], ['ADCC', /ADCC/], ['IBJJF', /IBJJF/], ['ONE', /ONE/], ['Polaris', /Polaris/], ['RAF', /RAF/]];
+  var EVENT_WORDS = [['UFC', /UFC(?: BJJ)?/], ['ADCC', /ADCC/], ['IBJJF', /IBJJF/], ['ONE', /ONE/], ['Polaris', /Polaris/], ['RAF', /RAF/]];
   function linkEvents(nodes) {
     var az = /[A-Za-z]/;
     var scan = function (tn) {
@@ -457,14 +457,18 @@
   // ---- 大会から探す ----
   // 一覧の各記事に付いている大会の札を読み、札のボタンで絞り込む。札はNotionの「大会」の欄。
   var evTag = '', evKey = null, evWant = null;
+  // Notionで札を付け替えたのに、サイトにまだ出ていない記事(10/15 UFC Vegas 122の3本を「その他の大会」→「UFC」)。サイトに出たら消してよい
+  var EV_FIX = { '/3f7a6fb1972b81ecba17ce709679c85e': ['UFC'], '/3f6a6fb1972b812ca091c3dc44b52e2f': ['UFC'], '/3f6a6fb1972b8192a20ceb7653180df4': ['UFC'] };
   var tagsOf = function (a) {
     var found = [];
     a.querySelectorAll('.notion-list-item-property, .notion-list-item-property *').forEach(function (x) {
       if (x.children.length) return;
       var t = x.textContent.trim();
+      if (t === 'UFC BJJ') t = 'UFC';   // 10/15 「UFC BJJ」の札は「UFC」にまとめた(サイトに古い札が残っている間も UFC として数える)
       if (EVENT_TAGS.indexOf(t) >= 0 && found.indexOf(t) < 0) found.push(t);
     });
-    return found;
+    var fix = EV_FIX[(a.getAttribute('href') || '').split('?')[0]];
+    return fix || found;
   };
   function eventBar(c, counts, total, path) {
     var box = c.querySelector(':scope > .jf-events'), sig = evTag + '|' + total + '|' + EVENT_TAGS.map(function (t) { return counts[t] || 0; }).join(',');
@@ -802,6 +806,7 @@
           var fresh = evKey === null, want = '';
           evKey = hk;
           try { want = decodeURIComponent(location.hash.slice(1)); } catch (err) {}
+          if (want === 'UFC BJJ') want = 'UFC';
           if (EVENT_TAGS.indexOf(want) >= 0) { evTag = want; pageNow[path] = 1; }
           else if (fresh) { evTag = ''; pageNow[path] = 1; }
         }
