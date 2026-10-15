@@ -922,10 +922,12 @@
     ticking = true;
     requestAnimationFrame(function () {
       var y = Math.max(window.pageYOffset, 0), d = y - lastY;
-      if (y < 80 || html.classList.contains('jf-menu-open')) html.classList.remove('jf-hide');
-      else if (d > 6) html.classList.add('jf-hide');
-      else if (d < -6) html.classList.remove('jf-hide');
-      if (Math.abs(d) > 6) lastY = y;
+      // 10/15 ハヤトさん「シャキッと上がってほしい」: 少し下げたらすぐ隠す。出すのは、はっきり上へ戻したとき(40px)だけにして、画像に帯がかぶりにくくする
+      var hidden = html.classList.contains('jf-hide');
+      if (y < 80 || html.classList.contains('jf-menu-open')) { html.classList.remove('jf-hide'); lastY = y; }
+      else if (!hidden && d > 4) { html.classList.add('jf-hide'); lastY = y; }
+      else if (hidden && d < -40) { html.classList.remove('jf-hide'); lastY = y; }
+      else if (hidden ? d > 0 : d < 0) lastY = y;   // 向きが逆に動いたぶんは基準を付け直す
       ticking = false;
     });
   }, { passive: true });
