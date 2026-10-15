@@ -302,7 +302,8 @@
         // 前の日・次の日(上の分)は、共有の下・ニュースの上に置く
         box.insertBefore(navTop, list);
         var mine = list.querySelector('.jf-picked');
-        if (mine && mine !== list.firstElementChild) mine.scrollIntoView({ block: 'start' });
+        // 10/15 黒帯も、ほかの帯と同じく押した記事の枠まで移る(前は黒帯だけ日付と画像の上で止まり、画像に飛んだように見えた)
+        if (mine) mine.scrollIntoView({ block: 'start' });
       });
     };
     var known = knownRows();
