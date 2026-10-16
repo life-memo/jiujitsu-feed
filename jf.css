@@ -797,7 +797,7 @@ html .jf-ig-on .jf-ig-bout { opacity: 1; transform: none; }
 html .jf-ig-btop { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; margin-bottom: 8px; }
 html .jf-ig-btag { padding: 1px 8px; border-radius: 10px; background: #111; color: #fff; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; }
 html .jf-ig-bbelt { font-size: 0.64rem; font-weight: 700; color: #a8841f; }
-html .jf-ig-bbelt::before { content: "🏆"; margin-right: 3px; }
+html .jf-ig-bbelt::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 4px; border-radius: 50%; background: #c9a43a; }
 html .jf-ig-vs { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px; }
 html .jf-ig-win { position: relative; display: flex; flex-direction: column; gap: 2px; }
 html .jf-ig-win strong { font-size: 0.9rem; line-height: 1.35; background: linear-gradient(#c8102e, #c8102e) left bottom / 0 3px no-repeat; padding-bottom: 3px; transition: background-size 0.5s ease; transition-delay: calc(var(--k) * 0.55s + 0.5s); }
