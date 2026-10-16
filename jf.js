@@ -356,7 +356,7 @@
     var box = el('figure', 'jf-ig');
     if (f.head) { var cap = el('figcaption', 'jf-ig-head', f.head); if (f.sub) cap.appendChild(el('span', null, f.sub)); box.appendChild(cap); }
     f.scenes.forEach(function (sc, i) {
-      var sec = el('section', 'jf-ig-scene jf-ig-' + sc.type);
+      var sec = el('section', 'jf-ig-scene jf-ig-s-' + sc.type);
       var h = el('p', 'jf-ig-title'); h.appendChild(el('span', 'jf-ig-no', String(i + 1))); h.appendChild(document.createTextNode(sc.title)); sec.appendChild(h);
       var after = SCENES[sc.type](sc, sec);
       box.appendChild(sec);
