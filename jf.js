@@ -219,47 +219,107 @@
     }
     return sh;
   }
-  // ---- 数字の図(試し 10/16) ----
-  // 記事の数字を、棒グラフで見せる。画面に入ったら棒が伸び、数字が0から数え上がる。
+  // ---- 数字のインフォグラフィック(試し 10/16) ----
+  // 記事の数字を、場面ごとの動く図で見せる。各場面は画面に入ったときに動き出す。
   // いまは試しで、図にする記事と数字をここに直接書いている(うまくいけば、Notionの原稿に欄を作って入れる形にする)
   var FIGS = {
-    '/3f9a6fb1972b81b2b4ffeb876defd5e9': { title: '一本で決まった試合のうち、足関節技で決まった割合', unit: '%', max: 50,
-      rows: [['ヒールフック解禁前', '2017〜19年', 15], ['ヒールフック解禁後', '2021〜23年', 37]],
-      note: 'IBJJF世界ノーギ選手権の男子黒帯、185試合' }
+    '/3f9a6fb1972b81b2b4ffeb876defd5e9': { head: '数字で見る', note: '出典：サンパウロ州立大学・サンパウロ大学の研究(IBJJF世界ノーギ選手権の男子黒帯、185試合)',
+      scenes: [
+        { type: 'timeline', title: 'IBJJFは2021年、黒帯のノーギでヒールフックを解禁', from: 2017, to: 2023, mark: 2021, markLabel: '解禁',
+          spans: [['解禁前の3年', 2017, 2019, 0], ['解禁後の3年', 2021, 2023, 1]] },
+        { type: 'dots', title: '一本で決まった試合のうち、足関節技で決まったのは', per: 10,
+          groups: [{ label: '解禁前', sub: '一本 40試合', total: 40, hit: 6, deep: 0, pct: 15 }, { label: '解禁後', sub: '一本 51試合', total: 51, hit: 19, deep: 15, pct: 37 }],
+          legend: [['jf-ig-dot-hit', '足関節技で一本'], ['jf-ig-dot-deep', 'うちヒールフック']] },
+        { type: 'change', title: 'ヘビー級のふつうの試合では、解禁後にこう変わった',
+          items: [['技を仕掛けたり防いだりする時間', 98, 47, '秒'], ['得点', 8, 2, '点']] }
+      ] }
+  };
+  var STILL = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var countUp = function (node, from, to, ms, delay) {
+    setTimeout(function () {
+      var t0 = null, step = function (t) {
+        if (t0 === null) t0 = t;
+        var p = STILL ? 1 : Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - p, 3);
+        node.textContent = String(Math.round(from + (to - from) * e));
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }, STILL ? 0 : delay || 0);
+  };
+  var whenSeen = function (node, fn) {
+    if (!('IntersectionObserver' in window)) { fn(); return; }
+    var io = new IntersectionObserver(function (es) { es.forEach(function (x) { if (x.isIntersecting) { io.disconnect(); fn(); } }); }, { threshold: 0.4 });
+    setTimeout(function () { io.observe(node); }, 0);
+  };
+  var SCENES = {
+    timeline: function (sc, box) {
+      // 1年を1マスにして、目盛りはマスの真ん中。帯はその年の端から端まで。解禁の印は解禁した年の左端
+      var line = el('div', 'jf-ig-line'), span = sc.to - sc.from + 1, pos = function (y) { return ((y - sc.from + 0.5) / span * 100) + '%'; };
+      sc.spans.forEach(function (sp) {
+        var b = el('div', 'jf-ig-span' + (sp[3] ? ' jf-ig-span-after' : ''));
+        b.style.left = pos(sp[1] - 0.5); b.style.width = ((sp[2] - sp[1] + 1) / span * 100) + '%';
+        b.appendChild(el('span', null, sp[0])); line.appendChild(b);
+      });
+      var pin = el('div', 'jf-ig-pin'); pin.style.left = pos(sc.mark - 0.5); pin.appendChild(el('b', null, sc.mark + '')); pin.appendChild(el('span', null, sc.markLabel)); line.appendChild(pin);
+      for (var y = sc.from; y <= sc.to; y++) { var t = el('i', 'jf-ig-tick', String(y).slice(2)); t.style.left = pos(y); line.appendChild(t); }
+      box.appendChild(line);
+    },
+    dots: function (sc, box) {
+      var wrap = el('div', 'jf-ig-groups'), nums = [];
+      sc.groups.forEach(function (g, gi) {
+        var col = el('div', 'jf-ig-group' + (gi ? ' jf-ig-after' : ''));
+        var top = el('div', 'jf-ig-gtop'); top.appendChild(el('strong', null, g.label)); top.appendChild(el('span', null, g.sub)); col.appendChild(top);
+        var grid = el('div', 'jf-ig-dots'); grid.style.setProperty('--per', sc.per);
+        for (var k = 0; k < g.total; k++) {
+          var d = el('i', 'jf-ig-dot'); d.style.setProperty('--i', k);
+          if (k < g.hit) { d.classList.add(k < g.deep ? 'jf-ig-dot-deep' : 'jf-ig-dot-hit'); d.style.setProperty('--h', k); }
+          grid.appendChild(d);
+        }
+        col.appendChild(grid);
+        var big = el('div', 'jf-ig-big'), n = el('b', null, '0'); big.appendChild(n); big.appendChild(el('small', null, '%'));
+        big.appendChild(el('span', null, g.hit + '試合')); col.appendChild(big);
+        nums.push([n, g.pct, 900 + g.total * 14]);
+        wrap.appendChild(col);
+      });
+      box.appendChild(wrap);
+      var lg = el('div', 'jf-ig-legend');
+      sc.legend.forEach(function (x) { var s2 = el('span'); s2.appendChild(el('i', 'jf-ig-dot ' + x[0])); s2.appendChild(document.createTextNode(x[1])); lg.appendChild(s2); });
+      box.appendChild(lg);
+      return function () { nums.forEach(function (x) { countUp(x[0], 0, x[1], 1100, x[2]); }); };
+    },
+    change: function (sc, box) {
+      var list = el('div', 'jf-ig-changes'), runs = [];
+      sc.items.forEach(function (it, i) {
+        var row = el('div', 'jf-ig-change');
+        row.appendChild(el('p', 'jf-ig-clabel', it[0]));
+        var bars = el('div', 'jf-ig-cbars');
+        var before = el('div', 'jf-ig-cbar jf-ig-cbefore'); before.style.setProperty('--w', '100%');
+        var bn = el('b', null, String(it[1])); before.appendChild(bn); before.appendChild(el('small', null, it[3]));
+        var after = el('div', 'jf-ig-cbar jf-ig-cafter'); after.style.setProperty('--w', (it[2] / it[1] * 100) + '%');
+        var an = el('b', null, String(it[1])); after.appendChild(an); after.appendChild(el('small', null, it[3]));
+        bars.appendChild(el('span', 'jf-ig-ctag', '前')); bars.appendChild(before); bars.appendChild(el('span', 'jf-ig-ctag jf-ig-ctag-after', '後')); bars.appendChild(after);
+        row.appendChild(bars);
+        var drop = el('span', 'jf-ig-drop', '約' + Math.round((1 - it[2] / it[1]) * 100) + '%減'); row.appendChild(drop);
+        list.appendChild(row);
+        runs.push([an, it[1], it[2], 500 + i * 350]);
+      });
+      box.appendChild(list);
+      return function () { runs.forEach(function (x) { countUp(x[0], x[1], x[2], 1100, x[3]); }); };
+    }
   };
   function figure(href) {
     var f = FIGS[href];
     if (!f) return null;
-    var box = el('figure', 'jf-fig');
-    box.appendChild(el('figcaption', 'jf-fig-title', f.title));
-    f.rows.forEach(function (r, i) {
-      var row = el('div', 'jf-fig-row' + (i === f.rows.length - 1 ? ' jf-fig-last' : ''));
-      var lab = el('div', 'jf-fig-label'); lab.appendChild(el('strong', null, r[0])); lab.appendChild(el('span', null, r[1]));
-      var track = el('div', 'jf-fig-track'), bar = el('div', 'jf-fig-bar');
-      bar.style.setProperty('--w', Math.min(100, r[2] / f.max * 100) + '%');
-      track.appendChild(bar);
-      var num = el('div', 'jf-fig-num'); var n = el('b', null, '0'); n.setAttribute('data-to', r[2]); num.appendChild(n); num.appendChild(el('small', null, f.unit));
-      row.appendChild(lab); row.appendChild(track); row.appendChild(num);
-      box.appendChild(row);
+    var box = el('figure', 'jf-ig');
+    if (f.head) box.appendChild(el('figcaption', 'jf-ig-head', f.head));
+    f.scenes.forEach(function (sc, i) {
+      var sec = el('section', 'jf-ig-scene jf-ig-' + sc.type);
+      var h = el('p', 'jf-ig-title'); h.appendChild(el('span', 'jf-ig-no', String(i + 1))); h.appendChild(document.createTextNode(sc.title)); sec.appendChild(h);
+      var after = SCENES[sc.type](sc, sec);
+      box.appendChild(sec);
+      whenSeen(sec, function () { sec.classList.add('jf-ig-on'); if (after) after(); });
     });
-    if (f.note) box.appendChild(el('p', 'jf-fig-note', f.note));
-    var play = function () {
-      if (box.classList.contains('jf-fig-on')) return;
-      box.classList.add('jf-fig-on');
-      var t0 = null, nums = box.querySelectorAll('b[data-to]');
-      var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var step = function (t) {
-        if (t0 === null) t0 = t;
-        var p = still ? 1 : Math.min(1, (t - t0) / 1200), e = 1 - Math.pow(1 - p, 3);
-        nums.forEach(function (b) { b.textContent = String(Math.round(Number(b.getAttribute('data-to')) * e)); });
-        if (p < 1) requestAnimationFrame(step);
-      };
-      requestAnimationFrame(step);
-    };
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (es) { es.forEach(function (x) { if (x.isIntersecting) { play(); io.disconnect(); } }); }, { threshold: 0.5 });
-      setTimeout(function () { io.observe(box); }, 0);
-    } else play();
+    if (f.note) box.appendChild(el('p', 'jf-ig-note', f.note));
     return box;
   }
   function storyCard(s, picked) {
