@@ -225,7 +225,7 @@
   var FIGS = {
     '/3f9a6fb1972b81b2b4ffeb876defd5e9': { head: '数字で見る', note: '出典：サンパウロ州立大学・サンパウロ大学の研究(IBJJF世界ノーギ選手権の男子黒帯、185試合)',
       scenes: [
-        { type: 'timeline', title: 'IBJJFは2021年、黒帯のノーギでヒールフックを解禁', from: 2017, to: 2023, mark: 2021, markLabel: '解禁',
+        { type: 'timeline', title: 'IBJJFは2021年、ノーギの試合でヒールフックを解禁', from: 2017, to: 2023, mark: 2021, markLabel: '解禁',
           spans: [['解禁前の3年', 2017, 2019, 0], ['解禁後の3年', 2021, 2023, 1]] },
         { type: 'dots', title: '一本で決まった試合のうち、足関節技で決まったのは', per: 10,
           groups: [{ label: '解禁前', sub: '一本 40試合', total: 40, hit: 6, deep: 0, pct: 15 }, { label: '解禁後', sub: '一本 51試合', total: 51, hit: 19, deep: 15, pct: 37 }],
