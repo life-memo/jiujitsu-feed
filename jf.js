@@ -286,6 +286,14 @@
       })).then(function (stories) {
         if (!alive() || shownKey !== key) return;
         list.textContent = '';
+        // 10/16 同じ並び順が2本あるときだけ、後ろの記事を空いている次の番号へずらす(サイト側の記事ページが古いと並び順が重なり、同じ帯の色が2つ出るため)。
+        // 抜けた番号はそのまま残す(黒帯が画像待ちの日に、茶帯を黒帯に繰り上げないため)
+        var okStory = function (s) { return s && s.points.length && s.title.indexOf('【削除】') !== 0 && (s === me || !s.date || s.date === me.date); };
+        var lastRank = 0;
+        stories.filter(okStory).map(function (s, i) { return [s, Number(s.rank) || 99, i]; })
+          .sort(function (a, b) { return a[1] - b[1] || (a[0] === me ? -1 : b[0] === me ? 1 : a[2] - b[2]); })
+          .forEach(function (x) { var r = Math.max(x[1], lastRank + 1); if (r < 99) x[0].rank = String(r); lastRank = r; });
+        stories.sort(function (a, b) { return (a ? Number(a.rank) || 99 : 999) - (b ? Number(b.rank) || 99 : 999); });
         // 黒帯の記事に画像があれば、その日の見出しのすぐ下に大きく出す(枠の中には入れない)
         var old = box.querySelector(':scope > .jf-day-img'), lead = stories.filter(function (s) { return s && String(s.rank) === '1' && s.img; })[0];
         if (old) old.remove();
