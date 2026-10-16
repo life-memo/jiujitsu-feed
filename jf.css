@@ -848,3 +848,8 @@ html .jf-ig-win strong { font-size: 1rem; }
 html .jf-ig-vsx { display: none; }
 html .jf-ig-lose { text-align: left; font-size: 0.78rem; }
 html .jf-ig-lose::before { content: "vs "; font-size: 0.66rem; font-weight: 500; }
+/* v55c: WINの印が縦に折れないように。ベルトの金の板を広げて文字を中に収める */
+html .jf-ig-wmark { flex: none; white-space: nowrap; }
+html .jf-ig-win strong { font-size: 0.95rem; word-break: keep-all; overflow-wrap: anywhere; }
+html .jf-ig-plate::before { inset: 7px 12%; }
+html .jf-ig-plate span { font-size: 0.64rem; white-space: nowrap; }
