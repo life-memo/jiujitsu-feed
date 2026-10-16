@@ -684,3 +684,28 @@ html .jf-social a:hover { opacity: 1; }
 html .jf-xhead { background: #fff; color: var(--jf-text) !important; border: 1px solid var(--jf-line); }
 html .jf-xhead:hover { background: #fff; border-color: var(--jf-text); }
 html .jf-social { justify-content: flex-end; }
+
+/* v52 (10/16 ハヤトさん): 上のXは枠も地もなくし、黒いマークだけ。下とメニューの印は少し小さく */
+html .jf-xhead { border: 0; background: none; width: 40px; }
+html .jf-xhead:hover { background: none; opacity: 0.6; }
+html .jf-xhead svg { width: 18px; height: 18px; }
+html .jf-social a svg { width: 19px; height: 19px; }
+
+/* v53 (10/16 試し): 記事の数字の図。画面に入ったら棒が伸びて数字が数え上がる(jf.js の FIGS) */
+html .jf-fig { margin: 18px 0 4px; padding: 16px 16px 12px; border: 1px solid var(--jf-line); border-radius: 12px; background: #fafafa; }
+html .jf-fig-title { margin: 0 0 12px; font-size: 0.8rem; font-weight: 700; line-height: 1.5; color: var(--jf-text); }
+html .jf-fig-row { display: grid; grid-template-columns: 7.6em minmax(0, 1fr) 3.4em; align-items: center; gap: 10px; padding: 7px 0; }
+html .jf-fig-label { display: flex; flex-direction: column; line-height: 1.35; }
+html .jf-fig-label strong { font-size: 0.72rem; font-weight: 700; color: var(--jf-text); }
+html .jf-fig-label span { font-size: 0.66rem; color: var(--jf-muted); }
+html .jf-fig-track { height: 14px; border-radius: 7px; background: #ececec; overflow: hidden; }
+html .jf-fig-bar { width: 0; height: 100%; border-radius: 7px; background: #9a9a9a; transition: width 1.2s cubic-bezier(0.22, 0.61, 0.36, 1); }
+html .jf-fig-last .jf-fig-bar { background: #c8102e; }
+html .jf-fig-on .jf-fig-bar { width: var(--w); }
+html .jf-fig-row + .jf-fig-row .jf-fig-bar { transition-delay: 0.25s; }
+html .jf-fig-num { text-align: right; white-space: nowrap; }
+html .jf-fig-num b { font-size: 1.35rem; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--jf-text); }
+html .jf-fig-last .jf-fig-num b { color: #c8102e; }
+html .jf-fig-num small { margin-left: 1px; font-size: 0.72rem; font-weight: 700; color: var(--jf-muted); }
+html .jf-fig-note { margin: 8px 0 0 !important; font-size: 0.66rem !important; color: var(--jf-muted); }
+@media (prefers-reduced-motion: reduce) { html .jf-fig-bar { transition: none; } }

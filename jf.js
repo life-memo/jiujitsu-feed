@@ -219,6 +219,49 @@
     }
     return sh;
   }
+  // ---- 数字の図(試し 10/16) ----
+  // 記事の数字を、棒グラフで見せる。画面に入ったら棒が伸び、数字が0から数え上がる。
+  // いまは試しで、図にする記事と数字をここに直接書いている(うまくいけば、Notionの原稿に欄を作って入れる形にする)
+  var FIGS = {
+    '/3f9a6fb1972b81b2b4ffeb876defd5e9': { title: '一本で決まった試合のうち、足関節技で決まった割合', unit: '%', max: 50,
+      rows: [['ヒールフック解禁前', '2017〜19年', 15], ['ヒールフック解禁後', '2021〜23年', 37]],
+      note: 'IBJJF世界ノーギ選手権の男子黒帯、185試合' }
+  };
+  function figure(href) {
+    var f = FIGS[href];
+    if (!f) return null;
+    var box = el('figure', 'jf-fig');
+    box.appendChild(el('figcaption', 'jf-fig-title', f.title));
+    f.rows.forEach(function (r, i) {
+      var row = el('div', 'jf-fig-row' + (i === f.rows.length - 1 ? ' jf-fig-last' : ''));
+      var lab = el('div', 'jf-fig-label'); lab.appendChild(el('strong', null, r[0])); lab.appendChild(el('span', null, r[1]));
+      var track = el('div', 'jf-fig-track'), bar = el('div', 'jf-fig-bar');
+      bar.style.setProperty('--w', Math.min(100, r[2] / f.max * 100) + '%');
+      track.appendChild(bar);
+      var num = el('div', 'jf-fig-num'); var n = el('b', null, '0'); n.setAttribute('data-to', r[2]); num.appendChild(n); num.appendChild(el('small', null, f.unit));
+      row.appendChild(lab); row.appendChild(track); row.appendChild(num);
+      box.appendChild(row);
+    });
+    if (f.note) box.appendChild(el('p', 'jf-fig-note', f.note));
+    var play = function () {
+      if (box.classList.contains('jf-fig-on')) return;
+      box.classList.add('jf-fig-on');
+      var t0 = null, nums = box.querySelectorAll('b[data-to]');
+      var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var step = function (t) {
+        if (t0 === null) t0 = t;
+        var p = still ? 1 : Math.min(1, (t - t0) / 1200), e = 1 - Math.pow(1 - p, 3);
+        nums.forEach(function (b) { b.textContent = String(Math.round(Number(b.getAttribute('data-to')) * e)); });
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { es.forEach(function (x) { if (x.isIntersecting) { play(); io.disconnect(); } }); }, { threshold: 0.5 });
+      setTimeout(function () { io.observe(box); }, 0);
+    } else play();
+    return box;
+  }
   function storyCard(s, picked) {
     var li = el('li', 'jf-story' + (picked ? ' jf-picked' : ''));
     if (s.rank) li.setAttribute('data-rank', s.rank);
@@ -230,6 +273,7 @@
     linkWho(ul);
     linkEvents([ul]);
     li.appendChild(ul);
+    var fig = figure(s.href); if (fig) li.appendChild(fig);
     // 共有(記事ごと)。参照記事と混ざらないよう、区切りの線より上に右寄せで置く
     li.appendChild(shareRow(s.title + '｜ジュウジュツフィード', location.origin + s.href));
     if (s.srcs.length) {
