@@ -679,3 +679,8 @@ html .jf-social a span { display: none; }
 html .jf-social a svg { width: 22px; height: 22px; padding: 0; border: 0 !important; border-radius: 0; }
 html .jf-social a { opacity: 0.85; transition: opacity 0.3s; }
 html .jf-social a:hover { opacity: 1; }
+
+/* v51 (10/16 ハヤトさん): 上のXは黒地をやめ、メニューのボタンと同じ白地・細い枠に黒いX。下とメニューの印は右に寄せる */
+html .jf-xhead { background: #fff; color: var(--jf-text) !important; border: 1px solid var(--jf-line); }
+html .jf-xhead:hover { background: #fff; border-color: var(--jf-text); }
+html .jf-social { justify-content: flex-end; }
