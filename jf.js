@@ -223,15 +223,18 @@
   // 記事の数字を、場面ごとの動く図で見せる。各場面は画面に入ったときに動き出す。
   // いまは試しで、図にする記事と数字をここに直接書いている(うまくいけば、Notionの原稿に欄を作って入れる形にする)
   var FIGS = {
-    '/3f9a6fb1972b81b2b4ffeb876defd5e9': { head: '数字で見る', note: '出典：サンパウロ州立大学・サンパウロ大学の研究(IBJJF世界ノーギ選手権の男子黒帯、185試合)',
+    // 10/16 試し: 大会のあとの結果のインフォグラフィック(UFC BJJ 12)。事実は記事の箇条書きと、その素材(公式結果ページで確認済み)の範囲だけ
+    '/3f4a6fb1972b8120a5dec90fbaba7d0d': { head: 'UFC BJJ 12　結果', sub: '10月9日(日本時間)・ラスベガス', note: '出典：UFC公式の結果ページほか(記事の参照記事)',
       scenes: [
-        { type: 'timeline', title: 'IBJJFは2021年、ノーギの試合でヒールフックを解禁', from: 2017, to: 2023, mark: 2021, markLabel: '解禁',
-          spans: [['解禁前の3年', 2017, 2019, 0], ['解禁後の3年', 2021, 2023, 1]] },
-        { type: 'dots', title: '一本で決まった試合のうち、足関節技で決まったのは', per: 10,
-          groups: [{ label: '解禁前', sub: '一本 40試合', total: 40, hit: 6, deep: 0, pct: 15 }, { label: '解禁後', sub: '一本 51試合', total: 51, hit: 19, deep: 15, pct: 37 }],
-          legend: [['jf-ig-dot-hit', '足関節技で一本'], ['jf-ig-dot-deep', 'うちヒールフック']] },
-        { type: 'change', title: 'ヘビー級のふつうの試合では、解禁後にこう変わった',
-          items: [['技を仕掛けたり防いだりする時間', 98, 47, '秒'], ['得点', 8, 2, '点']] }
+        { type: 'bouts', title: '主な3試合',
+          bouts: [
+            { tag: 'メイン', belt: '女子フライ級 初代王座戦', win: 'カシア・モウラ', lose: 'アデル・フォルナリノ', how: 'スプリット判定', kind: 'dec' },
+            { tag: 'セミメイン', belt: 'ライト級 空位の王座戦', win: 'ヘナート・カヌート', lose: 'イーサン・クレリンステン', how: '判定 3-0', kind: 'dec' },
+            { tag: '注目の一戦', win: 'ガブリエル・アルメイダ', lose: 'ギルバート・バーンズ', how: 'ヒールフック', time: '1R 4分34秒', kind: 'sub' }
+          ] },
+        { type: 'belts', title: 'カシア・モウラは、UFC BJJで初めての2階級王者に', who: 'カシア・モウラ',
+          belts: [['バンタム級', 'もともと持っていた王座'], ['女子フライ級', '今回とった初代王座']] },
+        { type: 'split', title: '3試合の決まり方', parts: [['判定', 2, 'dec'], ['一本', 1, 'sub']] }
       ] }
   };
   var STILL = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -252,6 +255,46 @@
     setTimeout(function () { io.observe(node); }, 0);
   };
   var SCENES = {
+    bouts: function (sc, box) {
+      var list = el('div', 'jf-ig-bouts');
+      sc.bouts.forEach(function (b, i) {
+        var card = el('div', 'jf-ig-bout jf-ig-' + b.kind); card.style.setProperty('--k', i);
+        var top = el('div', 'jf-ig-btop'); top.appendChild(el('span', 'jf-ig-btag', b.tag)); if (b.belt) top.appendChild(el('span', 'jf-ig-bbelt', b.belt)); card.appendChild(top);
+        var vs = el('div', 'jf-ig-vs');
+        var w = el('div', 'jf-ig-win'); w.appendChild(el('i', 'jf-ig-wmark', 'WIN')); w.appendChild(el('strong', null, b.win));
+        var l = el('div', 'jf-ig-lose', b.lose);
+        vs.appendChild(w); vs.appendChild(el('span', 'jf-ig-vsx', 'vs')); vs.appendChild(l); card.appendChild(vs);
+        var how = el('div', 'jf-ig-how'); how.appendChild(el('b', null, b.how)); if (b.time) how.appendChild(el('span', null, b.time)); card.appendChild(how);
+        list.appendChild(card);
+      });
+      box.appendChild(list);
+    },
+    belts: function (sc, box) {
+      var row = el('div', 'jf-ig-belts');
+      sc.belts.forEach(function (bt, i) {
+        var b = el('div', 'jf-ig-belt' + (i ? ' jf-ig-belt-new' : '')); b.style.setProperty('--k', i);
+        var plate = el('div', 'jf-ig-plate'); plate.appendChild(el('span', null, bt[0])); b.appendChild(plate);
+        b.appendChild(el('p', null, bt[1]));
+        row.appendChild(b);
+        if (!i) row.appendChild(el('span', 'jf-ig-plus', '+'));
+      });
+      box.appendChild(row);
+      var res = el('div', 'jf-ig-bres'); var n = el('b', null, '0'); res.appendChild(n); res.appendChild(el('span', null, '階級の王者　' + sc.who)); box.appendChild(res);
+      return function () { countUp(n, 0, sc.belts.length, 500, 1500); };
+    },
+    split: function (sc, box) {
+      var total = sc.parts.reduce(function (a, p) { return a + p[1]; }, 0);
+      var bar = el('div', 'jf-ig-split'), lg = el('div', 'jf-ig-splitlg'), runs = [];
+      sc.parts.forEach(function (p, i) {
+        var seg = el('div', 'jf-ig-seg jf-ig-seg-' + p[2]); seg.style.setProperty('--w', (p[1] / total * 100) + '%'); seg.style.setProperty('--k', i);
+        bar.appendChild(seg);
+        var item = el('span', 'jf-ig-lgi jf-ig-seg-' + p[2]); var n = el('b', null, '0'); item.appendChild(el('i')); item.appendChild(document.createTextNode(p[0] + ' ')); item.appendChild(n); item.appendChild(document.createTextNode('試合'));
+        lg.appendChild(item); runs.push([n, p[1], 300 + i * 500]);
+      });
+      box.appendChild(bar); box.appendChild(lg);
+      return function () { runs.forEach(function (x) { countUp(x[0], 0, x[1], 600, x[2]); }); };
+    },
+
     timeline: function (sc, box) {
       // 1年を1マスにして、目盛りはマスの真ん中。帯はその年の端から端まで。解禁の印は解禁した年の左端
       var line = el('div', 'jf-ig-line'), span = sc.to - sc.from + 1, pos = function (y) { return ((y - sc.from + 0.5) / span * 100) + '%'; };
@@ -311,7 +354,7 @@
     var f = FIGS[href];
     if (!f) return null;
     var box = el('figure', 'jf-ig');
-    if (f.head) box.appendChild(el('figcaption', 'jf-ig-head', f.head));
+    if (f.head) { var cap = el('figcaption', 'jf-ig-head', f.head); if (f.sub) cap.appendChild(el('span', null, f.sub)); box.appendChild(cap); }
     f.scenes.forEach(function (sc, i) {
       var sec = el('section', 'jf-ig-scene jf-ig-' + sc.type);
       var h = el('p', 'jf-ig-title'); h.appendChild(el('span', 'jf-ig-no', String(i + 1))); h.appendChild(document.createTextNode(sc.title)); sec.appendChild(h);
