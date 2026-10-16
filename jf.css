@@ -667,3 +667,15 @@ html .jf-drawer .jf-social a:hover { transform: none; }
 @media (min-width: 1000px) {
   html .jf-foot .jf-social { grid-column: 2; border-top: 0; padding-top: 0; margin-top: -12px; }
 }
+
+/* v50 (10/16 ハヤトさん): 上のXは丸をやめ、左のメニューのボタンと同じ角の取れた四角(40×36、角丸8px)にそろえる。
+   下とメニューの印は、文字と丸い枠をやめてマークだけにする */
+html .jf-xhead { width: 40px; height: 36px; border-radius: 8px; }
+@media (min-width: 600px) {
+  html .jf-xhead { width: auto; padding: 0 14px 0 12px; }
+}
+html .jf-social { gap: 22px; }
+html .jf-social a span { display: none; }
+html .jf-social a svg { width: 22px; height: 22px; padding: 0; border: 0 !important; border-radius: 0; }
+html .jf-social a { opacity: 0.85; transition: opacity 0.3s; }
+html .jf-social a:hover { opacity: 1; }
