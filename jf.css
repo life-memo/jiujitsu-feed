@@ -636,3 +636,34 @@ html .jf-mania-bar > span:nth-child(3) { background: #6b2224; }
 html .jf-mania-bar > span:nth-child(4) { background: #3a1a1b; }
 html .jf-mania-bar > span:nth-child(5) { background: #111; border-radius: 0 3px 3px 0; }
 html .jf-mania-dot { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 20px; height: 20px; border-radius: 50%; background: #fff; border: 3px solid #888; box-sizing: border-box; }
+
+/* v49 (10/16 ハヤトさん): Xは上の帯の右(タイトルの横)に黒い印で置く。フッターの大きなXの欄はやめ、
+   フッターとメニューの「ニュース」「このサイトについて」の下に、Xとポッドキャストの小さな印を並べる */
+html .jf-xhead { position: fixed; top: 10px; right: max(16px, calc((100vw - 640px) / 2 + 20px)); z-index: 21; display: inline-flex; align-items: center; justify-content: center; gap: 6px; width: 36px; height: 36px; padding: 0; border-radius: 18px; background: #111; color: #fff !important; text-decoration: none; font-size: 0.74rem !important; font-weight: 700; letter-spacing: 0.04em; transition: background 0.3s; }
+html .jf-xhead svg { width: 15px; height: 15px; flex: none; }
+html .jf-xhead span { display: none; }
+html .jf-xhead:hover { background: #333; }
+@media (min-width: 600px) {
+  html .jf-xhead { width: auto; padding: 0 14px 0 12px; }
+  html .jf-xhead span { display: inline; }
+}
+@media (min-width: 1000px) {
+  html .jf-xhead { right: max(32px, calc((100vw - 1080px) / 2 + 32px)); }
+}
+@media (max-width: 999px) {
+  html .jf-xhead { transition: transform 0.38s cubic-bezier(0.45, 0, 0.25, 1), background 0.3s; }
+  html.jf-hide:not(.jf-menu-open) .jf-xhead { transform: translateY(-112px); }
+}
+html.jf-menu-open .jf-xhead { visibility: hidden; }
+html .jf-social { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+html .jf-social a { display: inline-flex !important; align-items: center; gap: 8px; padding: 0 !important; font-size: 0.8rem !important; color: inherit !important; text-decoration: none; }
+html .jf-social a svg { box-sizing: content-box; flex: none; padding: 9px; border: 1px solid currentColor; border-radius: 50%; }
+html .jf-social a:hover span { text-decoration: underline; text-underline-offset: 4px; }
+html .jf-foot .jf-social { color: #fff; border-top: 1px solid #303030; padding-top: 22px; }
+html .jf-foot .jf-social a svg { border-color: #303030; }
+html .jf-drawer .jf-social { color: var(--jf-text); border-top: 1px solid var(--jf-line); padding-top: 18px; margin-top: 4px; }
+html .jf-drawer .jf-social a svg { border-color: var(--jf-line); }
+html .jf-drawer .jf-social a:hover { transform: none; }
+@media (min-width: 1000px) {
+  html .jf-foot .jf-social { grid-column: 2; border-top: 0; padding-top: 0; margin-top: -12px; }
+}
