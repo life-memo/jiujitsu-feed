@@ -709,3 +709,8 @@ html .jf-fig-last .jf-fig-num b { color: #c8102e; }
 html .jf-fig-num small { margin-left: 1px; font-size: 0.72rem; font-weight: 700; color: var(--jf-muted); }
 html .jf-fig-note { margin: 8px 0 0 !important; font-size: 0.66rem !important; color: var(--jf-muted); }
 @media (prefers-reduced-motion: reduce) { html .jf-fig-bar { transition: none; } }
+/* v53b: スマホで棒が短すぎたので、名前を棒の上の行に出し、棒を横いっぱいに使う */
+html .jf-fig-row { grid-template-columns: minmax(0, 1fr) 3.6em; gap: 4px 12px; padding: 8px 0; }
+html .jf-fig-label { grid-column: 1 / -1; flex-direction: row; align-items: baseline; gap: 8px; }
+html .jf-fig-track { height: 16px; border-radius: 8px; }
+html .jf-fig-bar { border-radius: 8px; }
