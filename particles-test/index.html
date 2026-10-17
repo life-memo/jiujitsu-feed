@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Particles 動作テスト | ジュウジュツフィード</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="./particles.css">
+  <script src="./Particles.js" defer></script>
+</head>
+<body>
+  <main class="pt-demo">
+    <a class="pt-demo-back" href="https://github.com/life-memo/jiujitsu-feed">← GitHubのプロジェクトへ</a>
+    <h1>Particles 動作テスト</h1>
+    <p>Benchoの粒子アニメーションをReactなしで動かすテストページです。点にカーソルを近づけると離れ、タップ・クリックで「円 → 四角 → 花」と変わります。</p>
+    <div class="pt-demo-box">
+      <div class="ptc"><canvas id="particles-canvas" class="ptc-canvas" width="480" height="400" role="img" aria-label="720個の点で描いた形。タップすると形が変わる"></canvas></div>
+      <div class="pt-demo-name">現在の形：<strong id="shape-now">Circle</strong></div>
+    </div>
+    <section class="pt-demo-controls" aria-label="Particlesの調整">
+      <label>形<select id="shape-control"><option>Circle</option><option>Square</option><option>Flower</option></select></label>
+      <label>粒の大きさ<select id="grain-control"><option>Fine</option><option>Coarse</option></select></label>
+      <label>カーソルの影響範囲：<output id="reach-value">80</output><input id="reach-control" type="range" min="30" max="160" value="80"></label>
+      <label>押し出す強さ：<output id="force-value">60</output><input id="force-control" type="range" min="0" max="100" value="60"></label>
+    </section>
+    <p class="pt-demo-note">このページは独立した動作確認用です。ジュウジュツフィードの既存ページと共通のスクリプト・スタイルには手を加えていません。元コンポーネント：<a href="https://bencho.dev/blocks/particles" target="_blank" rel="noopener">Bencho / Particles</a>（<a href="https://bencho.dev/licence" target="_blank" rel="noopener">MIT License</a>）。</p>
+  </main>
+</body>
+</html>
