@@ -159,9 +159,92 @@ body.motion-off *,body.motion-off *::before,body.motion-off *::after { animation
 @media(prefers-reduced-motion:reduce) {
   *,*::before,*::after { animation:none!important;transition:none!important;scroll-behavior:auto!important }
 }
+
+
+/* ── MOTION PLAYGROUND v2: visible kinetic design, no new dependencies ── */
+.controls{flex-wrap:wrap}
+.motion-panel{display:flex;gap:7px;width:100%;align-items:center}
+.intensity{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;flex:1;background:#eaeaea;padding:4px;border-radius:9px}
+.intensity button{min-width:0;border:0;border-radius:7px;background:transparent;color:#6d6d6d;padding:10px 3px;font-size:11px;font-weight:800;white-space:nowrap;transition:background .2s,transform .2s,color .2s}
+.intensity button[aria-pressed="true"]{background:#111;color:#fff;box-shadow:0 3px 8px rgba(0,0,0,.14)}
+.intensity button:active{transform:scale(.95)}
+.replay-btn{white-space:nowrap;border:1px solid #d5d5d5;background:#fff;border-radius:9px;height:43px;min-width:79px;padding:0 9px;font-size:11px;font-weight:800;color:#111;transition:transform .2s,background .2s}
+.replay-btn:active{transform:scale(.91);background:#eee}
+.replay-btn:disabled{color:#aaa;cursor:default;background:#f2f2f2}
+.masthead{position:relative;isolation:isolate}
+.masthead::after{content:"";position:absolute;bottom:-2px;left:0;height:3px;width:100%;background:#c8102e;transform:scaleX(0);transform-origin:left}
+body[data-intensity="soft"] .masthead::after{animation:lineDraw 640ms 130ms cubic-bezier(.17,.82,.2,1) both}
+body[data-intensity="max"] .masthead::after{animation:lineDraw 1000ms 110ms cubic-bezier(.17,.82,.2,1) both}
+@keyframes lineDraw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.masthead h1{overflow:visible;position:relative}
+.kinetic-char{display:inline-block;white-space:pre;transform-origin:50% 90%;will-change:auto}
+body[data-intensity="soft"] .kinetic-char{animation:kineticSoft 410ms cubic-bezier(.16,.9,.2,1) both;animation-delay:calc(25ms * var(--order))}
+body[data-intensity="max"] .kinetic-char{animation:kineticBig 650ms cubic-bezier(.18,1.05,.3,1) both;animation-delay:calc(54ms * var(--order))}
+@keyframes kineticSoft{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes kineticBig{from{opacity:0;filter:blur(3px);transform:translateY(38px) rotate(-9deg) scale(.82)}to{opacity:1;filter:blur(0);transform:translateY(0) rotate(0) scale(1)}}
+body[data-intensity="max"] .masthead .issue{animation:metaSlide 400ms ease-out both}
+body[data-intensity="max"] .masthead .eyebrow{animation:metaSlide 480ms 100ms ease-out both}
+body[data-intensity="max"] .masthead>p{animation:metaSlide 600ms 580ms ease-out both}
+@keyframes metaSlide{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+/* Black-and-white editorial news ticker, purely decorative and pausable. */
+.news-ticker{margin:19px 0 7px;overflow:hidden;border-block:1px solid #111;background:#111;color:#fff;position:relative}
+.ticker-track{display:flex;width:max-content}
+.ticker-set{flex:none;display:flex;align-items:center;gap:0;white-space:nowrap}
+.ticker-set span{display:inline-flex;gap:14px;align-items:center;padding:11px 14px;font-size:10px;font-weight:800;letter-spacing:.13em}
+.ticker-set i{font-style:normal;color:#f04b64;font-size:10px}
+body[data-intensity="soft"] .ticker-track{animation:tickerMove 34s linear infinite}
+body[data-intensity="max"] .ticker-track{animation:tickerMove 17s linear infinite}
+@keyframes tickerMove{to{transform:translateX(-50%)}}
+.scroll-meter{position:fixed;z-index:35;top:0;left:0;width:100%;height:3px;pointer-events:none;background:transparent}
+.scroll-meter span{display:block;height:100%;width:0;background:var(--red);box-shadow:0 1px 5px rgba(200,16,46,.18)}
+.scroll-cue{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 1px 0;color:#777;font-size:10px;letter-spacing:.13em;font-weight:750}
+.scroll-cue .down{font-size:19px;color:#c8102e;display:inline-block}
+body[data-intensity="max"] .scroll-cue .down{animation:nudge 1.3s ease-in-out 3}
+@keyframes nudge{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+.story{touch-action:pan-y;transform-origin:center}
+.story .index{transition:color .23s,transform .3s}
+body[data-intensity="max"] .stories-editorial .story:hover .index{color:#c8102e;transform:translateX(5px)}
+body[data-intensity="max"] .story .tag{transition:background .2s,color .2s,border-color .2s}
+body[data-intensity="max"] .story:hover .tag{background:#111;border-color:#111;color:#fff}
+body[data-intensity="max"] .story .go-arrow{transition:transform .4s cubic-bezier(.18,1.6,.25,1)}
+body[data-intensity="max"] .story:hover .go-arrow{transform:translate(8px,-6px) rotate(8deg)}
+/* Each story comes into view as user scrolls, instead of animating out of sight. */
+body:not(.motion-off) .story.is-waiting{opacity:0;transform:translate3d(0,24px,0) scale(.99)}
+body[data-intensity="max"] .story.is-waiting{transform:translate3d(0,58px,0) scale(.94)}
+body[data-intensity="soft"] .story.is-waiting.is-inview{animation:revealSoft 500ms cubic-bezier(.2,.8,.25,1) both;animation-delay:var(--delay)}
+body[data-intensity="max"] .story.is-waiting.is-inview{animation:revealBig 760ms cubic-bezier(.17,1,.25,1) both;animation-delay:var(--delay)}
+@keyframes revealSoft{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes revealBig{from{opacity:0;filter:blur(4px);transform:translateY(58px) scale(.94)}to{opacity:1;filter:blur(0);transform:none}}
+/* Press ripple: created only during direct user interactions. */
+.ripple{position:absolute;left:var(--rx);top:var(--ry);width:16px;height:16px;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%) scale(0);opacity:.28;background:#bbb;animation:ripplePop 570ms cubic-bezier(.12,.72,.2,1) forwards}
+.stories-editorial .ripple{background:#bdbdbd}
+body[data-intensity="max"] .story.is-pressed{background:#f5f5f5}
+@keyframes ripplePop{0%{transform:translate(-50%,-50%) scale(.5);opacity:.5}100%{transform:translate(-50%,-50%) scale(31);opacity:0}}
+/* Dialog content arrives in layers rather than all appearing at once. */
+body[data-intensity="max"] .article-dialog[open]{animation:articleBig 520ms cubic-bezier(.16,1,.25,1) both}
+@keyframes articleBig{from{opacity:0;transform:translateY(55px) scale(.93)}to{opacity:1;transform:none}}
+body[data-intensity="max"] .article-dialog[open] .article-body h2{animation:metaSlide 610ms 160ms both}
+body[data-intensity="max"] .article-dialog[open] .article-body .lead{animation:metaSlide 650ms 270ms both}
+body[data-intensity="max"] .menu-dialog[open]{animation:menuBig 400ms cubic-bezier(.17,1.1,.25,1) both}
+@keyframes menuBig{from{opacity:0;transform:translateX(-60px)}to{opacity:1;transform:none}}
+/* User override must not leave hidden queued elements. */
+body.motion-off .story.is-waiting{opacity:1;transform:none}
+body.motion-off .kinetic-char{opacity:1;transform:none;filter:none}
+body.motion-off .ticker-track{transform:none}
+body.motion-off .masthead::after{transform:scaleX(1)}
+@media(min-width:700px){.controls{flex-wrap:wrap}.motion-panel{width:100%}.intensity{min-width:190px}}
+@media(max-width:390px){.intensity button{font-size:10px}.replay-btn{min-width:73px;font-size:10px}}
+@media(prefers-reduced-motion:reduce){
+ .story.is-waiting{opacity:1!important;transform:none!important}
+ .kinetic-char{opacity:1!important;transform:none!important;filter:none!important}
+ .masthead::after{transform:scaleX(1)!important}
+ .ticker-track{transform:none!important}
+}
+
 </style>
 </head>
-<body>
+<body data-intensity="max">
+<div class="scroll-meter" aria-hidden="true"><span id="scroll-meter-fill"></span></div>
 <header class="sitehead">
   <div class="topline">
     <button class="ico" type="button" id="menu-open" aria-label="メニューを開く"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
@@ -186,9 +269,16 @@ body.motion-off *,body.motion-off *::before,body.motion-off *::after { animation
         <button type="button" id="mode-current" aria-pressed="false">現行風</button>
         <button type="button" id="mode-editorial" aria-pressed="true">Editorial</button>
       </div>
-      <button type="button" id="motion-toggle" class="motion-toggle" aria-pressed="true"><span class="motion-dot"></span><span id="motion-label">動き ON</span></button>
+      <div class="motion-panel" role="group" aria-label="アニメーションの強さ">
+        <div class="intensity">
+          <button type="button" data-intensity="off" aria-pressed="false">なし</button>
+          <button type="button" data-intensity="soft" aria-pressed="false">控えめ</button>
+          <button type="button" data-intensity="max" aria-pressed="true">たっぷり</button>
+        </div>
+        <button class="replay-btn" type="button" id="replay-motion" aria-label="アニメーションをもう一度再生">↻ 再生</button>
+      </div>
     </div>
-    <span class="labnote">見出し・余白の変化と、タップ・画面切替時の小さな反応を試せます。※記事見出しは架空のサンプルです。</span>
+    <span class="labnote">①文字が踊る見出し　②流れるニュース帯　③スクロールで登場する記事　④タップの反応　⑤記事を開く演出。※ニュースはすべてサンプルです。</span>
   </div>
   <section class="masthead" aria-labelledby="page-title">
     <div class="issue"><span>JIUJITSU FEED <b>／ DAILY NEWS</b></span><span id="category-kicker">ISSUE 018</span></div>
@@ -196,6 +286,13 @@ body.motion-off *,body.motion-off *::before,body.motion-off *::after { animation
     <h1 id="page-title">今日のヘッドライン。</h1>
     <p>あした道場で話したくなるニュース。</p>
   </section>
+  <div class="scroll-cue" aria-hidden="true"><span>SCROLL TO EXPLORE</span><span class="down">↓</span></div>
+  <div class="news-ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <div class="ticker-set"><span>JIUJITSU FEED <i>✳</i></span><span>WORLD GRAPPLING <i>✳</i></span><span>海外の柔術ニュース <i>✳</i></span><span>MAT CULTURE <i>✳</i></span></div>
+      <div class="ticker-set"><span>JIUJITSU FEED <i>✳</i></span><span>WORLD GRAPPLING <i>✳</i></span><span>海外の柔術ニュース <i>✳</i></span><span>MAT CULTURE <i>✳</i></span></div>
+    </div>
+  </div>
   <div class="section-caption"><strong id="section-title">TODAY'S STORIES</strong><em id="story-count">06 ARTICLES</em></div>
   <section class="story-list stories-editorial" id="story-list" aria-label="ニュースカード"></section>
   <p style="font-size:11px;color:#888;line-height:1.8;margin-top:30px">※このページは独立したUIデザインテストです。ニュース見出しはサンプルで、実際の記事やアクセス解析とは接続していません。</p>
@@ -241,19 +338,23 @@ body.motion-off *,body.motion-off *::before,body.motion-off *::after { animation
     {id:"f",cat:"動向",title:"世界の若手選手たちに注目が集まる理由",desc:"次のスターを探すための海外トピック。"}
   ];
   const list=document.getElementById("story-list");
-  const motionBtn=document.getElementById("motion-toggle");
   const reduce=matchMedia("(prefers-reduced-motion: reduce)");
   let currentMode="editorial";
   let currentCategory="トップ";
-  let motionOn=!reduce.matches;
+  let intensity=reduce.matches?"off":"max";
   let lastFocused=null;
-  function effectiveMotion(){return motionOn&&!reduce.matches}
+  let revealObserver=null;
+  let meterFrame=0;
+  function effectiveMotion(){return intensity!=="off"&&!reduce.matches}
   function syncButtons(){
     document.getElementById("mode-current").setAttribute("aria-pressed",String(currentMode==="current"));
     document.getElementById("mode-editorial").setAttribute("aria-pressed",String(currentMode==="editorial"));
-    motionBtn.setAttribute("aria-pressed",String(motionOn));
-    document.getElementById("motion-label").textContent=motionOn?"動き ON":"動き OFF";
+    document.body.dataset.intensity=effectiveMotion()?intensity:"off";
     document.body.classList.toggle("motion-off",!effectiveMotion());
+    document.querySelectorAll("[data-intensity]").forEach(btn=>{
+      if(btn.tagName==="BUTTON")btn.setAttribute("aria-pressed",String(btn.dataset.intensity===intensity));
+    });
+    document.getElementById("replay-motion").disabled=!effectiveMotion();
     document.querySelectorAll(".category").forEach(el=>el.setAttribute("aria-pressed",String(el.dataset.category===currentCategory)));
   }
   function makeStory(s,index){
@@ -276,40 +377,113 @@ body.motion-off *,body.motion-off *::before,body.motion-off *::after { animation
     const go=document.createElement("span");go.className="go";go.append(document.createTextNode("記事を読む "));
     const arrow=document.createElement("span");arrow.className="go-arrow";arrow.textContent="↗";go.append(arrow);
     content.append(meta,h,d,go);btn.append(num,content);
-    btn.addEventListener("pointerdown",()=>{
+    btn.addEventListener("pointerdown",e=>{
       btn.classList.add("is-pressed");
+      if(!effectiveMotion()||intensity!=="max")return;
+      const r=btn.getBoundingClientRect();
+      const ripple=document.createElement("span");
+      ripple.className="ripple";
+      ripple.style.setProperty("--rx",(e.clientX-r.left)+"px");
+      ripple.style.setProperty("--ry",(e.clientY-r.top)+"px");
+      ripple.setAttribute("aria-hidden","true");
+      btn.append(ripple);
+      ripple.addEventListener("animationend",()=>ripple.remove(),{once:true});
     },{passive:true});
     ["pointercancel","pointerleave","pointerup"].forEach(ev=>btn.addEventListener(ev,()=>btn.classList.remove("is-pressed")));
     btn.addEventListener("click",()=>openArticle(s));
     return btn;
   }
-  function animateStories(){
-    if(!effectiveMotion())return;
-    list.querySelectorAll(".story").forEach((el,i)=>{
-      el.style.setProperty("--delay",(i*48)+"ms");
-      el.classList.remove("is-entering");
-      void el.offsetWidth;
-      el.classList.add("is-entering");
-      el.addEventListener("animationend",()=>el.classList.remove("is-entering"),{once:true});
+  function animateStories(reason){
+    if(revealObserver){revealObserver.disconnect();revealObserver=null;}
+    const cards=[...list.querySelectorAll(".story")];
+    if(!effectiveMotion()||reason==="layout")return;
+    cards.forEach((el,i)=>{
+      el.style.setProperty("--delay",Math.min(i,7)*(intensity==="max"?80:40)+"ms");
+      el.classList.add("is-waiting");
+    });
+    function reveal(el){
+      el.classList.add("is-inview");
+      el.addEventListener("animationend",()=>{
+        el.classList.remove("is-waiting","is-inview");
+      },{once:true});
+    }
+    if(!("IntersectionObserver" in window)){cards.forEach(reveal);return;}
+    revealObserver=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          reveal(entry.target);
+          revealObserver?.unobserve(entry.target);
+        }
+      });
+    },{rootMargin:"0px 0px -5% 0px",threshold:.08});
+    cards.forEach(el=>revealObserver.observe(el));
+  }
+  function headlineKinetics(text){
+    const heading=document.getElementById("page-title");
+    heading.setAttribute("aria-label",text);
+    const fragment=document.createDocumentFragment();
+    Array.from(text).forEach((ch,i)=>{
+      const span=document.createElement("span");
+      span.className="kinetic-char";
+      span.setAttribute("aria-hidden","true");
+      span.style.setProperty("--order",String(i));
+      span.textContent=ch;
+      fragment.append(span);
+    });
+    heading.replaceChildren(fragment);
+    const mast=document.querySelector(".masthead");
+    if(effectiveMotion()){
+      mast.style.animation="none";
+      void mast.offsetWidth;
+      mast.style.animation="";
+    }
+  }
+  function measureStories(){
+    const pos=new Map();
+    list.querySelectorAll(".story").forEach(el=>pos.set(el.dataset.storyId,el.getBoundingClientRect()));
+    return pos;
+  }
+  function flipStories(previous){
+    if(!previous||!effectiveMotion())return;
+    list.querySelectorAll(".story").forEach(el=>{
+      const before=previous.get(el.dataset.storyId);
+      if(!before||typeof el.animate!=="function")return;
+      const after=el.getBoundingClientRect();
+      const dx=before.left-after.left,dy=before.top-after.top;
+      const sx=Math.max(.72,Math.min(1.35,before.width/Math.max(1,after.width)));
+      const sy=Math.max(.72,Math.min(1.35,before.height/Math.max(1,after.height)));
+      if(Math.abs(dx)+Math.abs(dy)+100*Math.abs(sx-1)+100*Math.abs(sy-1)<3)return;
+      el.animate([
+        {transform:"translate("+dx+"px,"+dy+"px) scale("+sx+","+sy+")",opacity:.78,transformOrigin:"top left"},
+        {transform:"translate(0,0) scale(1,1)",opacity:1,transformOrigin:"top left"}
+      ],{duration:intensity==="max"?740:440,easing:"cubic-bezier(.18,.95,.25,1)"});
     });
   }
-  function render(){
+  function render(reason="initial"){
+    const previous=reason==="layout"&&effectiveMotion()?measureStories():null;
     const selected=currentCategory==="トップ"?stories:stories.filter(s=>s.cat===currentCategory);
     list.className="story-list "+(currentMode==="editorial"?"stories-editorial":"stories-current");
     list.replaceChildren(...selected.map(makeStory));
-    document.getElementById("page-title").textContent=currentCategory==="トップ"?"今日のヘッドライン。":currentCategory+"を、もう少し深く。";
+    headlineKinetics(currentCategory==="トップ"?"今日のヘッドライン。":currentCategory+"を、もう少し深く。");
     document.getElementById("section-title").textContent=currentCategory==="トップ"?"TODAY'S STORIES":currentCategory+" / STORIES";
     document.getElementById("category-kicker").textContent=currentCategory==="トップ"?"ISSUE 018":currentCategory+" EDITION";
     document.getElementById("story-count").textContent=String(selected.length).padStart(2,"0")+" ARTICLES";
     syncButtons();
-    animateStories();
+    animateStories(reason);
+    flipStories(previous);
   }
-  document.getElementById("mode-current").addEventListener("click",()=>{if(currentMode==="current")return;currentMode="current";render()});
-  document.getElementById("mode-editorial").addEventListener("click",()=>{if(currentMode==="editorial")return;currentMode="editorial";render()});
-  motionBtn.addEventListener("click",()=>{motionOn=!motionOn;syncButtons();if(motionOn)animateStories()});
+  document.getElementById("mode-current").addEventListener("click",()=>{if(currentMode==="current")return;currentMode="current";render("layout")});
+  document.getElementById("mode-editorial").addEventListener("click",()=>{if(currentMode==="editorial")return;currentMode="editorial";render("layout")});
+  document.querySelectorAll(".intensity button").forEach(btn=>btn.addEventListener("click",()=>{
+    intensity=reduce.matches?"off":btn.dataset.intensity;
+    render("replay");
+  }));
+  document.getElementById("replay-motion").addEventListener("click",()=>{
+    if(effectiveMotion())render("replay");
+  });
   function selectCategory(cat){
     if(currentCategory===cat)return;
-    currentCategory=cat;render();
+    currentCategory=cat;render("category");
     if(effectiveMotion()){document.querySelector(".masthead").scrollIntoView({behavior:"smooth",block:"start"})}
   }
   document.querySelectorAll(".category").forEach(el=>el.addEventListener("click",()=>selectCategory(el.dataset.category)));
@@ -336,9 +510,23 @@ body.motion-off *,body.motion-off *::before,body.motion-off *::after { animation
   dialog.addEventListener("click",e=>{if(e.target===dialog)dialog.close()});
   dialog.addEventListener("close",()=>{if(lastFocused&&lastFocused.isConnected)lastFocused.focus()});
   articleInside.addEventListener("scroll",updateProgress,{passive:true});
-  const onPreference=()=>{syncButtons();if(!effectiveMotion())list.querySelectorAll(".story").forEach(x=>x.classList.remove("is-entering"))};
+  function updatePageMeter(){
+    if(meterFrame)return;
+    meterFrame=requestAnimationFrame(()=>{
+      const max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
+      const pct=Math.max(0,Math.min(100,window.scrollY/max*100));
+      document.getElementById("scroll-meter-fill").style.width=pct+"%";
+      meterFrame=0;
+    });
+  }
+  window.addEventListener("scroll",updatePageMeter,{passive:true});
+  window.addEventListener("resize",updatePageMeter,{passive:true});
+  const onPreference=()=>{
+    if(reduce.matches)intensity="off";
+    render("replay");
+  };
   if(reduce.addEventListener)reduce.addEventListener("change",onPreference);
-  syncButtons();render();
+  syncButtons();render();updatePageMeter();
 })();
 </script>
 </body>
