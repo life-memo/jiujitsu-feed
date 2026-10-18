@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>Editorial × Microinteractions | ジュウジュツフィード UI LAB</title>
+<style>
+/*
+  Editorial × Microinteractions — standalone Jiujitsu Feed UI study
+  Inspired by the existing jf.css and jf.js (white background, dark ink,
+  Noto Sans JP, belt accents, centered header and category tabs).
+  Self-contained: never loaded by the actual Wraptas site.
+  All headlines are illustrative, not live journalism.
+*/
+:root { --ink:#101010; --quiet:#737373; --line:#e6e6e6; --red:#c8102e; --bg:#fff; --jp:"Noto Sans JP","Hiragino Sans","Yu Gothic",system-ui,sans-serif; }
+* { box-sizing:border-box }
+html { -webkit-text-size-adjust:100%; scroll-behavior:smooth }
+body { background:#fff; color:var(--ink); font-family:var(--jp); margin:0; -webkit-font-smoothing:antialiased }
+button { font:inherit; cursor:pointer; -webkit-tap-highlight-color:transparent }
+button:focus-visible { outline:2px solid #225ad5; outline-offset:3px }
+[hidden] { display:none!important }
+svg { display:block }
+header.sitehead { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.97); border-bottom:1px solid var(--line) }
+.topline { height:48px; max-width:1080px; margin:auto; display:grid; grid-template-columns:45px 1fr 45px; align-items:center; padding:0 14px }
+.logo { white-space:nowrap; font-size:17px; font-weight:800; letter-spacing:.055em; text-align:center }
+.ico { width:40px; height:40px; border:0; border-radius:9px; display:grid; place-items:center; background:transparent; color:var(--ink); transition:background .2s,transform .22s cubic-bezier(.2,1.6,.3,1) }
+.ico svg { width:19px; height:19px; stroke:currentColor; stroke-width:2; fill:none; stroke-linecap:round;stroke-linejoin:round }
+.ico:active { transform:scale(.88); background:#eee }
+.topx { display:grid;place-items:center;width:40px;height:40px;color:#111;text-decoration:none }
+.topx svg { width:18px;height:18px;fill:currentColor }
+.categories { background:#f6f6f6; border-top:1px solid #f0f0f0; overflow-x:auto; scrollbar-width:none; -webkit-overflow-scrolling:touch }
+.categories::-webkit-scrollbar { display:none }
+.categories-inner { display:flex; gap:1px; max-width:1080px; margin:auto; padding:0 12px; width:max-content; min-width:100% }
+.category { position:relative; flex:none; min-width:73px; border:0; background:transparent; color:#6c6c6c; padding:12px 10px 13px; font-size:12px; font-weight:600; letter-spacing:.07em }
+.category::after { content:"";position:absolute; height:2px; bottom:0;left:13px;right:13px; background:#111;transform:scaleX(0);transition:transform .3s cubic-bezier(.2,.8,.2,1) }
+.category[aria-pressed="true"] { color:#111 }
+.category[aria-pressed="true"]::after { transform:scaleX(1) }
+.lab { max-width:900px; margin:0 auto; padding:22px 20px 70px; min-height:70vh }
+.labbar { padding:12px 13px 14px; background:#f8f8f8; border:1px solid #e7e7e7; border-radius:12px; margin-bottom:38px }
+.labbar-head { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:11px }
+.labbar-head strong { font-size:12px;letter-spacing:.02em }
+.labbar-head span { font-size:9px;letter-spacing:.15em;font-weight:800;color:#8b8b8b }
+.controls { display:flex;align-items:center;gap:8px }
+.switch { flex:1; display:flex; background:#eaeaea; padding:4px; border-radius:9px; min-width:0 }
+.switch button { flex:1; min-width:0; border:0;background:transparent; border-radius:7px; padding:11px 4px; font-size:12px; font-weight:800;color:#777;white-space:nowrap;transition:background .2s,box-shadow .2s }
+.switch button[aria-pressed="true"] { background:#fff;color:#111;box-shadow:0 1px 5px rgba(0,0,0,.07) }
+.motion-toggle { display:flex;align-items:center;justify-content:center;gap:7px; flex:none;border:1px solid #d7d7d7; background:#fff; min-width:82px; height:43px; border-radius:8px; padding:0 10px;color:#111;font-size:11px;font-weight:800;transition:transform .2s }
+.motion-toggle:active { transform:scale(.94) }
+.motion-dot { width:7px;height:7px;border-radius:50%;background:#b5b5b5 }
+.motion-toggle[aria-pressed=true] .motion-dot { background:#23865d;box-shadow:0 0 0 3px #dcf4e8 }
+.labnote { display:block;margin:10px 2px 0;color:#767676;font-size:10px;line-height:1.6 }
+.eyebrow { font-size:10px;letter-spacing:.23em;font-weight:850;color:#555 }
+.masthead { padding:0 0 22px; border-bottom:2px solid #111; }
+.issue { display:flex;align-items:center;justify-content:space-between;gap:10px;color:#777;font-size:11px;letter-spacing:.07em;margin-bottom:14px }
+.issue b { font-weight:700;color:#111 }
+.masthead h1 { font-size:clamp(28px,7vw,52px);letter-spacing:-.055em;line-height:1.22;font-weight:850;margin:0 0 9px }
+.masthead p { font-size:12px;line-height:1.8;color:var(--quiet);margin:0 }
+.section-caption { display:flex;justify-content:space-between;align-items:baseline;padding:17px 1px 8px;font-size:11px;letter-spacing:.08em;color:#686868 }
+.section-caption strong { color:#111;font-size:12px;letter-spacing:.03em }
+.section-caption em { font-size:9px;font-style:normal;letter-spacing:.15em }
+.story-list { margin:0; padding:0; display:grid }
+.story { width:100%;position:relative;text-align:left;color:inherit;background:#fff;border:0;cursor:pointer;overflow:hidden;display:flex;align-items:flex-start;gap:15px;transition:background-color .22s,border-color .2s }
+.story:active { background:#f5f5f5 }
+.story .index { font-variant-numeric:tabular-nums;letter-spacing:-.055em }
+.story .meta { display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:10px;letter-spacing:.06em;margin-bottom:10px;color:#777 }
+.tag { border:1px solid #d8d8d8;padding:3px 6px;font-size:10px;font-weight:750;line-height:1.2 }
+.story .head { display:block;font-weight:780;line-height:1.56;text-wrap:pretty }
+.story .excerpt { display:block;color:#717171;font-size:12px;line-height:1.9;margin-top:9px }
+.story .go { display:inline-flex;align-items:center;gap:7px; margin-top:14px; font-size:10px; font-weight:750; letter-spacing:.04em }
+.story .go-arrow { display:inline-block;font-size:16px;transition:transform .26s cubic-bezier(.2,1.3,.3,1) }
+.story:hover .go-arrow { transform:translate(4px,-3px) }
+.story:active .go-arrow { transform:translate(6px,-5px) }
+.stories-current { gap:12px;padding-top:13px }
+.stories-current .story { border:1px solid var(--line);border-radius:14px;padding:19px 17px 19px 30px;min-height:138px;display:block }
+.stories-current .story::before { content:"";position:absolute;top:0;bottom:0;left:0;width:9px;background:var(--belt,#111) }
+.stories-current .story[data-rank="1"] { --belt:#c8102e }
+.stories-current .story[data-rank="2"] { --belt:#8a5527 }
+.stories-current .story[data-rank="3"] { --belt:#7a3da8 }
+.stories-current .story[data-rank="4"] { --belt:#1f5fc4 }
+.stories-current .story[data-rank="5"] { --belt:#111 }
+.stories-current .story[data-rank="6"] { --belt:#333 }
+.stories-current .index { display:none }
+.stories-current .story .head { font-size:16px }
+.stories-current .story .go { display:none }
+.stories-current .story .excerpt { font-size:11px;margin-top:5px }
+.stories-current .section-label { display:none }
+.stories-editorial { padding-top:6px; }
+.stories-editorial .story { gap:18px;padding:23px 1px 24px;border-bottom:1px solid #dedede;align-items:flex-start }
+.stories-editorial .story:first-child { padding-top:25px;padding-bottom:34px;border-bottom:2px solid #111; }
+.stories-editorial .index { color:#bbb;font-weight:650;line-height:1;flex:none;font-size:22px;min-width:30px;padding-top:5px }
+.stories-editorial .story:first-child .index { color:var(--red);font-size:37px;min-width:50px;padding-top:4px }
+.stories-editorial .head { font-size:17px;line-height:1.55;letter-spacing:-.04em }
+.stories-editorial .story:first-child .head { font-size:clamp(27px,7vw,44px);font-weight:880;letter-spacing:-.075em;line-height:1.34 }
+.stories-editorial .story:first-child .excerpt { font-size:13px;margin-top:16px;max-width:40ch }
+.stories-editorial .story .excerpt { font-size:11px }
+.stories-editorial .story .go { color:#111 }
+.stories-editorial .story:first-child .go { margin-top:24px }
+.stories-editorial .story:active { background:linear-gradient(90deg,#f7f7f7,transparent) }
+.stories-editorial .story:hover { background:#fafafa }
+.stories-editorial .story .head { text-decoration-color:transparent;text-decoration-thickness:1px;text-underline-offset:5px;transition:text-decoration-color .18s }
+.stories-editorial .story:hover .head { text-decoration:underline;text-decoration-color:#777 }
+.footer { background:#111;color:#fff;padding:44px max(20px,calc((100vw - 900px)/2)); }
+.footer strong { font-size:20px;letter-spacing:.04em }
+.footer p { font-size:12px;color:#bcbcbc;margin:8px 0 30px }
+.footer small { color:#888;font-size:10px }
+.footer-divider { height:1px;background:#333;margin:0 0 25px }
+body:not(.motion-off) .story.is-entering { animation:revealStory 440ms cubic-bezier(.2,.8,.25,1) both;animation-delay:var(--delay) }
+@keyframes revealStory { from { opacity:0;transform:translateY(13px);filter:blur(1.6px) } to { opacity:1;transform:none;filter:blur(0) } }
+body:not(.motion-off) .story.is-pressed .head { transform:translateX(3px); transition:transform 180ms }
+body:not(.motion-off) .story .head { transition:transform 180ms }
+body.motion-off *,body.motion-off *::before,body.motion-off *::after { animation:none!important;transition:none!important;scroll-behavior:auto!important }
+.article-dialog { padding:0;border:0;background:transparent;color:#111;width:min(calc(100% - 16px),650px);max-height:calc(100dvh - 24px);overflow:visible }
+.article-dialog::backdrop { background:rgba(0,0,0,.46);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px) }
+.article-dialog[open] { animation:openArticle .3s cubic-bezier(.2,.9,.25,1) both }
+@keyframes openArticle { from { opacity:0;transform:translateY(24px) scale(.98) } to { opacity:1;transform:none } }
+.article-inside { overflow:auto;max-height:calc(100dvh - 24px);border-radius:17px;background:#fff;box-shadow:0 22px 75px rgba(0,0,0,.18);overscroll-behavior:contain }
+.article-toolbar { position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;padding:12px 17px;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line) }
+.article-toolbar span { font-size:10px;font-weight:700;letter-spacing:.13em }
+.article-toolbar button { width:36px;height:36px;border:0;border-radius:50%;font-size:20px;background:#f2f2f2 }
+.read-progress { position:sticky;top:61px;z-index:2;height:2px;background:#efefef }
+.read-progress > span { display:block;width:0;height:100%;background:#c8102e;transition:width .12s linear }
+.article-body { padding:30px 24px 45px }
+.article-body .meta { color:#777;font-size:11px;letter-spacing:.09em }
+.article-body h2 { font-size:clamp(27px,7vw,43px);line-height:1.46;letter-spacing:-.055em;margin:12px 0 25px }
+.article-body p { font-size:14px;line-height:2.1;margin:18px 0 }
+.article-body .lead { font-weight:650;font-size:16px }
+.article-body .source-label { padding-top:16px;border-top:1px solid #ddd;color:#777;font-size:11px }
+.article-body .article-note { margin-top:26px;padding:14px;background:#f5f5f5;border-radius:8px;color:#666;font-size:11px }
+.menu-dialog { border:0;padding:0;position:fixed;inset:0 auto 0 0;margin:0;width:min(83vw,330px);height:100dvh;max-height:none;background:#fff;color:#111;box-shadow:10px 0 35px rgba(0,0,0,.15) }
+.menu-dialog::backdrop { background:rgba(0,0,0,.37) }
+.menu-dialog[open] { animation:slideMenu 240ms cubic-bezier(.2,.8,.2,1) both }
+@keyframes slideMenu { from {transform:translateX(-26px);opacity:.5} to {transform:none;opacity:1} }
+.menu-inner { padding:24px 24px 40px }
+.menu-inner h2 { font-size:17px;margin:22px 0 }
+.menu-inner button:not(.menu-close) { display:block;width:100%;text-align:left;border:0;border-bottom:1px solid #eee;background:#fff;padding:16px 0;font-size:14px;font-weight:700 }
+.menu-close { float:right;border:1px solid #ddd;border-radius:7px;background:#fff;padding:7px 12px }
+@media(min-width:700px) {
+  .lab {padding-top:35px}
+  .labbar {display:grid;grid-template-columns:1fr 310px;align-items:center;column-gap:20px;padding:16px 18px}
+  .labbar-head {margin-bottom:0}
+  .labnote {grid-column:1/-1;margin-top:8px}
+  .stories-current { grid-template-columns:repeat(2,minmax(0,1fr));gap:16px }
+  .stories-current .story:first-child { grid-column:span 2;min-height:165px }
+  .stories-editorial .story:first-child { padding:39px 5px 45px }
+  .stories-editorial .story:first-child .head {font-size:46px}
+  .stories-editorial .story {padding-left:5px;padding-right:5px}
+}
+@media(max-width:375px) {
+  .lab { padding-left:16px;padding-right:16px }
+  .logo {font-size:15px}
+  .topline {padding:0 9px}
+  .stories-editorial .story {gap:12px}
+  .stories-editorial .story:first-child .index {min-width:42px;font-size:31px}
+  .stories-editorial .story:first-child .head {font-size:26px}
+  .stories-editorial .story .head {font-size:15px}
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation:none!important;transition:none!important;scroll-behavior:auto!important }
+}
+</style>
+</head>
+<body>
+<header class="sitehead">
+  <div class="topline">
+    <button class="ico" type="button" id="menu-open" aria-label="メニューを開く"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <div class="logo">ジュウジュツフィード</div>
+    <a class="topx" href="https://x.com/jiujitsufeed" target="_blank" rel="noopener noreferrer" aria-label="Xを開く"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  </div>
+  <nav class="categories" aria-label="カテゴリー">
+    <div class="categories-inner" id="categories">
+      <button type="button" class="category" data-category="トップ" aria-pressed="true">トップ</button>
+      <button type="button" class="category" data-category="試合" aria-pressed="false">試合</button>
+      <button type="button" class="category" data-category="動向" aria-pressed="false">動向</button>
+      <button type="button" class="category" data-category="運営" aria-pressed="false">運営</button>
+      <button type="button" class="category" data-category="文化" aria-pressed="false">文化</button>
+    </div>
+  </nav>
+</header>
+<main class="lab">
+  <div class="labbar">
+    <div class="labbar-head"><strong>見た目と動きを比較</strong><span>UI EXPERIMENT / 01 + 03</span></div>
+    <div class="controls">
+      <div class="switch" role="group" aria-label="表示方法">
+        <button type="button" id="mode-current" aria-pressed="false">現行風</button>
+        <button type="button" id="mode-editorial" aria-pressed="true">Editorial</button>
+      </div>
+      <button type="button" id="motion-toggle" class="motion-toggle" aria-pressed="true"><span class="motion-dot"></span><span id="motion-label">動き ON</span></button>
+    </div>
+    <span class="labnote">見出し・余白の変化と、タップ・画面切替時の小さな反応を試せます。※記事見出しは架空のサンプルです。</span>
+  </div>
+  <section class="masthead" aria-labelledby="page-title">
+    <div class="issue"><span>JIUJITSU FEED <b>／ DAILY NEWS</b></span><span id="category-kicker">ISSUE 018</span></div>
+    <span class="eyebrow" id="issue-year">SUNDAY — OCT 18, 2026</span>
+    <h1 id="page-title">今日のヘッドライン。</h1>
+    <p>あした道場で話したくなるニュース。</p>
+  </section>
+  <div class="section-caption"><strong id="section-title">TODAY'S STORIES</strong><em id="story-count">06 ARTICLES</em></div>
+  <section class="story-list stories-editorial" id="story-list" aria-label="ニュースカード"></section>
+  <p style="font-size:11px;color:#888;line-height:1.8;margin-top:30px">※このページは独立したUIデザインテストです。ニュース見出しはサンプルで、実際の記事やアクセス解析とは接続していません。</p>
+</main>
+<footer class="footer"><strong>ジュウジュツフィード</strong><p>あした道場で話したくなるニュース。</p><div class="footer-divider"></div><small>© 2026 ジュウジュツフィード — DESIGN LAB</small></footer>
+<dialog class="menu-dialog" id="menu-dialog" aria-label="メニュー">
+  <div class="menu-inner">
+    <button type="button" class="menu-close" id="menu-close">閉じる ×</button>
+    <h2>ニュース</h2>
+    <button type="button" data-menu-category="トップ">今日のヘッドライン</button>
+    <button type="button" data-menu-category="試合">試合</button>
+    <button type="button" data-menu-category="動向">動向</button>
+    <button type="button" data-menu-category="運営">運営</button>
+    <button type="button" data-menu-category="文化">文化</button>
+    <p style="font-size:11px;color:#777;line-height:1.8;margin-top:28px">これはデザイン確認用のメニューです。</p>
+  </div>
+</dialog>
+<dialog class="article-dialog" id="article-dialog" aria-labelledby="article-title">
+  <div class="article-inside" id="article-inside">
+    <div class="article-toolbar"><span>JUJUTSU FEED / PREVIEW</span><button type="button" id="article-close" aria-label="閉じる">×</button></div>
+    <div class="read-progress"><span id="read-progress"></span></div>
+    <article class="article-body">
+      <span class="meta" id="article-meta">SAMPLE NEWS</span>
+      <h2 id="article-title"></h2>
+      <p class="lead" id="article-lead"></p>
+      <p>普段のニュースは、つい結果や目立つ発言だけを追いかけてしまいます。けれど、その出来事がなぜ注目されるのかを知ると、観戦や練習の楽しみ方も変わってきます。</p>
+      <p>ジュウジュツフィードが届けたいのは、そんな「もう少し知っていたい」と思える話題。ニュースの背景を短く読み解くことで、次に道場で交わす会話にも少し広がりが生まれるかもしれません。</p>
+      <p>この記事ページ風の表示は、文字の大きさと読み進める時の動き方を試すためのサンプルです。実際のニュース内容ではありません。</p>
+      <p class="source-label">EDITORIAL UI / INTERACTION PREVIEW</p>
+      <p class="article-note">ページ上部の細い赤い線は、この記事内のスクロール進行度を表しています。記事や投票データは一切保存されません。</p>
+    </article>
+  </div>
+</dialog>
+<script>
+(() => {
+  "use strict";
+  const stories=[
+    {id:"a",cat:"試合",title:"世界のグラップリングで、次に何が起きるのか。",desc:"大会の動きや選手たちの発言を手がかりに、今の競技シーンをもう少し深く知る。"},
+    {id:"b",cat:"動向",title:"海外柔術界で広がる、新たな練習の考え方",desc:"世界の道場では、いまどんな議論が交わされているのか。"},
+    {id:"c",cat:"試合",title:"試合をもっと面白くする、ルールの違い",desc:"観戦前に知っておきたいポイントを紹介。"},
+    {id:"d",cat:"運営",title:"大会運営の裏側にある、知られざる工夫",desc:"マットの外で進んでいる変化にも注目。"},
+    {id:"e",cat:"文化",title:"柔術がつなぐ、人とカルチャーの話",desc:"競技の外側に広がる柔術の世界。"},
+    {id:"f",cat:"動向",title:"世界の若手選手たちに注目が集まる理由",desc:"次のスターを探すための海外トピック。"}
+  ];
+  const list=document.getElementById("story-list");
+  const motionBtn=document.getElementById("motion-toggle");
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)");
+  let currentMode="editorial";
+  let currentCategory="トップ";
+  let motionOn=!reduce.matches;
+  let lastFocused=null;
+  function effectiveMotion(){return motionOn&&!reduce.matches}
+  function syncButtons(){
+    document.getElementById("mode-current").setAttribute("aria-pressed",String(currentMode==="current"));
+    document.getElementById("mode-editorial").setAttribute("aria-pressed",String(currentMode==="editorial"));
+    motionBtn.setAttribute("aria-pressed",String(motionOn));
+    document.getElementById("motion-label").textContent=motionOn?"動き ON":"動き OFF";
+    document.body.classList.toggle("motion-off",!effectiveMotion());
+    document.querySelectorAll(".category").forEach(el=>el.setAttribute("aria-pressed",String(el.dataset.category===currentCategory)));
+  }
+  function makeStory(s,index){
+    const btn=document.createElement("button");
+    btn.className="story";
+    btn.type="button";
+    btn.dataset.rank=String(index+1);
+    btn.dataset.storyId=s.id;
+    const num=document.createElement("span");
+    num.className="index";
+    num.textContent=String(index+1).padStart(2,"0");
+    const content=document.createElement("div");
+    const meta=document.createElement("div");
+    meta.className="meta";
+    const tag=document.createElement("span");tag.className="tag";tag.textContent=s.cat;
+    const date=document.createElement("span");date.textContent="2026.10.18";
+    meta.append(tag,date);
+    const h=document.createElement("strong");h.className="head";h.textContent=s.title;
+    const d=document.createElement("span");d.className="excerpt";d.textContent=s.desc;
+    const go=document.createElement("span");go.className="go";go.append(document.createTextNode("記事を読む "));
+    const arrow=document.createElement("span");arrow.className="go-arrow";arrow.textContent="↗";go.append(arrow);
+    content.append(meta,h,d,go);btn.append(num,content);
+    btn.addEventListener("pointerdown",()=>{
+      btn.classList.add("is-pressed");
+    },{passive:true});
+    ["pointercancel","pointerleave","pointerup"].forEach(ev=>btn.addEventListener(ev,()=>btn.classList.remove("is-pressed")));
+    btn.addEventListener("click",()=>openArticle(s));
+    return btn;
+  }
+  function animateStories(){
+    if(!effectiveMotion())return;
+    list.querySelectorAll(".story").forEach((el,i)=>{
+      el.style.setProperty("--delay",(i*48)+"ms");
+      el.classList.remove("is-entering");
+      void el.offsetWidth;
+      el.classList.add("is-entering");
+      el.addEventListener("animationend",()=>el.classList.remove("is-entering"),{once:true});
+    });
+  }
+  function render(){
+    const selected=currentCategory==="トップ"?stories:stories.filter(s=>s.cat===currentCategory);
+    list.className="story-list "+(currentMode==="editorial"?"stories-editorial":"stories-current");
+    list.replaceChildren(...selected.map(makeStory));
+    document.getElementById("page-title").textContent=currentCategory==="トップ"?"今日のヘッドライン。":currentCategory+"を、もう少し深く。";
+    document.getElementById("section-title").textContent=currentCategory==="トップ"?"TODAY'S STORIES":currentCategory+" / STORIES";
+    document.getElementById("category-kicker").textContent=currentCategory==="トップ"?"ISSUE 018":currentCategory+" EDITION";
+    document.getElementById("story-count").textContent=String(selected.length).padStart(2,"0")+" ARTICLES";
+    syncButtons();
+    animateStories();
+  }
+  document.getElementById("mode-current").addEventListener("click",()=>{if(currentMode==="current")return;currentMode="current";render()});
+  document.getElementById("mode-editorial").addEventListener("click",()=>{if(currentMode==="editorial")return;currentMode="editorial";render()});
+  motionBtn.addEventListener("click",()=>{motionOn=!motionOn;syncButtons();if(motionOn)animateStories()});
+  function selectCategory(cat){
+    if(currentCategory===cat)return;
+    currentCategory=cat;render();
+    if(effectiveMotion()){document.querySelector(".masthead").scrollIntoView({behavior:"smooth",block:"start"})}
+  }
+  document.querySelectorAll(".category").forEach(el=>el.addEventListener("click",()=>selectCategory(el.dataset.category)));
+  const menu=document.getElementById("menu-dialog");
+  document.getElementById("menu-open").addEventListener("click",()=>{lastFocused=document.activeElement;menu.showModal()});
+  document.getElementById("menu-close").addEventListener("click",()=>menu.close());
+  document.querySelectorAll("[data-menu-category]").forEach(el=>el.addEventListener("click",()=>{menu.close();selectCategory(el.dataset.menuCategory)}));
+  menu.addEventListener("click",e=>{if(e.target===menu)menu.close()});
+  const dialog=document.getElementById("article-dialog");
+  const articleInside=document.getElementById("article-inside");
+  const progress=document.getElementById("read-progress");
+  function updateProgress(){
+    const limit=Math.max(1,articleInside.scrollHeight-articleInside.clientHeight);
+    progress.style.width=Math.max(0,Math.min(100,(articleInside.scrollTop/limit)*100))+"%";
+  }
+  function openArticle(s){
+    lastFocused=document.activeElement;
+    document.getElementById("article-title").textContent=s.title;
+    document.getElementById("article-lead").textContent=s.desc;
+    document.getElementById("article-meta").textContent="2026.10.18 / "+s.cat+" / SAMPLE ARTICLE";
+    dialog.showModal();articleInside.scrollTop=0;updateProgress();
+  }
+  document.getElementById("article-close").addEventListener("click",()=>dialog.close());
+  dialog.addEventListener("click",e=>{if(e.target===dialog)dialog.close()});
+  dialog.addEventListener("close",()=>{if(lastFocused&&lastFocused.isConnected)lastFocused.focus()});
+  articleInside.addEventListener("scroll",updateProgress,{passive:true});
+  const onPreference=()=>{syncButtons();if(!effectiveMotion())list.querySelectorAll(".story").forEach(x=>x.classList.remove("is-entering"))};
+  if(reduce.addEventListener)reduce.addEventListener("change",onPreference);
+  syncButtons();render();
+})();
+</script>
+</body>
+</html>
