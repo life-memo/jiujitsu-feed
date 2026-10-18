@@ -134,6 +134,54 @@ main{max-width:1080px;margin:0 auto;padding:27px 18px 85px}
  .news-layout[data-view="bento"] .news-card:not([data-rank="1"]):not([data-rank="4"]) .card-title{font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+
+/* ── Motion Lab / UI feedback ──────────────────────────────
+   Repetition is short and staggered, never an endless loop.
+   Interactions stay functional with motion disabled. */
+.motion-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  padding-top:13px;border-top:1px solid #e4e4e4}
+.motion-label{display:flex;flex-direction:column;gap:3px}
+.motion-label strong{font-size:12px}
+.motion-label small{font-size:10px;color:#777}
+.motion-actions{display:flex;gap:7px;align-items:center}
+.motion-actions button{border:1px solid #dadada;background:#fff;color:#111;padding:9px 12px;min-height:39px;
+  border-radius:999px;font-size:11px;font-weight:750;transition:transform 160ms cubic-bezier(.2,.8,.3,1),background .2s}
+.motion-actions button:active{transform:scale(.93)}
+.motion-actions button[aria-pressed="true"]{background:#111;color:#fff;border-color:#111}
+.motion-actions button:disabled{color:#aaa;border-color:#eee;background:#f5f5f5}
+.news-card.is-appearing{animation:bento-card-enter 480ms cubic-bezier(.2,.85,.3,1) both;
+  animation-delay:var(--stagger,0ms)}
+@keyframes bento-card-enter {
+  from{opacity:0;transform:translateY(18px) scale(.975)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.news-card:active{transform:translateY(2px) scale(.97)}
+@media(hover:hover){
+  .news-card:hover{transform:translateY(-3px);box-shadow:0 13px 30px rgba(0,0,0,.085)}
+}
+.mode-switch button,.cat-btn,.head-action{transition:transform .2s cubic-bezier(.22,1.45,.4,1),background .2s,color .2s}
+.mode-switch button:active,.cat-btn:active,.head-action:active{transform:scale(.94)}
+.cat-btn{position:relative;border-bottom-color:transparent!important}
+.cat-btn::after{content:"";position:absolute;bottom:0;left:12px;right:12px;height:2px;background:#111;
+  transform:scaleX(0);transform-origin:center;transition:transform .32s cubic-bezier(.18,.8,.3,1)}
+.cat-btn[aria-pressed="true"]::after{transform:scaleX(1)}
+.overlay:not([hidden]),.drawer-shade:not([hidden]){animation:bento-backdrop 190ms ease-out both}
+@keyframes bento-backdrop{from{opacity:0}to{opacity:1}}
+.sheet{animation:bento-sheet-rise 340ms cubic-bezier(.18,1.05,.3,1) both}
+@keyframes bento-sheet-rise {
+  from{opacity:0;transform:translateY(42px) scale(.965)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+.drawer:not([hidden]){animation:bento-drawer-in 300ms cubic-bezier(.2,.85,.3,1) both}
+@keyframes bento-drawer-in{from{transform:translateX(-28px);opacity:.35}to{transform:translateX(0);opacity:1}}
+/* The toggle removes decorative motion; the page remains usable. */
+body[data-motion="off"] *,body[data-motion="off"] *::before,body[data-motion="off"] *::after {
+  animation:none!important;transition:none!important;scroll-behavior:auto!important
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+
 </style>
 </head>
 <body>
@@ -164,6 +212,14 @@ main{max-width:1080px;margin:0 auto;padding:27px 18px 85px}
       <button type="button" data-view="bento" aria-pressed="true">Bento Grid</button>
     </div>
     <div class="tool-description" id="view-description">重要ニュースを大きく、ほかのニュースを小さなカードに。タップして試してみてください。</div>
+    <div class="motion-tools" aria-label="アニメーション比較">
+      <div class="motion-label"><strong>アニメーションを試す</strong><small>カードの移動・登場・タップの反応</small></div>
+      <div class="motion-actions">
+        <button type="button" id="motion-toggle" aria-pressed="true">動き ON</button>
+        <button type="button" id="motion-replay">もう一度 ↻</button>
+      </div>
+    </div>
+
   </section>
 
   <header class="content-heading">
@@ -220,6 +276,18 @@ main{max-width:1080px;margin:0 auto;padding:27px 18px 85px}
   const listTitle=document.getElementById("list-title");
   const viewDescription=document.getElementById("view-description");
   let view="bento",category="トップ",lastFocus=null;
+  /* Respect iOS Reduce Motion on first load; no permanent animation loop. */
+  const motionPreference=window.matchMedia("(prefers-reduced-motion: reduce)");
+  let motionEnabled=!motionPreference.matches;
+  document.body.dataset.motion=motionEnabled?"on":"off";
+  const motionToggle=document.getElementById("motion-toggle");
+  const motionReplay=document.getElementById("motion-replay");
+  function updateMotionControl(){
+    motionToggle.textContent=motionEnabled?"動き ON":"動き OFF";
+    motionToggle.setAttribute("aria-pressed",String(motionEnabled));
+    motionReplay.disabled=!motionEnabled;
+  }
+  updateMotionControl();
   function el(tag,cls,text){
     const node=document.createElement(tag);
     if(cls)node.className=cls;
@@ -242,6 +310,7 @@ main{max-width:1080px;margin:0 auto;padding:27px 18px 85px}
     const card=el("button","news-card");
     card.type="button";
     card.dataset.rank=String(index+1);
+    card.dataset.itemId=String(item.id);
     card.setAttribute("aria-label",item.category+"： "+item.title+" のプレビュー");
     const top=el("div","card-top");
     top.append(el("span","card-number",String(index+1).padStart(2,"0")),el("span","card-tag",item.category));
@@ -253,7 +322,40 @@ main{max-width:1080px;margin:0 auto;padding:27px 18px 85px}
     card.addEventListener("click",()=>openArticle(item));
     return card;
   }
-  function render(){
+
+  /* FLIP: measure where each article was, then animate it to its
+     new cell. Card IDs stay stable across the two grid layouts. */
+  function measureCards(){
+    const rects=new Map();
+    layout.querySelectorAll(".news-card").forEach(card=>{
+      rects.set(card.dataset.itemId,card.getBoundingClientRect());
+    });
+    return rects;
+  }
+  function animateCards(previous,reason){
+    if(!motionEnabled)return;
+    layout.querySelectorAll(".news-card").forEach((card,index)=>{
+      const before=previous&&previous.get(card.dataset.itemId);
+      if(reason==="layout"&&before&&typeof card.animate==="function"){
+        const after=card.getBoundingClientRect();
+        const dx=before.left-after.left,dy=before.top-after.top;
+        const sx=Math.max(.5,Math.min(1.8,before.width/Math.max(after.width,1)));
+        const sy=Math.max(.5,Math.min(1.8,before.height/Math.max(after.height,1)));
+        if(Math.abs(dx)+Math.abs(dy)+Math.abs(1-sx)*120+Math.abs(1-sy)*120>3){
+          card.animate([
+            {transform:"translate("+dx+"px,"+dy+"px) scale("+sx+","+sy+")",opacity:.9,transformOrigin:"top left"},
+            {transform:"translate(0px,0px) scale(1,1)",opacity:1,transformOrigin:"top left"}
+          ],{duration:520,easing:"cubic-bezier(.2,.85,.3,1)"});
+        }
+      }else{
+        card.style.setProperty("--stagger",Math.min(index,7)*65+"ms");
+        card.classList.add("is-appearing");
+      }
+    });
+  }
+
+  function render(reason="initial"){
+    const previous=reason==="layout"&&motionEnabled?measureCards():null;
     const displayed=category==="トップ"?entries:entries.filter(item=>item.category===category);
     layout.dataset.view=view;
     layout.replaceChildren(...displayed.map(makeCard));
@@ -265,12 +367,14 @@ main{max-width:1080px;margin:0 auto;padding:27px 18px 85px}
       :"現在のジュウジュツフィードの雰囲気を再現した、同じ大きさを基本とする記事一覧です。";
     document.querySelectorAll("[data-view].mode-switch button,.mode-switch [data-view]").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.view===view)));
     document.querySelectorAll(".cat-btn").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.category===category)));
+    animateCards(previous,reason);
   }
   document.querySelectorAll(".mode-switch [data-view]").forEach(btn=>btn.addEventListener("click",()=>{
-    view=btn.dataset.view;render();
+    if(view===btn.dataset.view)return;
+    view=btn.dataset.view;render("layout");
   }));
   function setCategory(c){
-    category=c;render();closeMenu();
+    category=c;render("category");closeMenu();
     window.scrollTo({top:0,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"});
   }
   document.querySelectorAll(".cat-btn").forEach(btn=>btn.addEventListener("click",()=>setCategory(btn.dataset.category)));
@@ -285,7 +389,20 @@ main{max-width:1080px;margin:0 auto;padding:27px 18px 85px}
   document.getElementById("sheet-close").addEventListener("click",closeArticle);
   document.getElementById("article-overlay").addEventListener("click",e=>{if(e.target.id==="article-overlay")closeArticle();});
   document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!document.getElementById("article-overlay").hidden)closeArticle();else if(!drawer.hidden)closeMenu();}});
-  render();
+  motionToggle.addEventListener("click",()=>{
+    motionEnabled=!motionEnabled;
+    document.body.dataset.motion=motionEnabled?"on":"off";
+    if(!motionEnabled){
+      layout.querySelectorAll(".news-card").forEach(card=>{
+        if(typeof card.getAnimations==="function")card.getAnimations().forEach(a=>a.cancel());
+      });
+    }else{
+      render("replay");
+    }
+    updateMotionControl();
+  });
+  motionReplay.addEventListener("click",()=>{if(motionEnabled)render("replay");});
+  render("initial");
 })();
 </script>
 </body>
