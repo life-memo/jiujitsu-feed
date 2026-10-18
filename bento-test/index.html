@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#ffffff">
+<title>Bento Grid 比較テスト | ジュウジュツフィード</title>
+<style>
+/*
+  ジュウジュツフィード Bento Grid 比較デモ
+  jf.css/jf.js を参考にした独立ページ。実際の記事は読み込まない。
+  CSSとJSはこのファイル内に限定し、本番Wraptasとは接続しない。
+  既存の白／黒／柔術の帯色を保ち、レイアウトだけ比較する。
+*/
+:root{
+  --jf-text:#111;--jf-muted:#767676;--jf-line:#e6e6e6;
+  --jf-sans:"Noto Sans JP","Hiragino Sans","Yu Gothic UI",Meiryo,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:var(--jf-text);font-family:var(--jf-sans)}
+button,a{font:inherit;-webkit-tap-highlight-color:transparent}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible{outline:2px solid #1f5fc4;outline-offset:3px}
+button:active{opacity:.85}
+[hidden]{display:none!important}
+.site-head{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);border-bottom:1px solid var(--jf-line)}
+.site-head-inner{max-width:1080px;margin:auto;display:grid;grid-template-columns:50px 1fr 50px;align-items:center;min-height:48px;padding:4px 14px}
+.brand{font-size:18px;font-weight:800;letter-spacing:.04em;text-align:center}
+.head-action{width:38px;height:35px;display:grid;place-items:center;border:0;background:transparent;border-radius:8px;color:#111;text-decoration:none}
+.head-action svg{width:21px;height:21px}
+.head-action.x-icon svg{width:17px;height:17px}
+.category-bar{background:#f6f6f6;border-top:1px solid #f1f1f1}
+.category-inner{max-width:1080px;margin:auto;padding:0 12px;display:flex;gap:4px;overflow:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.category-inner::-webkit-scrollbar{display:none}
+.cat-btn{flex:none;min-width:72px;padding:11px 15px;border:0;border-bottom:2px solid transparent;background:transparent;color:#767676;font-size:13px;font-weight:600;white-space:nowrap}
+.cat-btn[aria-pressed=true]{color:#111;border-bottom-color:#111}
+main{max-width:1080px;margin:0 auto;padding:27px 18px 85px}
+.preview-tools{display:grid;gap:12px;margin-bottom:28px;padding:17px;border:1px solid #ddd;border-radius:14px;background:#fafafa}
+.tool-heading{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.eyebrow{color:#777;font-size:10px;font-weight:700;letter-spacing:.12em}
+.tool-heading strong{font-size:13px}
+.mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:5px;background:#ececec;padding:4px;border-radius:11px}
+.mode-switch button{padding:11px 6px;border:0;border-radius:8px;background:transparent;font-weight:800;font-size:13px;color:#666}
+.mode-switch button[aria-pressed=true]{background:#fff;color:#111;box-shadow:0 1px 6px rgba(0,0,0,.09)}
+.tool-description{font-size:12px;color:#686868;line-height:1.7;min-height:20px}
+.content-heading{margin:0 0 18px}
+.small-year{display:block;font-size:11px;font-weight:500;letter-spacing:.1em;color:#777;margin-bottom:3px}
+.content-heading h1{font-size:clamp(24px,4vw,34px);margin:0;line-height:1.45;letter-spacing:-.035em}
+.content-heading p{font-size:12px;color:#777;margin:7px 0 0;line-height:1.7}
+.division{display:flex;justify-content:space-between;gap:8px;align-items:center;border-top:2px solid #111;padding-top:10px;margin:20px 0 15px}
+.division strong{font-size:13px;letter-spacing:.05em}
+.division span{font-size:10px;color:#888;letter-spacing:.04em}
+.news-layout{display:grid;gap:12px;min-height:180px}
+.news-card{--belt:#111;position:relative;width:100%;min-width:0;display:flex;flex-direction:column;align-items:flex-start;text-align:left;border:1px solid #e4e4e4;border-radius:14px;background:#fff;color:#111;padding:16px 16px 17px 20px;overflow:hidden;isolation:isolate;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+.news-card::before{content:"";position:absolute;top:0;bottom:0;left:0;width:6px;background:var(--belt)}
+.news-card:hover{border-color:#bbb;box-shadow:0 8px 20px rgba(0,0,0,.06)}
+.news-card:active{transform:scale(.985)}
+.news-card[data-rank="1"]{--belt:#c8102e}
+.news-card[data-rank="2"]{--belt:#8a5527}
+.news-card[data-rank="3"]{--belt:#7a3da8}
+.news-card[data-rank="4"]{--belt:#1f5fc4}
+.news-card[data-rank="5"]{--belt:#111}
+.news-card[data-rank="6"]{--belt:#333}
+.card-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 10px;font-size:10px;line-height:1.2}
+.card-number{font-size:10px;color:#888;font-weight:750;letter-spacing:.1em}
+.card-tag{padding:5px 7px;border:1px solid #e3e3e3;border-radius:4px;font-size:9px;font-weight:700;color:#626262}
+.card-title{display:block;font-weight:800;font-size:15px;line-height:1.5;letter-spacing:-.025em}
+.card-excerpt{display:block;font-size:11px;color:#777;line-height:1.7;margin-top:7px;max-width:55ch}
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:auto;padding-top:12px;font-size:10px;color:#888}
+.card-arrow{font-size:18px;color:#555}
+.news-layout[data-view="current"]{grid-template-columns:1fr}
+.news-layout[data-view="current"] .news-card{min-height:128px}
+.news-layout[data-view="current"] .news-card::before{width:10px}
+.news-layout[data-view="current"] .card-title{font-size:16px}
+.news-layout[data-view="current"] .card-excerpt{font-size:12px}
+.news-layout[data-view="bento"]{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.news-layout[data-view="bento"] .news-card{min-height:178px;padding:15px 12px 13px 16px}
+.news-layout[data-view="bento"] .news-card[data-rank="1"]{grid-column:1/-1;min-height:245px;padding:20px 19px 18px 24px;background:#111;color:#fff;border-color:#111}
+.news-layout[data-view="bento"] .news-card[data-rank="1"]::before{background:#c8102e;width:9px}
+.news-layout[data-view="bento"] .news-card[data-rank="1"] .card-number{color:#aaa}
+.news-layout[data-view="bento"] .news-card[data-rank="1"] .card-tag{color:#fff;border-color:#666}
+.news-layout[data-view="bento"] .news-card[data-rank="1"] .card-title{font-size:clamp(21px,5.5vw,28px);line-height:1.4;margin-top:5px;max-width:24ch}
+.news-layout[data-view="bento"] .news-card[data-rank="1"] .card-excerpt{font-size:12px;color:#c1c1c1}
+.news-layout[data-view="bento"] .news-card[data-rank="1"] .card-foot{color:#aaa}
+.news-layout[data-view="bento"] .news-card[data-rank="1"] .card-arrow{color:#fff}
+.news-layout[data-view="bento"] .news-card[data-rank="4"]{grid-column:1/-1;background:#f6f6f6;min-height:125px}
+.news-layout[data-view="bento"] .news-card:not([data-rank="1"]):not([data-rank="4"]) .card-title{font-size:13px;line-height:1.55}
+.news-layout[data-view="bento"] .news-card:not([data-rank="1"]):not([data-rank="4"]) .card-excerpt{display:none}
+.news-layout[data-view="bento"] .news-card:not([data-rank="1"]) .card-foot{padding-top:8px}
+.news-layout[data-view="bento"] .news-card[data-rank="4"] .card-title{font-size:17px}
+.layout-note{font-size:11px;color:#888;line-height:1.8;margin:19px 0}
+.footer{background:#111;color:#fff;padding:45px max(20px,calc((100% - 1080px)/2));}
+.footer-title{font-size:19px;font-weight:800;letter-spacing:.05em}
+.footer p{color:#bcbcbc;font-size:12px}
+.footer small{color:#999;font-size:11px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.43);z-index:50;display:grid;place-items:end center;padding:12px 10px max(12px,env(safe-area-inset-bottom))}
+.sheet{background:#fff;border-radius:18px;width:min(100%,530px);max-height:min(78dvh,710px);overflow:auto;padding:17px 20px 26px;box-shadow:0 14px 56px rgba(0,0,0,.22);animation:enter .25s ease-out}
+@keyframes enter{from{transform:translateY(30px);opacity:.5}to{transform:translateY(0);opacity:1}}
+.sheet-top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.sheet-top span{font-size:10px;color:#777;letter-spacing:.1em}
+.sheet-close{border:0;background:#f5f5f5;border-radius:50%;width:38px;height:38px;font-size:22px}
+.sheet h2{font-size:25px;line-height:1.45;margin:19px 0 15px}
+.sheet p{color:#505050;line-height:1.85;font-size:13px}
+.sheet-note{padding:14px;background:#f5f5f5;border-radius:8px;color:#666!important;font-size:12px!important}
+.drawer-shade{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:35}
+.drawer{position:fixed;inset:0 auto 0 0;width:min(84vw,330px);z-index:36;background:#fff;box-shadow:8px 0 30px rgba(0,0,0,.1);padding:28px 25px}
+.drawer h2{font-size:18px;margin:24px 0}
+.drawer button{display:block;width:100%;border:0;background:#fff;text-align:left;padding:13px 0;font-weight:650;border-bottom:1px solid #eee}
+.drawer .drawer-close{font-weight:400;width:auto;border:1px solid #ddd;border-radius:7px;padding:6px 12px;margin-left:auto}
+@media(min-width:720px){
+ .site-head-inner{min-height:51px}
+ main{padding:36px 30px 105px}
+ .preview-tools{grid-template-columns:1fr minmax(250px,330px);align-items:center;padding:18px 24px}
+ .tool-heading{display:grid;gap:5px}.tool-description{grid-column:1/-1}
+ .news-layout[data-view="current"]{grid-template-columns:repeat(2,1fr);gap:15px}
+ .news-layout[data-view="current"] .news-card:first-child{grid-column:1/-1;min-height:160px}
+ .news-layout[data-view="bento"]{grid-template-columns:repeat(12,1fr);grid-auto-rows:123px;gap:13px}
+ .news-layout[data-view="bento"] .news-card[data-rank="1"]{grid-column:span 7;grid-row:span 2;min-height:0}
+ .news-layout[data-view="bento"] .news-card[data-rank="2"]{grid-column:span 5;grid-row:span 1;min-height:0}
+ .news-layout[data-view="bento"] .news-card[data-rank="3"]{grid-column:span 5;grid-row:span 1;min-height:0}
+ .news-layout[data-view="bento"] .news-card[data-rank="4"]{grid-column:span 6;grid-row:span 1;min-height:0}
+ .news-layout[data-view="bento"] .news-card[data-rank="5"]{grid-column:span 3;grid-row:span 1;min-height:0}
+ .news-layout[data-view="bento"] .news-card[data-rank="6"]{grid-column:span 3;grid-row:span 1;min-height:0}
+ .news-layout[data-view="bento"] .news-card[data-rank="1"] .card-title{font-size:29px}
+ .news-layout[data-view="bento"] .news-card[data-rank="2"] .card-excerpt,
+ .news-layout[data-view="bento"] .news-card[data-rank="3"] .card-excerpt{display:block;font-size:10px;line-height:1.5}
+}
+@media(max-width:350px){
+ .brand{font-size:15px}
+ .news-layout[data-view="bento"] .news-card{padding:12px 9px 11px 13px}
+ .news-layout[data-view="bento"] .card-tag{font-size:8px}
+ .news-layout[data-view="bento"] .news-card:not([data-rank="1"]):not([data-rank="4"]) .card-title{font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="site-head">
+  <div class="site-head-inner">
+    <button type="button" class="head-action" id="menu-open" aria-label="メニューを開く"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    <div class="brand">ジュウジュツフィード</div>
+    <a class="head-action x-icon" href="https://x.com/jiujitsufeed" target="_blank" rel="noopener noreferrer" aria-label="ジュウジュツフィードのX"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+  </div>
+  <nav class="category-bar" aria-label="ニュースカテゴリー">
+    <div class="category-inner" id="categories">
+      <button class="cat-btn" aria-pressed="true" data-category="トップ">トップ</button>
+      <button class="cat-btn" aria-pressed="false" data-category="試合">試合</button>
+      <button class="cat-btn" aria-pressed="false" data-category="動向">動向</button>
+      <button class="cat-btn" aria-pressed="false" data-category="運営">運営</button>
+      <button class="cat-btn" aria-pressed="false" data-category="文化">文化</button>
+    </div>
+  </nav>
+</header>
+<main>
+  <section class="preview-tools" aria-label="デザイン比較">
+    <div class="tool-heading">
+      <span class="eyebrow">LAYOUT LAB / TEST PAGE</span>
+      <strong>記事一覧のレイアウトを比較</strong>
+    </div>
+    <div class="mode-switch" role="group" aria-label="レイアウトの種類">
+      <button type="button" data-view="current" aria-pressed="false">現行風</button>
+      <button type="button" data-view="bento" aria-pressed="true">Bento Grid</button>
+    </div>
+    <div class="tool-description" id="view-description">重要ニュースを大きく、ほかのニュースを小さなカードに。タップして試してみてください。</div>
+  </section>
+
+  <header class="content-heading">
+    <span class="small-year">2026</span>
+    <h1 id="page-title">10月18日（日）のヘッドライン</h1>
+    <p>あした道場で話したくなるニュース。<br>※見出しはデザイン比較用のサンプルです。</p>
+  </header>
+
+  <div class="division"><strong id="list-title">今日のニュース</strong><span id="layout-kind">BENTO LAYOUT</span></div>
+  <section class="news-layout" id="news-layout" data-view="bento" aria-label="ニュース一覧"></section>
+  <p class="layout-note">※このページはレイアウト比較のための独立デモです。記事・画像・閲覧数などの本番データとは接続していません。</p>
+</main>
+
+<footer class="footer">
+  <div class="footer-title">ジュウジュツフィード</div>
+  <p>あした道場で話したくなるニュース。</p>
+  <small>© 2026 ジュウジュツフィード — UI DEMO</small>
+</footer>
+
+<div class="drawer-shade" id="drawer-shade" hidden></div>
+<aside class="drawer" id="drawer" aria-label="デモメニュー" hidden>
+  <button class="drawer-close" id="menu-close" type="button">閉じる ×</button>
+  <h2>ニュース</h2>
+  <button data-nav="トップ" type="button">今日のヘッドライン</button>
+  <button data-nav="試合" type="button">試合</button>
+  <button data-nav="動向" type="button">動向</button>
+  <button data-nav="運営" type="button">運営</button>
+  <button data-nav="文化" type="button">文化</button>
+  <p style="font-size:11px;color:#888;margin-top:28px;line-height:1.8">ナビゲーションも動作するデモです。実際の記事には移動しません。</p>
+</aside>
+
+<div class="overlay" id="article-overlay" hidden>
+  <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" id="article-sheet">
+    <div class="sheet-top"><span id="sheet-tag">ARTICLE PREVIEW</span><button class="sheet-close" id="sheet-close" type="button" aria-label="記事を閉じる">×</button></div>
+    <h2 id="sheet-title"></h2>
+    <p id="sheet-description"></p>
+    <p class="sheet-note">これはカードをタップしたときの表示イメージです。記事本文はデザイン確認用のサンプルで、本番ニュースとは接続していません。</p>
+  </section>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  const entries=[
+    {id:1,category:"試合",title:"世界のグラップリングで、いま注目したい対戦とは",description:"海外の大会をもっと楽しむために、押さえておきたい見どころを整理する。",day:"TODAY"},
+    {id:2,category:"動向",title:"海外柔術家の発言から見える、新しい潮流",description:"選手たちが語る変化の兆し。",day:"TODAY"},
+    {id:3,category:"試合",title:"大会の結果を、次の観戦につなげる",description:"勝敗だけではわからないポイントをチェック。",day:"TODAY"},
+    {id:4,category:"運営",title:"ルールの違いが試合をどう変えるのか",description:"海外大会を観る前に知っておきたい制度と背景。",day:"TOPIC"},
+    {id:5,category:"文化",title:"柔術の文化を、海外の視点から",description:"道場の外側に広がる話題。",day:"TOPIC"},
+    {id:6,category:"動向",title:"これから注目される選手たち",description:"海外で語られている次世代の見どころ。",day:"TOPIC"}
+  ];
+  const layout=document.getElementById("news-layout");
+  const title=document.getElementById("page-title");
+  const listTitle=document.getElementById("list-title");
+  const viewDescription=document.getElementById("view-description");
+  let view="bento",category="トップ",lastFocus=null;
+  function el(tag,cls,text){
+    const node=document.createElement(tag);
+    if(cls)node.className=cls;
+    if(text!==undefined)node.textContent=text;
+    return node;
+  }
+  function openArticle(data){
+    lastFocus=document.activeElement;
+    document.getElementById("sheet-tag").textContent=data.category+" / サンプル記事";
+    document.getElementById("sheet-title").textContent=data.title;
+    document.getElementById("sheet-description").textContent=data.description;
+    document.getElementById("article-overlay").hidden=false;
+    document.getElementById("sheet-close").focus();
+  }
+  function closeArticle(){
+    document.getElementById("article-overlay").hidden=true;
+    if(lastFocus&&lastFocus.isConnected)lastFocus.focus();
+  }
+  function makeCard(item,index){
+    const card=el("button","news-card");
+    card.type="button";
+    card.dataset.rank=String(index+1);
+    card.setAttribute("aria-label",item.category+"： "+item.title+" のプレビュー");
+    const top=el("div","card-top");
+    top.append(el("span","card-number",String(index+1).padStart(2,"0")),el("span","card-tag",item.category));
+    const t=el("strong","card-title",item.title);
+    const d=el("span","card-excerpt",item.description);
+    const foot=el("div","card-foot");
+    foot.append(el("span","",item.day),el("span","card-arrow","↗"));
+    card.append(top,t,d,foot);
+    card.addEventListener("click",()=>openArticle(item));
+    return card;
+  }
+  function render(){
+    const displayed=category==="トップ"?entries:entries.filter(item=>item.category===category);
+    layout.dataset.view=view;
+    layout.replaceChildren(...displayed.map(makeCard));
+    title.textContent=category==="トップ"?"10月18日（日）のヘッドライン":category+"のニュース";
+    listTitle.textContent=category==="トップ"?"今日のニュース":category+"の記事";
+    document.getElementById("layout-kind").textContent=view==="bento"?"BENTO LAYOUT":"CURRENT-STYLE LAYOUT";
+    viewDescription.textContent=view==="bento"
+      ?"重要ニュースを大きく、ほかのニュースを小さなカードに。タップして試してみてください。"
+      :"現在のジュウジュツフィードの雰囲気を再現した、同じ大きさを基本とする記事一覧です。";
+    document.querySelectorAll("[data-view].mode-switch button,.mode-switch [data-view]").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.view===view)));
+    document.querySelectorAll(".cat-btn").forEach(btn=>btn.setAttribute("aria-pressed",String(btn.dataset.category===category)));
+  }
+  document.querySelectorAll(".mode-switch [data-view]").forEach(btn=>btn.addEventListener("click",()=>{
+    view=btn.dataset.view;render();
+  }));
+  function setCategory(c){
+    category=c;render();closeMenu();
+    window.scrollTo({top:0,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"});
+  }
+  document.querySelectorAll(".cat-btn").forEach(btn=>btn.addEventListener("click",()=>setCategory(btn.dataset.category)));
+  document.querySelectorAll("[data-nav]").forEach(btn=>btn.addEventListener("click",()=>setCategory(btn.dataset.nav)));
+  const drawer=document.getElementById("drawer"),shade=document.getElementById("drawer-shade");
+  const menuOpen=document.getElementById("menu-open");
+  function openMenu(){lastFocus=document.activeElement;drawer.hidden=false;shade.hidden=false;document.getElementById("menu-close").focus();}
+  function closeMenu(){drawer.hidden=true;shade.hidden=true;if(lastFocus&&lastFocus.isConnected)lastFocus.focus();}
+  menuOpen.addEventListener("click",openMenu);
+  document.getElementById("menu-close").addEventListener("click",closeMenu);
+  shade.addEventListener("click",closeMenu);
+  document.getElementById("sheet-close").addEventListener("click",closeArticle);
+  document.getElementById("article-overlay").addEventListener("click",e=>{if(e.target.id==="article-overlay")closeArticle();});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(!document.getElementById("article-overlay").hidden)closeArticle();else if(!drawer.hidden)closeMenu();}});
+  render();
+})();
+</script>
+</body>
+</html>
