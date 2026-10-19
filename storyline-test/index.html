@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex,nofollow">
+<title>Storyline UI テスト | ジュウジュツフィード</title>
+<style>
+/* Standalone Jiujitsu Feed UI concept. Not loaded by jf.js / jf.css.
+   No dependency, real article, user data, API call or tracking. */
+:root{
+ --black:#121212;--gray:#6f6f6f;--line:#e4e4e4;--soft:#f6f6f6;--red:#c8102e;
+ --jp:"Noto Sans JP","Hiragino Sans","Yu Gothic UI",Meiryo,system-ui,sans-serif
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:var(--black);font-family:var(--jp);-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:2px solid #285fce;outline-offset:3px}
+[hidden]{display:none!important}
+a{color:inherit}
+.site-header{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line);background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.header-inner{height:52px;max-width:980px;margin:auto;padding:0 18px;display:flex;align-items:center;justify-content:space-between;gap:9px}
+.brand{font-size:17px;font-weight:850;letter-spacing:.045em;white-space:nowrap}
+.header-right{display:flex;align-items:center;gap:10px}
+.header-kicker{font-size:10px;color:#9a9a9a;letter-spacing:.15em;font-weight:800}
+.jump-btn{border:1px solid #ddd;background:#fff;color:#111;border-radius:999px;padding:8px 12px;min-height:36px;font-weight:780;font-size:11px}
+.jump-btn:active{transform:scale(.96)}
+.mini-nav{border-top:1px solid #f1f1f1;background:#f7f7f7}
+.mini-nav-inner{max-width:980px;margin:auto;padding:0 18px;display:flex;gap:7px;align-items:center}
+.mini-nav span{font-size:11px;color:#444;padding:11px 12px 12px;border-bottom:2px solid #111;font-weight:760}
+.mini-nav small{font-size:10px;color:#999;margin-left:11px;letter-spacing:.1em}
+.shell{max-width:760px;margin:auto;padding:33px 20px 90px}
+.demo-label{display:inline-flex;gap:7px;align-items:center;color:#666;font-size:10px;font-weight:780;letter-spacing:.09em;border:1px solid #ddd;padding:6px 9px;border-radius:4px}
+.demo-label b{color:#c8102e;font-size:12px;letter-spacing:.08em}
+.intro{padding-top:20px;padding-bottom:30px}
+.intro .english{font-size:10px;font-weight:800;letter-spacing:.23em;color:#8b8b8b}
+.intro h1{font-size:clamp(37px,9vw,64px);letter-spacing:-.085em;line-height:1.2;font-weight:900;margin:14px 0}
+.intro h1 em{font-style:normal;display:block;color:#969696}
+.intro p{font-size:13px;line-height:1.85;color:#686868;margin:15px 0 0;max-width:550px}
+.guide{display:flex;align-items:center;gap:9px;border-top:1px solid #e6e6e6;padding-top:17px;margin-top:22px;color:#666;font-size:11px;font-weight:680;letter-spacing:.01em}
+.guide span{font-weight:850;color:#c8102e;font-size:19px}
+.selector-head{display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid #111;padding-top:13px;margin-top:15px;gap:8px}
+.selector-head strong{font-size:13px;letter-spacing:.05em}
+.selector-head span{color:#888;font-size:10px;white-space:nowrap}
+.topic-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:14px 0 29px}
+.topic{background:#fff;border:1px solid #ddd;border-radius:13px;min-height:128px;text-align:left;padding:14px 12px;position:relative;display:flex;flex-direction:column;gap:7px;transition:border-color .2s,background .2s,transform .2s,box-shadow .2s}
+.topic::before{content:"";position:absolute;top:0;left:12px;right:12px;height:3px;background:var(--topic-color,#111);opacity:.25;border-radius:0 0 4px 4px}
+.topic[aria-pressed="true"]{background:#111;color:#fff;border-color:#111;box-shadow:0 8px 22px rgba(0,0,0,.09)}
+.topic[aria-pressed="true"]::before{opacity:1}
+.topic:active{transform:scale(.97)}
+.topic .topic-index{font-size:10px;font-weight:800;letter-spacing:.14em;color:#888}
+.topic[aria-pressed="true"] .topic-index{color:#aaa}
+.topic .topic-name{font-weight:800;font-size:13px;line-height:1.55;flex:1}
+.topic small{font-size:10px;color:#929292}
+.topic[aria-pressed="true"] small{color:#bbb}
+.storyhero{background:#121212;color:#fff;position:relative;overflow:hidden;border-radius:14px;padding:26px 22px 23px;isolation:isolate}
+.storyhero::before{content:"";position:absolute;left:0;top:0;bottom:0;width:7px;background:#c8102e}
+.storyhero::after{content:"";width:210px;height:210px;border:27px solid rgba(255,255,255,.045);border-radius:50%;position:absolute;right:-70px;top:-100px;z-index:-1}
+.hero-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:23px}
+.hero-top span{font-size:10px;font-weight:750;letter-spacing:.17em;color:#d0d0d0}
+.hero-top strong{font-size:10px;letter-spacing:.05em;padding:5px 8px;border:1px solid #606060;border-radius:4px;color:#eee}
+.storyhero h2{font-size:clamp(22px,6vw,33px);line-height:1.38;letter-spacing:-.045em;margin:0 0 14px;font-weight:850;max-width:570px}
+.storyhero p{font-size:12px;color:#ccc;line-height:1.9;margin:0;max-width:550px}
+.hero-step{margin-top:25px;display:flex;align-items:center;gap:0}
+.hero-step b{display:flex;align-items:center;justify-content:center;flex:1;white-space:nowrap;border-top:1px solid #626262;color:#aaa;padding-top:10px;font-size:10px;font-weight:700;letter-spacing:.02em}
+.hero-step b:last-child{color:#fff;border-color:#c8102e}
+.hero-step b:last-child::after{content:"";width:5px;height:5px;background:#c8102e;border-radius:50%;margin-left:5px}
+.summary{background:#f7f7f7;border:1px solid #ededed;margin-top:13px;border-radius:12px;padding:18px 20px}
+.summary .summary-kicker{display:flex;align-items:center;gap:8px;color:#777;font-size:10px;font-weight:800;letter-spacing:.13em}
+.pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:#c8102e}
+.summary p{font-size:13px;line-height:1.85;margin:8px 0 0;font-weight:700}
+.timeline-section{padding-top:35px}
+.timeline-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.timeline-heading h2{margin:0;font-size:23px;letter-spacing:-.055em}
+.timeline-heading .english{display:block;font-size:10px;letter-spacing:.16em;color:#888;margin-bottom:4px;font-weight:750}
+.timeline-heading .count{color:#888;font-size:10px;white-space:nowrap}
+.timeline-desc{color:#888;font-size:11px;line-height:1.7;margin:8px 0 16px}
+.toolbar{border-block:1px solid #e8e8e8;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:11px 0}
+.order-control{display:flex;gap:3px;padding:3px;border:1px solid #e6e6e6;background:#f6f6f6;border-radius:7px}
+.order-control button{border:0;border-radius:5px;background:transparent;color:#777;padding:7px 12px;font-size:11px;font-weight:760;white-space:nowrap}
+.order-control button[aria-pressed="true"]{background:#111;color:#fff}
+.expand-all{border:0;background:transparent;color:#444;text-decoration:underline;text-underline-offset:3px;font-size:11px;font-weight:760;padding:10px 3px}
+.timeline{position:relative;margin-top:20px}
+.moment{position:relative;display:grid;grid-template-columns:56px 25px minmax(0,1fr);column-gap:9px;align-items:stretch}
+.moment .datecol{text-align:right;padding-top:17px;color:#666}
+.monthdate{font-size:12px;font-weight:850;white-space:nowrap}
+.year{font-size:10px;color:#999;margin-top:3px}
+.rail{position:relative;display:flex;justify-content:center}
+.rail::before{content:"";width:2px;background:#e2e2e2;position:absolute;top:0;bottom:0;left:calc(50% - 1px)}
+.moment:first-child .rail::before{top:20px}
+.moment:last-child .rail::before{bottom:calc(100% - 21px)}
+.dot{position:absolute;top:19px;left:50%;z-index:1;transform:translateX(-50%);width:11px;height:11px;border-radius:50%;background:#fff;border:2px solid #a8a8a8;box-shadow:0 0 0 4px #fff}
+.moment[data-latest="true"] .dot{width:14px;height:14px;background:#c8102e;border-color:#c8102e;top:17px;box-shadow:0 0 0 4px #fff}
+.moment-body{padding-bottom:16px;min-width:0}
+.event{display:block;text-align:left;width:100%;position:relative;background:#fff;border:1px solid #e3e3e3;border-radius:11px;padding:15px 16px;transition:border-color .2s,box-shadow .2s,transform .2s,background .2s;min-height:101px}
+.event:hover{border-color:#b9b9b9;box-shadow:0 5px 18px rgba(0,0,0,.035)}
+.event:active{transform:scale(.989)}
+.moment[data-latest="true"] .event{border-color:#d9b2b9}
+.event[aria-expanded="true"]{border-color:#111;border-radius:11px 11px 0 0}
+.moment[data-latest="true"] .event[aria-expanded="true"]{border-color:#c8102e}
+.event-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:7px}
+.event-type{font-size:10px;font-weight:800;color:#666;letter-spacing:.08em}
+.event[aria-expanded="true"] .event-type{color:#a50b25}
+.now-tag{border-radius:2px;background:#c8102e;color:#fff;padding:4px 6px;font-size:9px;font-weight:750;white-space:nowrap}
+.event-title{display:block;font-size:15px;font-weight:830;line-height:1.55;letter-spacing:-.025em}
+.event-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px}
+.event-foot span{font-size:10px;color:#888}
+.event .chevron{width:20px;height:20px;display:grid;place-items:center;color:#888;font-size:19px;line-height:1;transition:transform .25s}
+.event[aria-expanded="true"] .chevron{transform:rotate(45deg);color:#111}
+.event-content{border:1px solid #111;border-top:0;background:#fcfcfc;border-radius:0 0 11px 11px;padding:17px 16px 19px}
+.moment[data-latest="true"] .event-content{border-color:#c8102e}
+.event-content p{font-size:12px;line-height:1.9;color:#505050;margin:0 0 13px}
+.event-content .detail-label{font-size:10px;letter-spacing:.12em;color:#888;font-weight:850;margin-bottom:7px}
+.event-content .context{border-left:3px solid #c8102e;padding:5px 10px;background:#f5f5f5;font-size:12px;line-height:1.7;color:#333}
+.detail-end{display:flex;justify-content:space-between;align-items:center;color:#999;font-size:10px;margin-top:15px;gap:8px}
+.detail-end strong{color:#555;font-weight:700}
+.last-note{margin-top:23px;border-top:2px solid #111;padding:17px 3px 0;display:flex;align-items:flex-start;gap:13px}
+.last-note .flag{font-size:16px;line-height:1.3;font-weight:900;color:#c8102e}
+.last-note strong{display:block;font-size:13px;margin-bottom:4px}
+.last-note p{margin:0;font-size:11px;color:#777;line-height:1.8}
+.footer{background:#111;color:#fff;padding:41px max(20px,calc((100vw - 760px)/2))}
+.footer .footer-brand{font-weight:850;font-size:19px;letter-spacing:.04em}
+.footer p{font-size:12px;color:#bbb;margin:9px 0 30px}
+.footer small{display:block;border-top:1px solid #393939;padding-top:21px;color:#999;font-size:10px}
+@media(min-width:700px){
+ .shell{padding-top:48px}
+ .intro{padding-bottom:37px}
+ .intro h1{font-size:65px}
+ .topic{min-height:137px}
+ .storyhero{padding:34px 35px}
+ .moment{grid-template-columns:90px 32px minmax(0,1fr);column-gap:15px}
+ .event{padding:19px 21px}
+ .event-title{font-size:18px}
+ .datecol{padding-right:7px}
+}
+@media(max-width:380px){
+ .shell{padding-inline:15px}
+ .brand{font-size:15px}
+ .header-inner{padding-inline:10px}
+ .header-kicker{display:none}
+ .topic-list{gap:6px}
+ .topic{padding:11px 8px;min-height:130px}
+ .topic .topic-name{font-size:11px}
+ .topic small{font-size:9px}
+ .moment{grid-template-columns:47px 21px minmax(0,1fr);gap:6px}
+ .monthdate{font-size:10px}
+ .event{padding:13px 12px}
+ .event-title{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">ジュウジュツフィード</div>
+    <div class="header-right"><span class="header-kicker">UI EXPERIMENT</span><button id="jump-topics" class="jump-btn" type="button">話題を選ぶ ↗</button></div>
+  </div>
+  <div class="mini-nav"><div class="mini-nav-inner"><span>ストーリー</span><small>NEWS IN CONTEXT</small></div></div>
+</header>
+<main class="shell">
+  <div class="demo-label"><b>DEMO</b> 架空のニュースを使ったUIテスト</div>
+  <section class="intro" aria-labelledby="intro-title">
+    <span class="english">STORYLINE / FOLLOW THE NEWS</span>
+    <h1 id="intro-title">ニュースを、<em>つなげて読む。</em></h1>
+    <p>話題をひとつ選ぶだけで、最初のニュースから最新の動きまで一続きに。海外の柔術ニュースを「今どうなってる？」から追いかけるためのUI。</p>
+    <div class="guide"><span>↓</span> 気になる話題を選んで、時系列をたどろう</div>
+  </section>
+  <section id="topics" aria-labelledby="topics-heading">
+    <div class="selector-head"><strong id="topics-heading">話題を選ぶ / PICK A STORY</strong><span>3つのデモストーリー</span></div>
+    <div class="topic-list" id="topic-list" role="group" aria-label="ストーリーの選択"></div>
+  </section>
+  <section class="storyhero" aria-labelledby="story-title">
+    <div class="hero-top"><span>THE STORY SO FAR</span><strong>サンプルストーリー</strong></div>
+    <h2 id="story-title"></h2>
+    <p id="story-description"></p>
+    <div class="hero-step" aria-hidden="true"><b>最初の報道</b><b>その後の展開</b><b>いまここ</b></div>
+  </section>
+  <section class="summary" aria-label="現在の状況" aria-live="polite">
+    <div class="summary-kicker"><span class="pulse" aria-hidden="true"></span> 現在の状況 / WHERE THINGS STAND</div>
+    <p id="story-now"></p>
+  </section>
+  <section class="timeline-section" id="timeline-section" aria-labelledby="timeline-title">
+    <div class="timeline-heading">
+      <div><span class="english">THE TIMELINE</span><h2 id="timeline-title">これまでの流れ</h2></div>
+      <span class="count" id="event-count">5 UPDATES</span>
+    </div>
+    <p class="timeline-desc">各ニュースをタップすると、背景と前後のつながりが読めます。</p>
+    <div class="toolbar">
+      <div class="order-control" role="group" aria-label="表示順">
+        <button id="oldest" type="button" aria-pressed="true">古い順 ↓</button>
+        <button id="newest" type="button" aria-pressed="false">新しい順 ↑</button>
+      </div>
+      <button type="button" class="expand-all" id="expand-all">すべて開く ＋</button>
+    </div>
+    <div class="timeline" id="timeline" aria-live="polite"></div>
+    <div class="last-note">
+      <span class="flag">↳</span>
+      <div><strong>続報が出たら、このストーリーに追加</strong>
+      <p>同じ話題の記事をまとめて追いかけられる設計イメージです。現在はデモ用データのみで、実際のニュースや記事更新とは連動しません。</p></div>
+    </div>
+  </section>
+</main>
+<footer class="footer">
+ <div class="footer-brand">ジュウジュツフィード</div>
+ <p>あした道場で話したくなるニュース。</p>
+ <small>© 2026 ジュウジュツフィード / Storyline UI Test — 本番サイトではありません</small>
+</footer>
+<script>
+(() => {
+  "use strict";
+  // Fictional editorial samples. None of these events are being reported as fact.
+  const data=[
+    {id:"transfer",short:"選手の移籍",topic:"注目選手、移籍の舞台裏。",lead:"チームを離れるという発表から、新たな環境での活動まで。ひとつのニュースを点ではなく線で見る。",now:"新しい環境での活動が伝えられ、次の大会での動きに注目が集まっている。",color:"#c8102e",events:[
+      {date:"9月12日",type:"発端",title:"所属チームを離れると発表",excerpt:"話題はここから始まった。",summary:"ある若手柔術家が、これまで練習してきたチームを離れる意向を明らかにしたという架空のケース。突然の知らせを受け、競技活動への影響が関心を集めた。",context:"最初に確認するのは、選手自身が発表した事実と、周囲の推測を区別すること。"},
+      {date:"9月15日",type:"反応",title:"関係者のコメントが出る",excerpt:"なぜ移籍が話題になった？",summary:"以前のチームの関係者から、選手へのメッセージが発信されたという設定。関係者のコメントは動向を理解する手がかりになるが、移籍の理由を断定する情報とは限らない。",context:"本人の意向と周辺の反応を並べることで、一つの記事では見えない背景が整理できる。"},
+      {date:"9月20日",type:"展開",title:"新たな練習環境が明らかに",excerpt:"次の活動に手がかり。",summary:"選手の新しい練習環境について、架空の続報が伝えられた。今後の競技活動がどう変わるのか、ニュースを時系列で見るほど理解しやすくなる。",context:"続報を追加すると、読者は前の記事を探し直さなくても経緯を把握できる。"},
+      {date:"10月5日",type:"続報",title:"次の大会への参加が話題に",excerpt:"競技への復帰をどう見る？",summary:"新チームでの活動を始めた後、次の大会への参加が検討されているという架空の展開。確定情報と予定段階の情報を分けて追うのが大切。",context:"話の流れがつながると、なぜ次の大会が注目されるのかを一目で把握できる。"},
+      {date:"10月16日",type:"現在地",title:"新環境で迎える次戦に注目",excerpt:"いま、何をチェックすべき？",summary:"これまでの動きを踏まえた架空の最新段階。次戦でのパフォーマンスや練習環境の変化が、今後の注目ポイントとして整理される。",context:"初報から現在地まで追えることで、初めて知った読者もニュースに追いつける。"}
+    ]},
+    {id:"event",short:"国際大会",topic:"国際大会が開幕するまで。",lead:"開催発表からルール公開、出場選手、対戦カードまで。大会に向けて情報が積み上がる様子を追う。",now:"対戦カードが発表され、観戦ポイントの整理が進んでいる。大会本番を待つ段階。",color:"#8a5527",events:[
+      {date:"7月12日",type:"発端",title:"大会の開催概要を発表",excerpt:"大会が動き出す。",summary:"架空の国際大会について開催概要が発表された設定。開催地や日程が明らかになると、選手とファンの準備が始まる。",context:"初報からの変化をたどると、大会の全体像が整理できる。"},
+      {date:"8月22日",type:"展開",title:"採用ルールと形式が公開",excerpt:"勝敗を左右する条件。",summary:"大会主催者が試合形式やルールを公表したという仮想ケース。ポイント制か一本決着重視かで、観戦時の注目点は変わってくる。",context:"ルールの発表は、後に出てくる対戦カードの見方にもつながる。"},
+      {date:"9月10日",type:"続報",title:"出場選手の顔ぶれが明らかに",excerpt:"注目の顔合わせ。",summary:"出場選手の一部が発表されたという仮想ニュース。スタイルの異なる選手が集まるほど、ファンの期待も高まる。",context:"前のルール発表とあわせて読むと、どんな戦い方が有利なのか考えやすい。"},
+      {date:"10月2日",type:"展開",title:"対戦カードが公開される",excerpt:"気になる組み合わせは？",summary:"具体的な対戦カードが発表されたという架空の続報。大会の見どころが徐々に具体化する。",context:"登場する選手や試合方式がそろった段階で、ニュースが一つのストーリーになる。"},
+      {date:"10月18日",type:"現在地",title:"開幕前の注目ポイントを整理",excerpt:"観戦準備はここから。",summary:"この架空大会の観戦ポイントをまとめた現在地。どの試合に注目するか、初報からの流れを踏まえて把握できる。",context:"最新のまとめから過去の記事をたどる読み方もできる。"}
+    ]},
+    {id:"rules",short:"ルール変更",topic:"新ルールはどう決まった？",lead:"見直し案に対する選手の反応、主催者の説明、最終決定まで。ひとつの制度変更を追いかける。",now:"修正されたルール案がまとめられ、次の大会での適用が予定されているという段階。",color:"#1f5fc4",events:[
+      {date:"8月8日",type:"発端",title:"ルール見直し案が示される",excerpt:"議論のきっかけ。",summary:"架空の競技団体が、得点や試合運営に関するルールの見直しを提案したという設定。",context:"まずは『提案』なのか『決定』なのかを明確にしておきたい。"},
+      {date:"8月19日",type:"反応",title:"選手や指導者から意見が出る",excerpt:"現場はどう受け止めた？",summary:"変更案に対し、競技者や指導者から賛否の意見が寄せられたという仮想の展開。",context:"異なる立場のコメントを順に置くことで、論点が浮かび上がる。"},
+      {date:"9月11日",type:"展開",title:"主催団体が説明を追加",excerpt:"改定の狙いを読み解く。",summary:"架空の主催団体が、変更の目的や安全面への配慮について補足説明をしたという設定。",context:"意見が出たあとで説明が追加された、という順番自体が重要な情報になる。"},
+      {date:"9月27日",type:"続報",title:"一部を修正した案が公開される",excerpt:"何が変わった？",summary:"当初の案を踏まえて修正されたルールが公表されたという架空の展開。",context:"初回の提案と見比べると、議論がどこに影響したのか分かりやすい。"},
+      {date:"10月9日",type:"現在地",title:"適用予定の大会が明らかに",excerpt:"今後の注目点は？",summary:"新しい規定が採用される大会について案内が出たという仮想の段階。",context:"現在地から最初の発表へ戻ると、変更に至る流れを短時間で復習できる。"}
+    ]}
+  ];
+  const $=id=>document.getElementById(id);
+  const topicList=$("topic-list"), timeline=$("timeline");
+  let chosen=0, order="oldest", expanded=new Set();
+  const prefersReduced=window.matchMedia("(prefers-reduced-motion: reduce)");
+  function elt(tag,cls,value){
+    const node=document.createElement(tag);
+    if(cls)node.className=cls;
+    if(value!==undefined)node.textContent=value;
+    return node;
+  }
+  function renderTopics(){
+    topicList.replaceChildren();
+    data.forEach((story,i)=>{
+      const button=elt("button","topic");button.type="button";
+      button.style.setProperty("--topic-color",story.color);
+      button.setAttribute("aria-pressed",String(i===chosen));
+      button.append(elt("span","topic-index","0"+(i+1)),elt("span","topic-name",story.short),elt("small","",story.events.length+"つの続報 ↗"));
+      button.addEventListener("click",()=>{
+        if(chosen===i)return;
+        chosen=i;expanded=new Set([data[chosen].events.length-1]);
+        render();
+        const hero=$("story-title");hero.scrollIntoView({behavior:prefersReduced.matches?"auto":"smooth",block:"center"});
+      });
+      topicList.append(button);
+    });
+  }
+  function renderEvent(event,index,isLatest){
+    const row=elt("article","moment");
+    row.dataset.latest=String(isLatest);
+    const date=elt("div","datecol");
+    date.append(elt("div","monthdate",event.date),elt("div","year","2026"));
+    const rail=elt("div","rail");rail.setAttribute("aria-hidden","true");rail.append(elt("span","dot"));
+    const body=elt("div","moment-body");
+    const button=elt("button","event");button.type="button";
+    const open=expanded.has(index);
+    button.setAttribute("aria-expanded",String(open));
+    button.setAttribute("aria-controls","story-event-"+index);
+    const top=elt("div","event-top");
+    top.append(elt("span","event-type",event.type.toUpperCase()));
+    if(isLatest)top.append(elt("span","now-tag","NOW / いまここ"));
+    button.append(top,elt("strong","event-title",event.title));
+    const foot=elt("div","event-foot");
+    foot.append(elt("span","",event.excerpt),elt("span","chevron","+"));
+    button.append(foot);
+    const detail=elt("div","event-content");detail.id="story-event-"+index;detail.hidden=!open;
+    detail.append(elt("div","detail-label","WHAT HAPPENED / 何があった？"),elt("p","",event.summary));
+    detail.append(elt("div","detail-label","WHY IT MATTERS / どうつながる？"));
+    detail.append(elt("div","context",event.context));
+    const end=elt("div","detail-end");
+    end.append(elt("span","", "架空のニュース例"),elt("strong","",index+1+" / "+data[chosen].events.length));
+    detail.append(end);
+    button.addEventListener("click",()=>{
+      if(expanded.has(index))expanded.delete(index);else expanded.add(index);
+      const next=expanded.has(index);
+      button.setAttribute("aria-expanded",String(next));detail.hidden=!next;
+      updateExpandLabel();
+    });
+    body.append(button,detail);row.append(date,rail,body);return row;
+  }
+  function updateExpandLabel(){
+    const total=data[chosen].events.length;
+    $("expand-all").textContent=expanded.size===total?"すべて閉じる −":"すべて開く ＋";
+  }
+  function render(){
+    const story=data[chosen];
+    renderTopics();
+    $("story-title").textContent=story.topic;
+    $("story-description").textContent=story.lead;
+    $("story-now").textContent=story.now;
+    $("event-count").textContent=story.events.length+" UPDATES";
+    $("oldest").setAttribute("aria-pressed",String(order==="oldest"));
+    $("newest").setAttribute("aria-pressed",String(order==="newest"));
+    const indices=story.events.map((_,i)=>i);
+    if(order==="newest")indices.reverse();
+    timeline.replaceChildren(...indices.map(i=>renderEvent(story.events[i],i,i===story.events.length-1)));
+    updateExpandLabel();
+  }
+  $("oldest").addEventListener("click",()=>{if(order!=="oldest"){order="oldest";render()}});
+  $("newest").addEventListener("click",()=>{if(order!=="newest"){order="newest";render()}});
+  $("expand-all").addEventListener("click",()=>{
+    const total=data[chosen].events.length;
+    if(expanded.size===total)expanded.clear();
+    else expanded=new Set(Array.from({length:total},(_,i)=>i));
+    const y=window.scrollY;render();window.scrollTo({top:y,behavior:"instant"});
+  });
+  $("jump-topics").addEventListener("click",()=>{
+    $("topics").scrollIntoView({behavior:prefersReduced.matches?"auto":"smooth",block:"start"});
+  });
+  expanded.add(data[0].events.length-1);
+  render();
+})();
+</script>
+</body>
+</html>
