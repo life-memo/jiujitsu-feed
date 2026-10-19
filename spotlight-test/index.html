@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ffffff">
+<meta name="robots" content="noindex,nofollow">
+<title>Spotlight Search | ジュウジュツフィード UI Lab</title>
+<style>
+/* Standalone interactive search demo for JiuJitsu Feed. No Wraptas/site changes. */
+:root{--ink:#141414;--muted:#777;--line:#e7e7e7;--red:#c8102e;--paper:#fff;
+  --sans:"Noto Sans JP","Hiragino Sans","Yu Gothic UI",Meiryo,system-ui,sans-serif}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans)}
+button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #295bc7;outline-offset:2px}
+[hidden]{display:none!important}
+.site-header{position:sticky;top:0;z-index:15;background:#fff;border-bottom:1px solid var(--line)}
+.brandline{display:grid;grid-template-columns:46px 1fr 46px;align-items:center;min-height:48px;max-width:1080px;margin:auto;padding:2px 15px}
+.logo{font-size:18px;font-weight:800;letter-spacing:.065em;text-align:center;white-space:nowrap}
+.top-icon{display:grid;place-items:center;border:0;background:transparent;color:#111;width:42px;height:42px;border-radius:9px;transition:background .2s,transform .2s}
+.top-icon:hover{background:#f5f5f5}.top-icon:active{transform:scale(.88)}
+.top-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tabs{border-top:1px solid #f2f2f2;background:#f6f6f6}
+.tabs-inner{max-width:1080px;margin:auto;display:flex;padding:0 12px;gap:4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tabs-inner::-webkit-scrollbar{display:none}
+.tabs button{position:relative;flex:none;border:0;border-bottom:2px solid transparent;color:#777;background:transparent;font-size:12px;font-weight:600;min-width:70px;padding:12px 9px}
+.tabs button[aria-pressed="true"]{color:#111;border-bottom-color:#111}
+.demo-shell{width:min(100% - 36px,760px);margin:0 auto;padding:34px 0 80px}
+.intro-label{font-size:10px;font-weight:850;letter-spacing:.16em;color:#8b8b8b}
+.heading{margin:5px 0 9px;font-size:clamp(29px,7vw,44px);line-height:1.35;letter-spacing:-.055em}
+.subheading{margin:0 0 22px;color:#777;font-size:12px;line-height:1.75}
+.demo-actions{background:#f8f8f8;border:1px solid #e8e8e8;padding:16px;border-radius:14px;margin:22px 0 40px}
+.demo-actions .eyebrow{font-size:10px;font-weight:800;letter-spacing:.12em;color:#777}
+.demo-actions h2{font-size:16px;margin:6px 0 12px;letter-spacing:-.025em}
+.demo-actions p{font-size:11px;color:#777;line-height:1.7;margin:12px 0 0}
+.launch-search{width:100%;min-height:53px;background:#fff;border:1px solid #d5d5d5;color:#666;border-radius:10px;display:flex;align-items:center;gap:11px;padding:0 12px;text-align:left;transition:border-color .2s,box-shadow .2s,transform .2s}
+.launch-search:hover{border-color:#999;box-shadow:0 5px 20px #0000000a}
+.launch-search:active{transform:scale(.99)}
+.launch-search svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;flex:none}
+.launch-search span{font-size:13px;flex:1}
+kbd{font:inherit;font-size:10px;border:1px solid #ddd;color:#888;background:#f9f9f9;border-radius:5px;padding:5px 7px;white-space:nowrap}
+.section-bar{display:flex;align-items:center;justify-content:space-between;border-top:2px solid #161616;padding-top:12px;margin-bottom:18px}
+.section-bar strong{font-size:13px}.section-bar span{font-size:10px;color:#777}
+.story{width:100%;position:relative;display:block;text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;margin:12px 0;padding:19px 19px 19px 30px;transition:transform .18s,border-color .18s,box-shadow .18s}
+.story::before{content:"";position:absolute;left:0;top:0;bottom:0;width:9px;border-radius:14px 0 0 14px;background:var(--belt,#111)}
+.story[data-rank="1"]{--belt:#c8102e}.story[data-rank="2"]{--belt:#8a5527}.story[data-rank="3"]{--belt:#7a3da8}.story[data-rank="4"]{--belt:#1f5fc4}.story[data-rank="5"]{--belt:#111}
+.story:hover{transform:translateY(-2px);box-shadow:0 7px 20px #0000000a;border-color:#bbb}
+.story .meta{display:flex;align-items:center;gap:8px;color:#888;font-size:10px;letter-spacing:.04em;margin-bottom:8px}
+.story .meta b{font-size:10px;font-weight:800;color:#444;border:1px solid #ddd;padding:2px 6px}
+.story strong{display:block;font-weight:800;font-size:clamp(15px,4vw,19px);line-height:1.5}
+.story p{font-size:12px;line-height:1.7;margin:6px 0 0;color:#777}
+.site-footer{background:#111;color:#fff;padding:44px max(20px,calc((100vw - 760px)/2))}
+.site-footer strong{font-size:19px;letter-spacing:.05em}
+.site-footer p{color:#bbb;font-size:12px;margin-top:8px}
+.site-footer small{display:block;border-top:1px solid #333;margin-top:26px;padding-top:22px;color:#888;font-size:10px}
+
+/* Spotlight command palette */
+.spotlight{position:fixed;inset:0;z-index:70;display:flex;align-items:flex-start;justify-content:center;
+  padding:calc(44px + env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom));
+  overflow-y:auto;overscroll-behavior:contain;background:rgba(14,14,14,.53);
+  -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+.spotlight[hidden]{display:none}
+.palette{width:min(100%,610px);min-width:0;max-height:min(680px,calc(100dvh - 80px - env(safe-area-inset-top)));
+  background:#fff;border-radius:17px;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 25px 75px rgba(0,0,0,.2),0 0 0 1px rgba(255,255,255,.22);
+  animation:paletteIn .23s cubic-bezier(.18,.9,.25,1)}
+@keyframes paletteIn{from{opacity:0;transform:translateY(-14px) scale(.98)}to{opacity:1;transform:none}}
+.search-row{min-height:66px;flex:none;display:flex;align-items:center;gap:11px;padding:0 14px;border-bottom:1px solid #e9e9e9}
+.search-row svg{height:21px;width:21px;stroke:#111;stroke-width:1.8;fill:none;stroke-linecap:round;flex:none}
+.search-row input{min-width:0;flex:1;border:0;outline:none!important;box-shadow:none!important;background:#fff;color:#111;font-size:16px;line-height:1.5;padding:10px 0}
+.search-row input::placeholder{color:#999}
+.close-search{background:#f5f5f5;border:1px solid #e7e7e7;border-radius:6px;color:#666;padding:6px 9px;font-size:11px;font-weight:700;white-space:nowrap}
+.pop-content{overflow-y:auto;min-height:100px;overscroll-behavior:contain;scrollbar-width:thin;flex:1}
+.pop-section-title{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#888;font-size:10px;font-weight:750;letter-spacing:.09em;padding:20px 18px 11px}
+.pop-section-title span:last-child{font-size:10px;font-weight:500;letter-spacing:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:0 16px 16px}
+.chip{background:#fff;border:1px solid #e1e1e1;border-radius:999px;color:#292929;font-size:12px;font-weight:700;padding:9px 13px;transition:background .15s,transform .18s}
+.chip:hover{background:#f6f6f6}.chip:active{transform:scale(.94)}
+.filters{display:flex;gap:6px;overflow-x:auto;padding:0 16px 15px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filter{flex:none;border:1px solid #e0e0e0;border-radius:999px;background:#fff;color:#555;font-size:11px;padding:7px 12px}
+.filter[aria-pressed="true"]{background:#111;color:#fff;border-color:#111}
+.result-count{padding:0 17px 8px;font-size:11px;color:#888}
+.results{padding:0 9px 8px}
+.result{width:100%;border:0;border-radius:9px;background:#fff;display:flex;align-items:flex-start;gap:11px;text-align:left;padding:12px 10px;transition:background .15s;min-height:64px}
+.result:hover,.result[aria-selected="true"]{background:#f2f2f2}
+.result-icon{flex:none;width:35px;height:35px;border-radius:9px;background:#f5f5f5;border:1px solid #eee;display:grid;place-items:center;color:#666;font-size:11px;font-weight:800}
+.result[aria-selected="true"] .result-icon{background:#111;color:#fff;border-color:#111}
+.result-main{min-width:0;flex:1;display:flex;flex-direction:column;gap:5px}
+.result-main strong{font-size:12px;line-height:1.55;color:#171717;font-weight:750}
+.result-main small{font-size:10px;line-height:1.55;color:#888}
+.result-main mark{background:#fff0c3;border-radius:2px;padding:0 1px;color:inherit}
+.result-arrow{flex:none;color:#888;font-size:14px;padding:8px 0}
+.no-results{padding:28px 24px 42px;text-align:center}
+.no-results svg{display:block;margin:0 auto 12px;width:30px;height:30px;fill:none;stroke:#999;stroke-width:1.5}
+.no-results strong{display:block;font-size:14px}.no-results p{font-size:12px;line-height:1.8;color:#888}
+.shortcut-footer{display:flex;align-items:center;gap:13px;flex-wrap:wrap;padding:11px 14px;background:#fafafa;border-top:1px solid #e8e8e8;color:#888;font-size:10px;flex:none}
+.shortcut-footer kbd{padding:3px 6px;font-size:10px;margin-right:3px}
+.sample-notice{padding:12px 17px 0;font-size:10px;color:#999;line-height:1.6}
+.preview-overlay{position:fixed;z-index:90;inset:0;display:grid;place-items:end center;background:rgba(0,0,0,.4);padding:12px 12px max(12px,env(safe-area-inset-bottom))}
+.preview-card{max-height:82dvh;overflow:auto;overscroll-behavior:contain;border-radius:19px;width:min(100%,600px);background:#fff;padding:21px 21px 25px;box-shadow:0 15px 50px #0004;animation:sheetUp .24s cubic-bezier(.2,.9,.3,1)}
+@keyframes sheetUp{from{transform:translateY(35px);opacity:.5}to{transform:none;opacity:1}}
+.preview-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.preview-top span{font-size:10px;font-weight:850;color:#888;letter-spacing:.11em}
+.preview-x{border:0;background:#f3f3f3;border-radius:50%;width:39px;height:39px;font-size:22px}
+.preview-card h2{font-size:clamp(22px,6vw,30px);letter-spacing:-.04em;line-height:1.47;margin:18px 0}
+.preview-card p{font-size:13px;line-height:1.85;color:#666}
+.preview-card .disclaimer{background:#f6f6f6;border-radius:10px;padding:15px;margin-top:22px;font-size:11px}
+.bottom-actions{margin-top:17px;display:flex;gap:9px}
+.bottom-actions button{flex:1;border:1px solid #111;padding:13px;border-radius:8px;background:#111;color:#fff;font-size:12px;font-weight:750}
+.bottom-actions button.secondary{background:#fff;color:#111}
+@media(min-width:700px){
+ .spotlight{padding-top:13vh}
+ .palette{max-height:min(680px,76dvh)}
+ .preview-overlay{place-items:center}
+ .story-list{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+ .story{margin:0}
+ .story:first-child{grid-column:1/-1}
+}
+@media(max-width:360px){.logo{font-size:15px}.brandline{padding:2px 9px}.search-row{padding:0 10px;gap:8px}.shortcut-footer{gap:7px}}
+@media(max-height:620px){
+ .spotlight{padding-top:10px}
+ .palette{max-height:calc(100dvh - 20px)}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="brandline">
+    <button type="button" class="top-icon" id="menu-button" aria-label="サイトメニュー">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+    <span class="logo">ジュウジュツフィード</span>
+    <button type="button" class="top-icon" id="header-search" aria-label="記事を検索" aria-haspopup="dialog">
+      <svg viewBox="0 0 24 24"><circle cx="10.7" cy="10.7" r="6.5"/><path d="m16 16 5 5"/></svg>
+    </button>
+  </div>
+  <nav class="tabs" aria-label="カテゴリー"><div class="tabs-inner" id="site-tabs">
+    <button type="button" aria-pressed="true">トップ</button>
+    <button type="button" aria-pressed="false">試合</button>
+    <button type="button" aria-pressed="false">動向</button>
+    <button type="button" aria-pressed="false">運営</button>
+    <button type="button" aria-pressed="false">文化</button>
+  </div></nav>
+</header>
+<main class="demo-shell">
+  <span class="intro-label">2026 / NEWS</span>
+  <h1 class="heading">今日のヘッドライン</h1>
+  <p class="subheading">あした道場で話したくなるニュース。</p>
+  <section class="demo-actions" aria-label="Spotlight Searchデモ">
+    <span class="eyebrow">FEATURE PREVIEW 01</span>
+    <h2>気になる選手や大会を、すぐに見つける。</h2>
+    <button type="button" class="launch-search" id="launch-search" aria-haspopup="dialog">
+      <svg viewBox="0 0 24 24"><circle cx="10.7" cy="10.7" r="6.5"/><path d="m16 16 5 5"/></svg>
+      <span>記事・選手・大会を検索...</span><kbd>⌘ / Ctrl + K</kbd>
+    </button>
+    <p>検索すると候補がその場に表示される。気になる記事をタップするとプレビューが開きます。</p>
+  </section>
+  <div class="section-bar"><strong>HEADLINES / 注目記事</strong><span>UIデモ用サンプル</span></div>
+  <section class="story-list" id="headline-list" aria-label="注目記事一覧"></section>
+</main>
+<footer class="site-footer"><strong>ジュウジュツフィード</strong><p>あした道場で話したくなるニュース。</p><small>© 2026 ジュウジュツフィード / UI TEST — 本番サイトではありません</small></footer>
+<div class="spotlight" id="search-backdrop" hidden>
+  <section class="palette" id="search-palette" role="dialog" aria-modal="true" aria-label="記事を探す">
+    <div class="search-row">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.7" cy="10.7" r="6.5"/><path d="m16 16 5 5"/></svg>
+      <input id="search-input" type="search" placeholder="選手名・大会名・キーワード" enterkeyhint="search" role="combobox" aria-controls="search-results" aria-expanded="true" aria-autocomplete="list" aria-activedescendant="" autocomplete="off">
+      <button class="close-search" type="button" id="close-search" aria-label="検索を閉じる">閉じる ×</button>
+    </div>
+    <div class="pop-content" id="pop-content">
+      <div id="starter">
+        <div class="pop-section-title"><span>POPULAR SEARCHES</span><span>よく探すキーワード</span></div>
+        <div class="chips">
+          <button type="button" class="chip" data-query="ADCC">ADCC</button>
+          <button type="button" class="chip" data-query="ルオトロ">ルオトロ</button>
+          <button type="button" class="chip" data-query="UFC BJJ">UFC BJJ</button>
+          <button type="button" class="chip" data-query="クレイグ">クレイグ</button>
+          <button type="button" class="chip" data-query="柔術">柔術</button>
+        </div>
+      </div>
+      <div class="pop-section-title"><span id="results-heading">SUGGESTED STORIES</span><span id="results-meta">すべての分野</span></div>
+      <div class="filters" aria-label="検索結果のカテゴリー">
+        <button class="filter" type="button" data-filter="すべて" aria-pressed="true">すべて</button>
+        <button class="filter" type="button" data-filter="試合" aria-pressed="false">試合</button>
+        <button class="filter" type="button" data-filter="動向" aria-pressed="false">動向</button>
+        <button class="filter" type="button" data-filter="運営" aria-pressed="false">運営</button>
+        <button class="filter" type="button" data-filter="文化" aria-pressed="false">文化</button>
+      </div>
+      <div class="result-count" id="result-count" aria-live="polite"></div>
+      <div class="results" id="search-results" role="listbox" aria-label="記事候補"></div>
+      <div class="no-results" id="no-results" hidden>
+        <svg viewBox="0 0 24 24"><circle cx="10.7" cy="10.7" r="6.5"/><path d="m16 16 5 5"/></svg>
+        <strong>記事が見つかりませんでした</strong>
+        <p>キーワードを短くするか、カテゴリーを「すべて」にしてみてください。</p>
+      </div>
+      <div class="sample-notice">※検索対象はサンプル記事のみ。実際のサイトの記事検索ではありません。</div>
+    </div>
+    <div class="shortcut-footer"><span><kbd>↑</kbd><kbd>↓</kbd> 選択</span><span><kbd>Enter</kbd> プレビュー</span><span><kbd>Esc</kbd> 閉じる</span></div>
+  </section>
+</div>
+<div id="preview-overlay" class="preview-overlay" hidden>
+  <section class="preview-card" role="dialog" aria-modal="true" aria-labelledby="preview-title">
+    <div class="preview-top"><span id="preview-meta">記事プレビュー</span><button type="button" class="preview-x" id="preview-close" aria-label="プレビューを閉じる">×</button></div>
+    <h2 id="preview-title"></h2>
+    <p id="preview-desc"></p>
+    <p class="disclaimer">これはSpotlight Searchの操作を試すためのサンプル記事です。実際の記事には接続していません。</p>
+    <div class="bottom-actions">
+      <button type="button" id="preview-back" class="secondary">検索に戻る</button>
+      <button type="button" id="preview-done">閉じる</button>
+    </div>
+  </section>
+</div>
+<script>
+(() => {
+ "use strict";
+ // Search index is deliberately illustrative: do not present as real news.
+ const articles=[
+  {id:1,cat:"試合",title:"ADCCとは？ 世界最高峰のグラップリング大会を知る",summary:"ルールと特徴、見どころを整理。大会をもっと楽しむための入門記事。",keywords:"adcc アブダビ アブダビコンバット grappling 世界大会"},
+  {id:2,cat:"動向",title:"ルオトロ兄弟が注目される理由",summary:"タイとケイド、世界を驚かせる柔術スタイルの背景に迫る。",keywords:"ruotolo tye kade タイ ケイド ルオトロ ワン one"},
+  {id:3,cat:"試合",title:"UFC BJJの新しい挑戦とルールを読む",summary:"UFCが展開する柔術シリーズは、競技の見せ方をどう変えるのか。",keywords:"ufc bjj グラップリング 新大会 クラウディア"},
+  {id:4,cat:"文化",title:"クレイグ・ジョーンズと柔術カルチャー",summary:"競技の外でも大きな存在感を示すグラップラーの発信を追う。",keywords:"craig jones クレイグ ジョーンズ b team"},
+  {id:5,cat:"動向",title:"ゴードン・ライアンのキャリアと影響力",summary:"ノーギ柔術界で話題を集める選手の歩みを振り返る。",keywords:"gordon ryan ゴードン ライアン nogi ノーギ"},
+  {id:6,cat:"運営",title:"ムンジアルとADCC、大会運営の違い",summary:"道着とノーギ、それぞれの大会設計で変わる観戦体験。",keywords:"ibjjf ムンジアル 世界柔術 運営 adcc"},
+  {id:7,cat:"試合",title:"ミカ・ガルバォンの技術と試合の見どころ",summary:"注目選手をもっと楽しむための観戦ポイント。",keywords:"mica galvao ミカ ガルバォン ガルバオン"},
+  {id:8,cat:"文化",title:"日本の柔術シーンを形づくった人たち",summary:"柔術の歴史をひもとく人物紹介。",keywords:"中井祐樹 ホイス ヒクソン グレイシー 日本"},
+  {id:9,cat:"動向",title:"ノーギ柔術の現在地、世界の新しいトレンド",summary:"海外のトレーニングや大会に見える変化とは。",keywords:"nogi ノーギ 柔術 グラップリング トレンド"},
+  {id:10,cat:"運営",title:"大会ルールの違いを知ると観戦が変わる",summary:"ポイント制、サブミッション、時間配分の基本を整理。",keywords:"adcc ibjjf ufc bjj ルール 得点 ポイント"}
+ ];
+ const $=id=>document.getElementById(id);
+ const backdrop=$("search-backdrop"),palette=$("search-palette"),input=$("search-input");
+ const results=$("search-results"),count=$("result-count"),starter=$("starter"),empty=$("no-results"),popContent=$("pop-content");
+ const preview=$("preview-overlay");
+ let filter="すべて",candidates=[],active=0,origin=null,openedFromSearch=false;
+ const normalize=s=>String(s||"").normalize("NFKC").toLocaleLowerCase("ja").replace(/[\s　]+/g,"").trim();
+ function score(a,q){
+   if(!q)return 1;
+   const title=normalize(a.title),kw=normalize(a.keywords),description=normalize(a.summary);
+   const full=normalize(q);
+   const pieces=String(q).split(/\s+/).map(normalize).filter(Boolean);
+   const terms=pieces.length>1?pieces:[full];
+   if(!terms.every(t=>title.includes(t)||kw.includes(t)||description.includes(t)||normalize(a.cat).includes(t)))return 0;
+   return terms.reduce((v,t)=>v+(title.includes(t)?6:0)+(kw.includes(t)?3:0)+(description.includes(t)?1:0),0);
+ }
+ function highlight(node,text,query) {
+   // Highlight matching text using text nodes only; never insert user HTML.
+   const needle=String(query||"").trim();
+   if(!needle || needle.includes(" ")){node.textContent=text;return;}
+   const pos=text.toLocaleLowerCase("ja").indexOf(needle.toLocaleLowerCase("ja"));
+   if(pos<0){node.textContent=text;return;}
+   node.append(document.createTextNode(text.slice(0,pos)));
+   const mark=document.createElement("mark");mark.textContent=text.slice(pos,pos+needle.length);node.append(mark);
+   node.append(document.createTextNode(text.slice(pos+needle.length)));
+ }
+ function resetFocus(){
+   results.querySelectorAll(".result").forEach((el,i)=>el.setAttribute("aria-selected",String(i===active)));
+   input.setAttribute("aria-activedescendant",candidates[active]?"sr-"+candidates[active].id:"");
+ }
+ function render(){
+   const q=input.value.trim();
+   starter.hidden=!!q;
+   $("results-heading").textContent=q?"SEARCH RESULTS":"SUGGESTED STORIES";
+   $("results-meta").textContent=filter==="すべて"?"すべての分野":filter;
+   document.querySelectorAll(".filter").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.filter===filter)));
+   const matching=articles.map(a=>({...a,weight:score(a,q)}))
+       .filter(a=>a.weight>0&&(filter==="すべて"||a.cat===filter))
+       .sort((a,b)=>b.weight-a.weight||a.id-b.id);
+   candidates=matching.slice(0,q?10:6);
+   active=0;results.replaceChildren();
+   count.textContent=candidates.length+" 件の候補"+(q?"（「"+q+"」）":"");
+   empty.hidden=candidates.length>0;
+   candidates.forEach((a,i)=>{
+     const btn=document.createElement("button");btn.type="button";btn.className="result";
+     btn.id="sr-"+a.id;btn.setAttribute("role","option");btn.setAttribute("aria-selected",String(i===0));
+     const ico=document.createElement("span");ico.className="result-icon";ico.textContent=String(a.id).padStart(2,"0");
+     const mid=document.createElement("span");mid.className="result-main";
+     const title=document.createElement("strong");highlight(title,a.title,q);
+     const sub=document.createElement("small");sub.textContent=a.cat+" · "+a.summary;
+     const arrow=document.createElement("span");arrow.className="result-arrow";arrow.textContent="↗";
+     mid.append(title,sub);btn.append(ico,mid,arrow);btn.addEventListener("mouseenter",()=>{active=i;resetFocus()});
+     btn.addEventListener("click",()=>openPreview(a,true));results.append(btn);
+   });
+   resetFocus();popContent.scrollTop=0;
+ }
+ function openSearch(){
+   if(!backdrop.hidden){input.focus();return;}
+   origin=document.activeElement;backdrop.hidden=false;document.body.style.overflow="hidden";
+   filter="すべて";input.value="";render();input.focus({preventScroll:true});
+ }
+ function closeSearch(){
+   backdrop.hidden=true;document.body.style.overflow="";
+   if(origin?.isConnected)origin.focus({preventScroll:true});
+ }
+ function openPreview(a,fromSearch){
+   openedFromSearch=!!fromSearch;
+   $("preview-title").textContent=a.title;$("preview-meta").textContent=a.cat+" / SAMPLE PREVIEW";
+   $("preview-desc").textContent=a.summary;
+   preview.hidden=false;
+   // Hide spotlight while preview is up so dialogs don't overlap visually.
+   if(!backdrop.hidden)backdrop.style.visibility="hidden";
+   document.body.style.overflow="hidden";
+   $("preview-close").focus({preventScroll:true});
+ }
+ function closePreview(back){
+   preview.hidden=true;backdrop.style.visibility="";
+   if(back&&openedFromSearch&&!backdrop.hidden){input.focus({preventScroll:true});return;}
+   if(!backdrop.hidden)closeSearch();else{document.body.style.overflow="";if(origin?.isConnected)origin.focus({preventScroll:true})}
+ }
+ ["header-search","launch-search"].forEach(id=>$(id).addEventListener("click",openSearch));
+ $("close-search").addEventListener("click",closeSearch);
+ backdrop.addEventListener("click",e=>{if(e.target===backdrop)closeSearch()});
+ input.addEventListener("input",render);
+ input.addEventListener("keydown",e=>{
+   if(e.key==="ArrowDown"||e.key==="ArrowUp"){
+     if(!candidates.length)return;
+     e.preventDefault();active=(active+(e.key==="ArrowDown"?1:-1)+candidates.length)%candidates.length;
+     resetFocus();results.querySelectorAll(".result")[active]?.scrollIntoView({block:"nearest"});
+   }else if(e.key==="Enter"&&candidates.length){
+     e.preventDefault();openPreview(candidates[active],true);
+   }else if(e.key==="Escape"){
+     e.preventDefault();if(input.value){input.value="";render()}else closeSearch();
+   }
+ });
+ document.querySelectorAll(".chip").forEach(btn=>btn.addEventListener("click",()=>{input.value=btn.dataset.query;render();input.focus({preventScroll:true})}));
+ document.querySelectorAll(".filter").forEach(btn=>btn.addEventListener("click",()=>{filter=btn.dataset.filter;render()}));
+ $("preview-close").addEventListener("click",()=>closePreview(false));
+ $("preview-back").addEventListener("click",()=>closePreview(true));
+ $("preview-done").addEventListener("click",()=>closePreview(false));
+ preview.addEventListener("click",e=>{if(e.target===preview)closePreview(false)});
+ document.addEventListener("keydown",e=>{
+   if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){
+     e.preventDefault();if(preview.hidden)openSearch();return;
+   }
+   if(e.key==="/"&&backdrop.hidden&&preview.hidden&&!["INPUT","TEXTAREA"].includes(document.activeElement.tagName)){
+     e.preventDefault();openSearch();
+   }
+   if(e.key==="Escape"&&!preview.hidden){e.preventDefault();closePreview(true)}
+   else if(e.key==="Escape"&&!backdrop.hidden&&document.activeElement!==input){e.preventDefault();closeSearch()}
+   if(e.key==="Tab"&&!preview.hidden){
+     // Focus remains in the preview's accessible controls.
+     const items=[$("preview-close"),$("preview-back"),$("preview-done")];
+     const first=items[0],last=items[items.length-1];
+     if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+   } else if(e.key==="Tab"&&!backdrop.hidden) {
+     // Palette's only Tab stops are search input, close and filter/chips/results.
+     // Keep keyboard focus in the modal, without disrupting arrow selection.
+     const items=[...palette.querySelectorAll('button:not([hidden]), input')].filter(x=>x.offsetParent!==null);
+     const first=items[0],last=items[items.length-1];
+     if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+     else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+   }
+ });
+ // Non-search demo links: show a polite prompt rather than navigating away.
+ $("menu-button").addEventListener("click",()=>openSearch());
+ document.querySelectorAll("#site-tabs button").forEach(btn=>btn.addEventListener("click",()=>{
+   document.querySelectorAll("#site-tabs button").forEach(x=>x.setAttribute("aria-pressed",String(x===btn)));
+   openSearch();filter=btn.textContent.trim()==="トップ"?"すべて":btn.textContent.trim();render();
+ }));
+ const headline=$("headline-list");
+ articles.slice(0,5).forEach((a,i)=>{
+   const btn=document.createElement("button");btn.type="button";btn.className="story";btn.dataset.rank=String(i+1);
+   const meta=document.createElement("span");meta.className="meta";
+   const tag=document.createElement("b");tag.textContent=a.cat;meta.append(tag,document.createTextNode("SAMPLE / 2026"));
+   const title=document.createElement("strong");title.textContent=a.title;
+   const d=document.createElement("p");d.textContent=a.summary;
+   btn.append(meta,title,d);btn.addEventListener("click",()=>openPreview(a,false));headline.append(btn);
+ });
+})();
+</script>
+</body>
+</html>
